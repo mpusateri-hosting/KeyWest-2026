@@ -2830,7 +2830,7 @@ function filterRecs(query) {
   var html = '<div class="card" style="margin-bottom:14px;">';
   matches.forEach(function(m) {
     var item = m.item;
-    html += '<div class="rec-item" onclick="getDirections('' + item.address.replace(/'/g,"\'") + '')">';
+    html += '<div class="rec-item" onclick="getDirections(\'' + item.address.replace(/'/g,"\\'") + '\')">';
     html += '<div class="rec-emoji">' + item.emoji + '</div>';
     html += '<div class="rec-info">';
     html += '<div class="rec-name">' + item.name + '</div>';
@@ -2842,7 +2842,7 @@ function filterRecs(query) {
     html += '</div>';
     if (item.note) html += '<div style="font-size:11px;color:var(--teal-light);margin-top:4px;font-style:italic;">💬 ' + item.note + '</div>';
     html += '</div>';
-    html += '<button class="rec-dir-btn" onclick="event.stopPropagation();getDirections('' + item.address.replace(/'/g,"\'") + '')">🗺️</button>';
+    html += '<button class="rec-dir-btn" onclick="event.stopPropagation();getDirections(\'' + item.address.replace(/'/g,"\\'") + '\')">🗺️</button>';
     html += '</div>';
   });
   html += '</div>';
@@ -2956,6 +2956,22 @@ function showKeyLimePie() {
 
   document.getElementById('results-title').textContent = '🍋 Key Lime Pie Guide';
   var html = '<div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;font-style:italic;">Fair warning: Key West takes key lime pie seriously. Strong opinions exist about meringue vs whipped cream vs cheesecake-style. Choose your allegiance carefully.</div>';
+
+  places.forEach(function(p) {
+    html += '<div class="place-result">';
+    html += '<div class="place-num" style="font-size:16px;background:linear-gradient(135deg,var(--gold),#e6a800);min-width:32px;height:32px;">' + p.emoji + '</div>';
+    html += '<div class="place-info">';
+    html += '<div class="place-name">' + p.name + '</div>';
+    html += '<div class="place-meta"><span class="stars">★ ' + p.stars + '</span><span>(' + p.reviews + ')</span></div>';
+    if (p.note) html += '<div style="font-size:11px;color:var(--teal-light);margin-top:3px;font-style:italic;">💬 ' + p.note + '</div>';
+    html += '</div>';
+    html += '<button class="place-dir-btn" onclick="getDirections(\'' + p.address.replace(/'/g,"\\'") + '\')">Go \u2192</button>';
+    html += '</div>';
+  });
+
+  document.getElementById('results-list').innerHTML = html;
+  document.getElementById('results-modal').classList.add('open');
+}
 function getDirections(address) {
   if (!address) return;
   var encoded = encodeURIComponent(address);
