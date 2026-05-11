@@ -1,1 +1,3167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Keys Trip 2026 🌴</title>
+<style>
+  /* System font fallbacks — used in preview/offline, web fonts load progressively */
+  body { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; }
+</style>
+<script>
+  /* Load Google Fonts silently — fails gracefully in sandboxed environments */
+  (function() {
+    try {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap';
+      link.onerror = function() {}; // silent fail
+      document.head.appendChild(link);
+    } catch(e) {}
+  })();
+</script>
+<style>
+  /* ============================================================
+     CONFIGURATION — swap these when you have real credentials
+  ============================================================ */
+  :root {
+    --hotel-name: "The Reach Key West";
+    --hotel-address: "1435 Simonton Street, Key West, FL 33040";
+    --hotel-lat: 24.5478;
+    --hotel-lng: -81.8008;
+    --trip-start: "2026-07-07";
+    --trip-end: "2026-07-11";
+  }
 
+  /* ============================================================
+     DESIGN TOKENS — Tropical palette
+  ============================================================ */
+  :root {
+    --teal:        #0ABFBC;
+    --teal-dark:   #0891A0;
+    --teal-light:  #7EECEA;
+    --purple:      #7C3AED;
+    --purple-mid:  #A855F7;
+    --purple-light:#DDD6FE;
+    --coral:       #FF6B6B;
+    --gold:        #FFD166;
+    --navy:        #0B1F3A;
+    --navy-mid:    #162B4D;
+    --navy-light:  #1E3A5F;
+    --white:       #FFFFFF;
+    --off-white:   #F0FAFA;
+    --text-muted:  #8FB4C4;
+    --card-bg:     rgba(255,255,255,0.07);
+    --card-border: rgba(255,255,255,0.12);
+    --shadow:      0 8px 32px rgba(0,0,0,0.3);
+    --radius:      16px;
+    --radius-sm:   10px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Animated tropical background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(10,191,188,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 110%, rgba(124,58,237,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 80% at 50% 50%, var(--navy-mid) 0%, var(--navy) 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Subtle wave pattern */
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 200px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 200'%3E%3Cpath fill='rgba(10,191,188,0.05)' d='M0,100 C360,200 720,0 1440,100 L1440,200 L0,200 Z'/%3E%3Cpath fill='rgba(124,58,237,0.05)' d='M0,150 C480,50 960,250 1440,150 L1440,200 L0,200 Z'/%3E%3C/svg%3E") bottom/cover no-repeat;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ============================================================
+     LAYOUT
+  ============================================================ */
+  #app {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 90px;
+  }
+
+  /* ============================================================
+     HEADER
+  ============================================================ */
+  .app-header {
+    padding: 52px 20px 16px;
+    text-align: center;
+    position: relative;
+  }
+
+  .app-header .trip-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--teal), var(--purple-mid));
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .app-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--teal-light) 0%, var(--white) 50%, var(--purple-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .app-header .subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  /* ============================================================
+     SCREENS
+  ============================================================ */
+  .screen { display: none; animation: fadeUp 0.3s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(12px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ============================================================
+     CARDS
+  ============================================================ */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    margin: 0 16px 14px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-header .card-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal-light);
+  }
+
+  .card-header .card-icon { font-size: 16px; }
+
+  .card-body { padding: 14px 16px; }
+
+  /* ============================================================
+     HOME SCREEN — Weather Strip
+  ============================================================ */
+  .weather-strip {
+    background: linear-gradient(135deg, rgba(10,191,188,0.2), rgba(124,58,237,0.2));
+    border: 1px solid rgba(10,191,188,0.3);
+    border-radius: var(--radius);
+    margin: 0 16px 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  .weather-strip:active { transform: scale(0.98); }
+
+  .weather-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+
+  .weather-icon { font-size: 36px; line-height: 1; }
+
+  .weather-temp {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .weather-details {
+    flex: 1;
+  }
+
+  .weather-desc {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .weather-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .weather-meta span {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .weather-tap-hint {
+    font-size: 11px;
+    color: var(--teal-light);
+    opacity: 0.7;
+  }
+
+  /* ============================================================
+     HOME — Day Badge
+  ============================================================ */
+  .day-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    margin-bottom: 10px;
+  }
+
+  .day-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .day-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* ============================================================
+     HOME — Schedule
+  ============================================================ */
+  .schedule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    margin: 0 4px;
+  }
+
+  .schedule-item:active { background: rgba(255,255,255,0.05); }
+  .schedule-item:last-child { border-bottom: none; }
+
+  .schedule-time {
+    font-size: 12px;
+    color: var(--teal-light);
+    font-weight: 600;
+    min-width: 52px;
+    padding-top: 2px;
+  }
+
+  .schedule-info { flex: 1; }
+
+  .schedule-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .schedule-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-group {
+    background: rgba(10,191,188,0.2);
+    color: var(--teal-light);
+    border: 1px solid rgba(10,191,188,0.3);
+  }
+
+  .tag-couple {
+    background: rgba(168,85,247,0.2);
+    color: var(--purple-light);
+    border: 1px solid rgba(168,85,247,0.3);
+  }
+
+  .schedule-dir {
+    font-size: 18px;
+    padding-top: 2px;
+    opacity: 0.7;
+  }
+
+  /* ============================================================
+     HOME — Quick Access Grid
+  ============================================================ */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 0 16px 14px;
+  }
+
+  .quick-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 6px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    backdrop-filter: blur(12px);
+  }
+
+  .quick-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.1); }
+
+  .quick-btn .qb-icon { font-size: 22px; }
+  .quick-btn .qb-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  /* ============================================================
+     I NEED SECTION
+  ============================================================ */
+  .ineed-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 0 16px 14px;
+  }
+
+  .ineed-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    backdrop-filter: blur(12px);
+  }
+
+  .ineed-btn:active { transform: scale(0.97); }
+
+  .ineed-btn.thirsty  { border-color: rgba(255,209,102,0.3); }
+  .ineed-btn.hungry   { border-color: rgba(255,107,107,0.3); }
+  .ineed-btn.coffee   { border-color: rgba(180,120,60,0.3); }
+  .ineed-btn.beach    { border-color: rgba(10,191,188,0.4); }
+  .ineed-btn.shopping { border-color: rgba(168,85,247,0.3); }
+  .ineed-btn.sleep    { border-color: rgba(126,236,234,0.3); }
+  .ineed-btn.help     { border-color: rgba(255,107,107,0.5); background: rgba(255,107,107,0.08); }
+
+  .ineed-icon { font-size: 28px; }
+
+  .ineed-text { flex: 1; }
+  .ineed-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .ineed-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ============================================================
+     RESULTS MODAL
+  ============================================================ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+  .modal-sheet {
+    background: linear-gradient(180deg, var(--navy-light) 0%, var(--navy-mid) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 480px;
+    padding: 20px 20px 40px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .modal-handle {
+    width: 40px;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+
+  .place-result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--card-border);
+    cursor: pointer;
+  }
+
+  .place-result:last-child { border-bottom: none; }
+
+  .place-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--purple-mid));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .place-info { flex: 1; }
+  .place-name { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+  .place-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 8px; }
+
+  .stars { color: var(--gold); }
+
+  .place-dir-btn {
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    border: none;
+    border-radius: 8px;
+    color: var(--white);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .modal-close {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 12px;
+    cursor: pointer;
+    margin-top: 14px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ============================================================
+     CHECKIN SCREEN
+  ============================================================ */
+  .checkin-list { padding: 0; }
+
+  .checkin-person {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .checkin-person:last-child { border-bottom: none; }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--purple-mid));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .checkin-info { flex: 1; }
+  .checkin-name { font-size: 14px; font-weight: 600; color: var(--white); }
+  .checkin-location { font-size: 12px; color: var(--teal-light); margin-top: 2px; }
+  .checkin-time { font-size: 11px; color: var(--text-muted); }
+
+  .checkin-my-btn {
+    width: calc(100% - 32px);
+    margin: 0 16px 14px;
+    background: linear-gradient(135deg, var(--teal), var(--purple-mid));
+    border: none;
+    border-radius: var(--radius);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 16px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s;
+    letter-spacing: 0.3px;
+  }
+
+  .checkin-my-btn:active { opacity: 0.85; transform: scale(0.99); }
+
+  /* ============================================================
+     FLIGHT SCREEN
+  ============================================================ */
+  .flight-card {
+    background: linear-gradient(135deg, rgba(10,191,188,0.15), rgba(124,58,237,0.15));
+    border: 1px solid rgba(10,191,188,0.25);
+    border-radius: var(--radius);
+    margin: 0 16px 14px;
+    padding: 20px;
+  }
+
+  .flight-route {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .flight-city { text-align: center; }
+  .flight-code {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .flight-city-name { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .flight-line {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 12px;
+  }
+
+  .flight-plane { font-size: 20px; }
+
+  .flight-duration {
+    font-size: 11px;
+    color: var(--teal-light);
+    font-weight: 500;
+  }
+
+  .flight-dashes {
+    width: 100%;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--teal-light) 0, var(--teal-light) 4px, transparent 4px, transparent 8px);
+    opacity: 0.4;
+  }
+
+  .flight-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .flight-detail {
+    background: rgba(255,255,255,0.05);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+
+  .fd-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .fd-value { font-size: 14px; font-weight: 600; color: var(--white); }
+
+  .flight-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  }
+
+  .status-ontime { background: rgba(10,191,188,0.2); color: var(--teal-light); border: 1px solid rgba(10,191,188,0.4); }
+  .status-delayed { background: rgba(255,107,107,0.2); color: #FF6B6B; border: 1px solid rgba(255,107,107,0.4); }
+
+  /* ============================================================
+     WEATHER SCREEN
+  ============================================================ */
+  .weather-hero {
+    text-align: center;
+    padding: 10px 16px 20px;
+  }
+
+  .weather-hero .big-icon { font-size: 64px; margin-bottom: 8px; }
+  .weather-hero .big-temp {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .weather-hero .feels { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+
+  .weather-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0 16px 14px;
+  }
+
+  .weather-stat {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 12px 8px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+  }
+
+  .ws-icon { font-size: 18px; margin-bottom: 4px; }
+  .ws-val { font-size: 16px; font-weight: 700; color: var(--white); }
+  .ws-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  .forecast-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .forecast-row:last-child { border-bottom: none; }
+  .fc-day { font-size: 13px; font-weight: 500; color: var(--white); width: 70px; }
+  .fc-icon { font-size: 20px; }
+  .fc-range { font-size: 13px; color: var(--text-muted); }
+  .fc-range strong { color: var(--white); }
+
+  /* ============================================================
+     PHOTOS SCREEN
+  ============================================================ */
+  .photo-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 0 16px 14px;
+  }
+
+  .photo-action-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.15s;
+    backdrop-filter: blur(12px);
+  }
+
+  .photo-action-btn:active { transform: scale(0.96); }
+  .pab-icon { font-size: 30px; }
+  .pab-label { font-size: 12px; font-weight: 600; color: var(--white); text-align: center; }
+  .pab-sub { font-size: 10px; color: var(--text-muted); text-align: center; }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    margin: 0 16px;
+  }
+
+  .photo-thumb {
+    aspect-ratio: 1;
+    background: var(--card-bg);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: opacity 0.15s;
+    position: relative;
+  }
+
+  .photo-thumb:active { opacity: 0.8; }
+
+  .photo-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .photo-uploader {
+    font-size: 11px;
+    color: var(--text-muted);
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    background: rgba(0,0,0,0.6);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  .photo-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  /* ============================================================
+     CALENDAR SCREEN
+  ============================================================ */
+  .cal-day-header {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--teal-light);
+    padding: 14px 16px 8px;
+  }
+
+  .cal-event {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .cal-event:active { background: rgba(255,255,255,0.04); }
+
+  .cal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  .dot-group { background: var(--teal); }
+  .dot-couple { background: var(--purple-mid); }
+
+  .cal-event-info { flex: 1; }
+  .cal-event-title { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 3px; }
+  .cal-event-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 8px; }
+  .cal-event-dir { font-size: 16px; opacity: 0.6; }
+
+  .add-event-btn {
+    width: calc(100% - 32px);
+    margin: 14px 16px;
+    background: transparent;
+    border: 1px dashed rgba(10,191,188,0.4);
+    border-radius: var(--radius);
+    color: var(--teal-light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 14px;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+  }
+
+  /* ============================================================
+     ITINERARY SCREEN
+  ============================================================ */
+  .itin-day {
+    margin: 0 16px 16px;
+  }
+
+  .itin-day-header {
+    background: linear-gradient(135deg, rgba(10,191,188,0.2), rgba(124,58,237,0.2));
+    border: 1px solid rgba(10,191,188,0.2);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .itin-day-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--teal-light);
+    line-height: 1;
+  }
+
+  .itin-day-info { }
+  .itin-day-name { font-size: 14px; font-weight: 600; color: var(--white); }
+  .itin-day-date { font-size: 11px; color: var(--text-muted); }
+
+  .itin-items {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    backdrop-filter: blur(12px);
+  }
+
+  .itin-item {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--card-border);
+    font-size: 13px;
+    color: var(--off-white);
+    line-height: 1.5;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .itin-item:last-child { border-bottom: none; }
+  .itin-item-time { color: var(--teal-light); font-weight: 600; font-size: 12px; min-width: 48px; padding-top: 1px; }
+
+  /* ============================================================
+     LOCAL RECS SCREEN
+  ============================================================ */
+  .rec-category {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    padding: 14px 16px 6px;
+  }
+
+  .rec-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .rec-item:active { background: rgba(255,255,255,0.04); }
+
+  .rec-emoji { font-size: 24px; width: 36px; text-align: center; flex-shrink: 0; }
+
+  .rec-info { flex: 1; }
+  .rec-name { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 3px; }
+  .rec-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 6px; align-items: center; }
+
+  .rec-stars { color: var(--gold); font-size: 11px; }
+  .rec-price { color: var(--teal-light); }
+
+  .rec-dir-btn {
+    background: transparent;
+    border: 1px solid rgba(10,191,188,0.3);
+    border-radius: 8px;
+    color: var(--teal-light);
+    font-size: 18px;
+    padding: 6px 8px;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  /* ============================================================
+     BOTTOM NAV
+  ============================================================ */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: rgba(11,31,58,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--card-border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0 20px;
+    z-index: 50;
+  }
+
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    transition: opacity 0.15s;
+    border: none;
+    background: none;
+    flex: 1;
+  }
+
+  .nav-btn:active { opacity: 0.7; }
+
+  .nav-icon { font-size: 20px; }
+
+  .nav-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.15s;
+  }
+
+  .nav-btn.active .nav-label { color: var(--teal-light); }
+  .nav-btn.active .nav-icon { filter: drop-shadow(0 0 6px var(--teal)); }
+
+  /* ============================================================
+     SECTION TITLES
+  ============================================================ */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    padding: 4px 16px 14px;
+  }
+
+  .section-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 0 16px 14px;
+    margin-top: -10px;
+  }
+
+  /* ============================================================
+     LOADING SPINNER
+  ============================================================ */
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    gap: 12px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(10,191,188,0.2);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ============================================================
+     INPUT MODAL (check in)
+  ============================================================ */
+  .input-field {
+    width: 100%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    outline: none;
+  }
+
+  .input-field:focus { border-color: var(--teal); }
+  .input-field::placeholder { color: var(--text-muted); }
+
+  .primary-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: opacity 0.15s;
+  }
+
+  .primary-btn:active { opacity: 0.85; }
+
+  /* File input hidden */
+  #photoFileInput { display: none; }
+  #cameraInput { display: none; }
+
+  /* ============================================================
+     SCROLLBAR hidden
+  ============================================================ */
+  ::-webkit-scrollbar { display: none; }
+
+  /* ============================================================
+     IDENTITY SCREEN
+  ============================================================ */
+  #identity-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(160deg, var(--navy) 0%, var(--navy-mid) 50%, rgba(124,58,237,0.2) 100%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  #identity-screen h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--teal-light), var(--white));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  #identity-screen .id-sub {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  .identity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 20px;
+  }
+
+  .identity-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 18px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s, border-color 0.15s;
+    backdrop-filter: blur(12px);
+  }
+
+  .identity-btn:active { transform: scale(0.96); }
+
+  .identity-btn .id-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .identity-btn .id-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* ============================================================
+     DO NOT PUSH BUTTON
+  ============================================================ */
+  .dnp-btn {
+    width: calc(100% - 32px);
+    margin: 0 16px 14px;
+    background: linear-gradient(135deg, #cc0000, #ff4444);
+    border: none;
+    border-radius: var(--radius);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 20px rgba(255,68,68,0.4);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .dnp-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(255,68,68,0.3);
+  }
+
+  .dnp-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .dnp-row:last-child { border-bottom: none; }
+
+  .dnp-person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .dnp-count {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    min-width: 60px;
+    text-align: right;
+    transition: transform 0.15s;
+  }
+
+  .dnp-count.bump {
+    transform: scale(1.4);
+    color: var(--coral);
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     IDENTITY SCREEN — shown on first launch
+============================================================ -->
+<div id="identity-screen">
+  <div style="font-size:48px;margin-bottom:16px;">🌴</div>
+  <h1>Keys Trip 2026</h1>
+  <div class="id-sub">Welcome to Key West.<br>Who are you?</div>
+
+  <div class="identity-grid">
+    <div class="identity-btn" onclick="setIdentity('Christy')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#0ABFBC,#0891A0)">CT</div>
+      <div class="id-name">Christy</div>
+    </div>
+    <div class="identity-btn" onclick="setIdentity('Bill')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#FFD166,#e6a800)">BI</div>
+      <div class="id-name">Bill</div>
+    </div>
+    <div class="identity-btn" onclick="setIdentity('Leighann')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#A855F7,#7C3AED)">LE</div>
+      <div class="id-name">Leighann</div>
+    </div>
+    <div class="identity-btn" onclick="setIdentity('Mike')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#7EECEA,#0ABFBC)">MI</div>
+      <div class="id-name">Mike</div>
+    </div>
+    <div class="identity-btn" onclick="setIdentity('Lisa')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#FF6B6B,#cc4444)">LI</div>
+      <div class="id-name">Lisa</div>
+    </div>
+    <div class="identity-btn" onclick="setIdentity('Chris')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#F97316,#ea580c)">CH</div>
+      <div class="id-name">Chris 🍺</div>
+    </div>
+    <div class="identity-btn" onclick="setIdentity('Rachel')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#34D399,#059669)">RA</div>
+      <div class="id-name">Rachel</div>
+    </div>
+    <div class="identity-btn" onclick="setIdentity('Andrew')">
+      <div class="id-avatar" style="background:linear-gradient(135deg,#60A5FA,#2563EB)">AN</div>
+      <div class="id-name">Andrew</div>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ========================================================
+       HOME SCREEN
+  ======================================================== -->
+  <div id="screen-home" class="screen active">
+    <div class="app-header">
+      <div class="trip-badge">🌴 Key West 2026</div>
+      <h1 id="home-day-title">Day 1 in Paradise</h1>
+      <div id="home-greeting" style="font-size:18px;font-weight:600;color:var(--teal-light);margin-top:4px;"></div>
+      <div class="subtitle" id="home-date-sub">Monday, June 9</div>
+      <div style="margin-top:6px;">
+        <span onclick="switchIdentity()" style="font-size:11px;color:var(--text-muted);border-bottom:1px dotted rgba(143,180,196,0.4);cursor:pointer;padding-bottom:1px;">Not you?</span>
+      </div>
+    </div>
+
+    <!-- Weather Strip -->
+    <div class="weather-strip" onclick="showScreen('weather')">
+      <div class="weather-main">
+        <div class="weather-icon" id="home-wx-icon">🌤️</div>
+        <div class="weather-temp" id="home-wx-temp">82°</div>
+        <div class="weather-details">
+          <div class="weather-desc" id="home-wx-desc">Partly Cloudy</div>
+          <div class="weather-meta">
+            <span>💧 <span id="home-wx-rain">15%</span></span>
+            <span>🌬️ <span id="home-wx-wind">12mph</span></span>
+            <span>☀️ UV <span id="home-wx-uv">High</span></span>
+          </div>
+        </div>
+      </div>
+      <div class="weather-tap-hint">Full forecast →</div>
+    </div>
+
+    <!-- Today's Schedule -->
+    <div class="day-badge">
+      <div class="day-label">Today's Schedule</div>
+    </div>
+
+    <div class="card">
+      <div class="card-body" id="today-schedule">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- Quick Access -->
+    <div class="day-badge" style="margin-top:4px">
+      <div class="day-label">Quick Access</div>
+    </div>
+
+    <div class="quick-grid">
+      <div class="quick-btn" onclick="showScreen('calendar')">
+        <div class="qb-icon">📅</div>
+        <div class="qb-label">Calendar</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('checkin')">
+        <div class="qb-icon">📍</div>
+        <div class="qb-label">Where Is Everyone</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('photos')">
+        <div class="qb-icon">📸</div>
+        <div class="qb-label">Photos</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('flight')">
+        <div class="qb-icon">✈️</div>
+        <div class="qb-label">Flight</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('recs')">
+        <div class="qb-icon">💡</div>
+        <div class="qb-label">Recs</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('itinerary')">
+        <div class="qb-icon">📋</div>
+        <div class="qb-label">Itinerary</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('ineed')">
+        <div class="qb-icon">🆘</div>
+        <div class="qb-label">I Need...</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('weather')">
+        <div class="qb-icon">🌤️</div>
+        <div class="qb-label">Weather</div>
+      </div>
+      <div class="quick-btn" onclick="showScreen('help')">
+        <div class="qb-icon">❓</div>
+        <div class="qb-label">How To</div>
+      </div>
+    </div>
+
+    <!-- Do Not Push -->
+    <button class="dnp-btn" onclick="showScreen('donotpush')">
+      🚨 DO NOT PUSH THIS BUTTON
+    </button>
+  </div>
+
+  <!-- ========================================================
+       I NEED SCREEN
+  ======================================================== -->
+  <div id="screen-ineed" class="screen">
+    <div class="app-header">
+      <h1>I Need...</h1>
+      <div class="subtitle">Tap for instant help</div>
+    </div>
+
+    <div class="ineed-grid">
+      <div class="ineed-btn thirsty" onclick="findNearby('bar','🍺 Nearest Bars')">
+        <div class="ineed-icon">🍺</div>
+        <div class="ineed-text">
+          <div class="ineed-title">I'm Thirsty</div>
+          <div class="ineed-sub">Nearest 3 bars</div>
+        </div>
+      </div>
+
+      <div class="ineed-btn hungry" onclick="findNearby('restaurant','🍔 Nearest Food')">
+        <div class="ineed-icon">🍔</div>
+        <div class="ineed-text">
+          <div class="ineed-title">I'm Hungry</div>
+          <div class="ineed-sub">Nearest 3 restaurants</div>
+        </div>
+      </div>
+
+      <div class="ineed-btn coffee" onclick="findNearby('cafe','☕ Nearest Coffee')">
+        <div class="ineed-icon">☕</div>
+        <div class="ineed-text">
+          <div class="ineed-title">Need Coffee</div>
+          <div class="ineed-sub">Nearest 3 cafes</div>
+        </div>
+      </div>
+
+      <div class="ineed-btn beach" onclick="findNearby('beach','🏖️ Nearest Beach')">
+        <div class="ineed-icon">🏖️</div>
+        <div class="ineed-text">
+          <div class="ineed-title">Beach Me</div>
+          <div class="ineed-sub">Nearest beach access</div>
+        </div>
+      </div>
+
+      <div class="ineed-btn shopping" onclick="findNearby('store','🛍️ Nearest Shops')">
+        <div class="ineed-icon">🛍️</div>
+        <div class="ineed-text">
+          <div class="ineed-title">I Want to Shop</div>
+          <div class="ineed-sub">Nearest 3 shops</div>
+        </div>
+      </div>
+
+      <div class="ineed-btn sleep" onclick="goToHotel()">
+        <div class="ineed-icon">🛏️</div>
+        <div class="ineed-text">
+          <div class="ineed-title">I Need Sleep</div>
+          <div class="ineed-sub">Directions to hotel</div>
+        </div>
+      </div>
+
+      <div class="ineed-btn" style="border-color:rgba(255,209,102,0.4);background:rgba(255,209,102,0.06);" onclick="showKeyLimePie()">
+        <div class="ineed-icon">🍋</div>
+        <div class="ineed-text">
+          <div class="ineed-title" style="color:var(--gold);">I Need Key Lime Pie</div>
+          <div class="ineed-sub">The definitive guide</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- I Need Help — full width -->
+    <div style="margin: 0 16px 14px;">
+      <div class="ineed-btn help" style="width:100%" onclick="showHelp()">
+        <div class="ineed-icon">🚨</div>
+        <div class="ineed-text">
+          <div class="ineed-title" style="color:#FF6B6B">I Need Help</div>
+          <div class="ineed-sub">Urgent care · Hotel address · Emergency</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       CHECK-IN SCREEN
+  ======================================================== -->
+  <div id="screen-checkin" class="screen">
+    <div class="app-header">
+      <h1>Where Is Everyone</h1>
+      <div class="subtitle">Last known locations</div>
+    </div>
+
+    <button class="checkin-my-btn" onclick="openCheckinModal()">
+      📍 Check In My Location
+    </button>
+
+    <a href="sms:5023867261,5023141100,5025932734,5025522716,5023876804,5027673116,5026086354,5025527573"
+       style="display:block;width:calc(100% - 32px);margin: 0 16px 14px;background:rgba(10,191,188,0.12);border:1px solid rgba(10,191,188,0.3);border-radius:var(--radius);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:16px;text-align:center;text-decoration:none;letter-spacing:0.3px;">
+      💬 Text the Whole Group
+    </a>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">👥</span>
+        <span class="card-title">Group Status</span>
+      </div>
+      <div class="card-body checkin-list" id="checkin-list">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-flight" class="screen">
+    <div class="app-header">
+      <h1>Flight Info</h1>
+      <div class="subtitle">Auto-updates on every load · United Airlines</div>
+    </div>
+
+    <!-- OUTBOUND LEG 1 -->
+    <div style="padding: 0 16px; margin-bottom: 6px;">
+      <div style="font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal-light); margin-bottom:8px;">✈️ Outbound · Tuesday July 7 · Leg 1 of 2</div>
+    </div>
+    <div class="flight-card">
+      <div style="margin-bottom:12px;"><span class="flight-status-badge status-ontime" id="out1-status">ON TIME</span></div>
+      <div class="flight-route">
+        <div class="flight-city">
+          <div class="flight-code">SDF</div>
+          <div class="flight-city-name">Louisville</div>
+        </div>
+        <div class="flight-line">
+          <div class="flight-plane">✈️</div>
+          <div class="flight-duration">~1h 38m</div>
+          <div class="flight-dashes"></div>
+        </div>
+        <div class="flight-city">
+          <div class="flight-code">ORD</div>
+          <div class="flight-city-name">Chicago</div>
+        </div>
+      </div>
+      <div class="flight-details">
+        <div class="flight-detail"><div class="fd-label">Flight</div><div class="fd-value">UA 3696</div></div>
+        <div class="flight-detail"><div class="fd-label">Date</div><div class="fd-value">Jul 7</div></div>
+        <div class="flight-detail"><div class="fd-label">Departs</div><div class="fd-value">9:00 AM</div></div>
+        <div class="flight-detail"><div class="fd-label">Arrives</div><div class="fd-value">10:38 AM</div></div>
+        <div class="flight-detail"><div class="fd-label">From</div><div class="fd-value">Louisville Muhammad Ali Intl</div></div>
+        <div class="flight-detail"><div class="fd-label">To</div><div class="fd-value">O'Hare Intl</div></div>
+      </div>
+    </div>
+
+    <!-- OUTBOUND LEG 2 -->
+    <div style="padding: 0 16px; margin: 8px 0 6px;">
+      <div style="font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--teal-light); margin-bottom:8px;">✈️ Outbound · Tuesday July 7 · Leg 2 of 2</div>
+    </div>
+    <div class="flight-card">
+      <div style="margin-bottom:12px;"><span class="flight-status-badge status-ontime" id="out2-status">ON TIME</span></div>
+      <div class="flight-route">
+        <div class="flight-city">
+          <div class="flight-code">ORD</div>
+          <div class="flight-city-name">Chicago</div>
+        </div>
+        <div class="flight-line">
+          <div class="flight-plane">✈️</div>
+          <div class="flight-duration">~3h 24m</div>
+          <div class="flight-dashes"></div>
+        </div>
+        <div class="flight-city">
+          <div class="flight-code">EYW</div>
+          <div class="flight-city-name">Key West</div>
+        </div>
+      </div>
+      <div class="flight-details">
+        <div class="flight-detail"><div class="fd-label">Flight</div><div class="fd-value">UA 3690</div></div>
+        <div class="flight-detail"><div class="fd-label">Date</div><div class="fd-value">Jul 7</div></div>
+        <div class="flight-detail"><div class="fd-label">Departs</div><div class="fd-value">11:43 AM</div></div>
+        <div class="flight-detail"><div class="fd-label">Arrives</div><div class="fd-value">3:07 PM</div></div>
+        <div class="flight-detail"><div class="fd-label">Layover</div><div class="fd-value">1h 5m at ORD</div></div>
+        <div class="flight-detail"><div class="fd-label">From</div><div class="fd-value">O'Hare Intl</div></div>
+      </div>
+    </div>
+
+    <!-- RETURN LEG 1 -->
+    <div style="padding: 0 16px; margin: 8px 0 6px;">
+      <div style="font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--purple-light); margin-bottom:8px;">✈️ Return · Saturday July 11 · Leg 1 of 2</div>
+    </div>
+    <div class="flight-card" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(10,191,188,0.15));border-color:rgba(124,58,237,0.25);">
+      <div style="margin-bottom:12px;"><span class="flight-status-badge status-ontime" id="ret1-status">ON TIME</span></div>
+      <div class="flight-route">
+        <div class="flight-city">
+          <div class="flight-code">EYW</div>
+          <div class="flight-city-name">Key West</div>
+        </div>
+        <div class="flight-line">
+          <div class="flight-plane">✈️</div>
+          <div class="flight-duration">~3h 55m</div>
+          <div class="flight-dashes"></div>
+        </div>
+        <div class="flight-city">
+          <div class="flight-code">ORD</div>
+          <div class="flight-city-name">Chicago</div>
+        </div>
+      </div>
+      <div class="flight-details">
+        <div class="flight-detail"><div class="fd-label">Flight</div><div class="fd-value">UA 3499</div></div>
+        <div class="flight-detail"><div class="fd-label">Date</div><div class="fd-value">Jul 11</div></div>
+        <div class="flight-detail"><div class="fd-label">Departs</div><div class="fd-value">4:00 PM</div></div>
+        <div class="flight-detail"><div class="fd-label">Arrives</div><div class="fd-value">7:55 PM</div></div>
+        <div class="flight-detail"><div class="fd-label">From</div><div class="fd-value">Key West Intl</div></div>
+        <div class="flight-detail"><div class="fd-label">To</div><div class="fd-value">O'Hare Intl</div></div>
+      </div>
+    </div>
+
+    <!-- RETURN LEG 2 -->
+    <div style="padding: 0 16px; margin: 8px 0 6px;">
+      <div style="font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--purple-light); margin-bottom:8px;">✈️ Return · Saturday July 11 · Leg 2 of 2</div>
+    </div>
+    <div class="flight-card" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(10,191,188,0.15));border-color:rgba(124,58,237,0.25);">
+      <div style="margin-bottom:12px;"><span class="flight-status-badge status-ontime" id="ret2-status">ON TIME</span></div>
+      <div class="flight-route">
+        <div class="flight-city">
+          <div class="flight-code">ORD</div>
+          <div class="flight-city-name">Chicago</div>
+        </div>
+        <div class="flight-line">
+          <div class="flight-plane">✈️</div>
+          <div class="flight-duration">~58m</div>
+          <div class="flight-dashes"></div>
+        </div>
+        <div class="flight-city">
+          <div class="flight-code">SDF</div>
+          <div class="flight-city-name">Louisville</div>
+        </div>
+      </div>
+      <div class="flight-details">
+        <div class="flight-detail"><div class="fd-label">Flight</div><div class="fd-value">UA 3551</div></div>
+        <div class="flight-detail"><div class="fd-label">Date</div><div class="fd-value">Jul 11</div></div>
+        <div class="flight-detail"><div class="fd-label">Departs</div><div class="fd-value">9:02 PM</div></div>
+        <div class="flight-detail"><div class="fd-label">Arrives</div><div class="fd-value">~10:00 PM</div></div>
+        <div class="flight-detail"><div class="fd-label">Layover</div><div class="fd-value">1h 7m at ORD</div></div>
+        <div class="flight-detail"><div class="fd-label">To</div><div class="fd-value">Louisville Muhammad Ali Intl</div></div>
+      </div>
+    </div>
+
+    <div style="padding: 14px 16px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+      <button class="primary-btn" style="margin:0" onclick="openAirlineStatus()">Live Flight Status →</button>
+      <button class="primary-btn" style="margin:0;background:linear-gradient(135deg,var(--purple),var(--purple-mid))" onclick="window.open(CONFIG.manageBookingUrl,'_blank')">My Booking →</button>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       WEATHER SCREEN
+  ======================================================== -->
+  <div id="screen-weather" class="screen">
+    <div class="app-header">
+      <h1>Key West Weather</h1>
+      <div class="subtitle" id="wx-updated">Loading forecast...</div>
+    </div>
+
+    <div class="weather-hero">
+      <div class="big-icon" id="wx-big-icon">🌤️</div>
+      <div class="big-temp" id="wx-big-temp">82°F</div>
+      <div class="feels" id="wx-feels">Feels like 88° · Partly Cloudy</div>
+    </div>
+
+    <div class="weather-stats">
+      <div class="weather-stat">
+        <div class="ws-icon">💧</div>
+        <div class="ws-val" id="wx-rain">15%</div>
+        <div class="ws-label">Rain</div>
+      </div>
+      <div class="weather-stat">
+        <div class="ws-icon">💦</div>
+        <div class="ws-val" id="wx-humid">74%</div>
+        <div class="ws-label">Humidity</div>
+      </div>
+      <div class="weather-stat">
+        <div class="ws-icon">🌬️</div>
+        <div class="ws-val" id="wx-wind">12mph</div>
+        <div class="ws-label">Wind</div>
+      </div>
+      <div class="weather-stat">
+        <div class="ws-icon">☀️</div>
+        <div class="ws-val" id="wx-uv">7</div>
+        <div class="ws-label">UV Index</div>
+      </div>
+      <div class="weather-stat">
+        <div class="ws-icon">🌊</div>
+        <div class="ws-val">84°F</div>
+        <div class="ws-label">Water Temp</div>
+      </div>
+      <div class="weather-stat">
+        <div class="ws-icon">👁️</div>
+        <div class="ws-val" id="wx-vis">10mi</div>
+        <div class="ws-label">Visibility</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">📅</span>
+        <span class="card-title">5-Day Forecast</span>
+      </div>
+      <div class="card-body" id="forecast-list">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       CALENDAR SCREEN
+  ======================================================== -->
+  <div id="screen-calendar" class="screen">
+    <div class="app-header">
+      <h1>Trip Calendar</h1>
+      <div class="subtitle">Tap any event for directions</div>
+    </div>
+
+    <div id="calendar-content">
+      <!-- populated by JS -->
+    </div>
+
+    <button class="add-event-btn" onclick="openAddEventModal()">+ Add Event</button>
+  </div>
+
+  <!-- ========================================================
+       ITINERARY SCREEN
+  ======================================================== -->
+  <div id="screen-itinerary" class="screen">
+    <div class="app-header">
+      <h1>Trip Itinerary</h1>
+      <div class="subtitle">The full game plan</div>
+    </div>
+
+    <div id="itinerary-content">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- ========================================================
+       PHOTOS SCREEN
+  ======================================================== -->
+  <div id="screen-photos" class="screen">
+    <div class="app-header">
+      <h1>Trip Photos</h1>
+      <div class="subtitle" id="photo-count">0 photos shared</div>
+    </div>
+
+    <div class="photo-actions">
+      <div class="photo-action-btn" onclick="document.getElementById('cameraInput').click()">
+        <div class="pab-icon">📷</div>
+        <div class="pab-label">Take Photo</div>
+        <div class="pab-sub">In-app camera</div>
+      </div>
+      <div class="photo-action-btn" onclick="document.getElementById('photoFileInput').click()">
+        <div class="pab-icon">🖼️</div>
+        <div class="pab-label">Upload Photos</div>
+        <div class="pab-sub">From camera roll</div>
+      </div>
+    </div>
+
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handlePhotoUpload(this)">
+    <input type="file" id="photoFileInput" accept="image/*" multiple onchange="handlePhotoUpload(this)">
+
+    <div class="photo-grid" id="photo-grid">
+      <div class="photo-empty">
+        📸<br><br>No photos yet.<br>Be the first to share one!
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       LOCAL RECS SCREEN
+  ======================================================== -->
+  <div id="screen-recs" class="screen">
+    <div class="app-header">
+      <h1>Local Recs</h1>
+      <div class="subtitle">Curated by your trip organizer · Ratings live from Google</div>
+    </div>
+
+    <!-- Search bar -->
+    <div style="padding: 0 16px 14px;">
+      <div style="position:relative;">
+        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:18px;pointer-events:none;">🔍</span>
+        <input
+          id="recs-search"
+          type="text"
+          placeholder="Search bars, food, oysters..."
+          oninput="filterRecs(this.value)"
+          style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;padding:13px 14px 13px 44px;outline:none;-webkit-appearance:none;"
+        />
+      </div>
+      <div id="recs-search-count" style="font-size:12px;color:var(--text-muted);margin-top:8px;padding-left:4px;display:none;"></div>
+    </div>
+
+    <div id="recs-content">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- ========================================================
+       HELP / ABOUT SCREEN
+  ======================================================== -->
+  <div id="screen-help" class="screen">
+    <div class="app-header">
+      <h1>How This Works</h1>
+      <div class="subtitle">Yes, someone actually built this for you</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🌴</span><span class="card-title">What Is This Thing</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        This is your group's personal Key West command center. Eight adults. Four nights. One app. What could go wrong.<br><br>
+        It has your flights, the weather, a shared calendar, local recommendations, a photo gallery, and a button that finds the nearest bar. It also has a button that sends Chris home. We'll get to that.
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(255,209,102,0.4);">
+      <div class="card-header"><span class="card-icon">📲</span><span class="card-title">Add This To Your Home Screen</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Do this now. Before you forget. Before the rum.<br><br>
+        <strong style="color:var(--gold);">On iPhone (Safari only — won't work in Chrome):</strong><br>
+        1. Make sure you're viewing this in <strong>Safari</strong>. If you opened it in Chrome, copy the link and paste it into Safari.<br>
+        2. Tap the <strong>Share button</strong> at the bottom of the screen — it looks like a box with an arrow pointing up ⬆️<br>
+        3. Scroll down in the menu that pops up until you see <strong>"Add to Home Screen"</strong><br>
+        4. Tap it. Give it a name if you want. Tap <strong>Add</strong> in the top right corner.<br>
+        5. Done. It now lives on your home screen like a real app.<br><br>
+        <strong style="color:var(--gold);">On Android (Andrew):</strong><br>
+        1. Tap the three dots ⋮ in the top right corner of Chrome<br>
+        2. Tap <strong>"Add to Home screen"</strong> or <strong>"Install app"</strong><br>
+        3. Tap <strong>Add</strong>. Done.<br>
+        4. If it doesn't work, that's on Android, not us.<br><br>
+        <span style="color:var(--text-muted);font-size:13px;">If you can't figure it out, ask Andrew. He brought a drone to a beach vacation, he can handle this.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">📍</span><span class="card-title">The Check-In Thing</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        When you go somewhere, tap <strong style="color:var(--teal-light)">Where Is Everyone</strong> and check in. Takes five seconds.<br><br>
+        This is not real-time GPS tracking. Nobody is watching you. Your phone is not an ankle monitor. It simply lets the group know your last known location so that when someone asks <em>"where's Chris?"</em> at 11pm, the answer isn't a group shrug and a prayer.<br><br>
+        <span style="color:var(--coral);">⚠️ Important:</span> Checking in at Sloppy Joe's at 4pm and then going dark does not mean you are still at Sloppy Joe's at midnight. It means you were at Sloppy Joe's at 4pm. Nobody knows where you are now. You could be at The Roost. You could be at The Saint. You could be face down in an alley off Duval Street serenading a stray cat.<br><br>
+        <strong style="color:var(--purple-light);">Chris.</strong> We are looking at you. Update your check-in. Lisa found you once. She divorced you once too. Don't push it.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Directions</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Almost everything in this app is tappable for directions. Calendar events, local recs, landmarks — tap it and Google Maps opens with walking directions from wherever you're standing.<br><br>
+        Key West is about two miles end to end. You are almost certainly closer than you think. Unless you are Chris, in which case your exact position is unknown and has been for the last three hours.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🆘</span><span class="card-title">The I Need Button</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        The <strong style="color:var(--teal-light)">I Need...</strong> tab is your lifeline. Thirsty? Hungry? Need coffee to survive the morning after? One tap finds the nearest options with directions.<br><br>
+        <strong style="color:var(--purple-light);">🛏️ I Need Sleep</strong> sends you directly back to The Reach. No thinking required. This button was designed for use after midnight on Duval Street when coherent thought is no longer among your available options. It works even if you have forgotten the hotel name, the street name, and what city you are in. Tap it. Go home. Drink water.<br><br>
+        <strong style="color:var(--coral);">🚨 I Need Help</strong> is for genuine emergencies — hospital, pharmacy, 911. We hope you never need it. We are also realists about what happens when eight people attack Duval Street for four consecutive nights. The hospital address is pre-loaded. You're welcome, Chris.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🚁</span><span class="card-title">A Note About the Drone</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Andrew has a drone. Possibly two. Nobody is surprised.<br><br>
+        Key West has FAA flight restrictions over parts of the island and near the airport. Before Andrew launches anything over Duval Street at sunset, someone should probably mention this. That someone is not going to be Chris, who will be busy.<br><br>
+        On the bright side, if Chris does go missing, Andrew's drone has a better chance of finding him than any of us do on foot. Every group needs a drone guy. We've got ours.<br><br>
+        <span style="color:var(--text-muted);font-size:13px;">📸 Any aerial photos Andrew takes are welcome in the shared photo gallery. Drone shots of the sunset over Mallory Square will be accepted without complaint.</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">📸</span><span class="card-title">Photos</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Take photos with your regular camera app like a normal person. Then come here and tap <strong style="color:var(--teal-light)">Upload Photos</strong> to share your favorites with the group.<br><br>
+        Or tap <strong style="color:var(--teal-light)">Take Photo</strong> to shoot directly in the app. Quality is slightly lower but perfectly fine for "proof that Bill actually caught a fish" and "evidence of whatever Chris was doing at 1am."<br><br>
+        At the end of the trip everyone has access to everyone else's photos. No more group texts with 47 attachments that half the group never downloads. You're welcome.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">✈️</span><span class="card-title">Flights</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        All four flight legs are in here — both connections out and both home. Tap <strong style="color:var(--teal-light)">Live Flight Status</strong> for real-time updates on United's site. Tap <strong style="color:var(--teal-light)">My Booking</strong> to manage your own reservation — because your confirmation number is your business and nobody needs to know what you paid.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">💡</span><span class="card-title">Local Recs</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Curated spots across bars, restaurants, beaches, landmarks and attractions. Ratings from Google. The 💬 teal notes are actual local intel from people who live there — not TripAdvisor, not a sponsored post, not the hotel concierge trying to send you somewhere they get a kickback.<br><br>
+        The Roost is great but gets three deep at the bar. The Saint is the locals' secret. Rum Bar has the best rum selection on the island. Kermit's Key Lime Shoppe is non-negotiable.<br><br>
+        Chris will find Sloppy Joe's without the app. He always does.
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(255,209,102,0.3);">
+      <div class="card-header"><span class="card-icon">🏖️</span><span class="card-title">Final Thought</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        This app exists so that eight adults who theoretically know how to travel can spend less time texting "where are you" and more time actually being in Key West together.<br><br>
+        Use it. Check in when you wander off. Share your photos. Tap the sleep button when the time comes. Let Andrew fly his drone. Keep an eye on Chris.<br><br>
+        <span style="color:var(--gold);">Now put your phone down and go enjoy the island. 🌴</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.05);">
+      <div class="card-header"><span class="card-icon">🤖</span><span class="card-title">A Note About Andrew</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Andrew uses an Android.<br><br>
+        The app works on Android. Mostly. We think. We haven't tested it as thoroughly as the seven iPhone users in the group because, frankly, his opinion counts slightly less in these matters.<br><br>
+        If Andrew reports a bug, we will log it, consider it carefully, and then ask one of the iPhone users if they can reproduce it before doing anything about it.<br><br>
+        Andrew, if you're reading this: we appreciate you. We appreciate your drone. We do not appreciate your life choices in mobile operating systems. Welcome aboard anyway. 🤖
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+  </div>
+  <!-- ========================================================
+       DO NOT PUSH SCREEN
+  ======================================================== -->
+  <div id="screen-donotpush" class="screen">
+    <div class="app-header">
+      <div class="trip-badge" style="background:linear-gradient(135deg,#cc0000,#ff4444);">🚨 RESTRICTED</div>
+      <h1 style="color:var(--coral);">Do Not Push</h1>
+      <div class="subtitle">You pushed it anyway. Of course you did.</div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);text-align:center;padding:20px 16px;">
+        Researchers have long studied the compulsion to push buttons labeled DO NOT PUSH. After extensive field research involving this group, scientists have concluded that Chris is the problem.<br><br>
+        <div style="font-size:13px;color:var(--text-muted);">Science thanks you for your contribution to the data.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">📊</span>
+        <span class="card-title">Research Data</span>
+      </div>
+      <div class="card-body" id="dnp-leaderboard">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+  </div>
+
+</div><!-- /app -->
+
+<!-- ============================================================
+     BOTTOM NAVIGATION
+============================================================ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" id="nav-home" onclick="showScreen('home')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Home</span>
+  </button>
+  <button class="nav-btn" id="nav-calendar" onclick="showScreen('calendar')">
+    <span class="nav-icon">📅</span>
+    <span class="nav-label">Calendar</span>
+  </button>
+  <button class="nav-btn" id="nav-checkin" onclick="showScreen('checkin')">
+    <span class="nav-icon">📍</span>
+    <span class="nav-label">Where</span>
+  </button>
+  <button class="nav-btn" id="nav-ineed" onclick="showScreen('ineed')">
+    <span class="nav-icon">🆘</span>
+    <span class="nav-label">I Need</span>
+  </button>
+  <button class="nav-btn" id="nav-photos" onclick="showScreen('photos')">
+    <span class="nav-icon">📸</span>
+    <span class="nav-label">Photos</span>
+  </button>
+</nav>
+
+<!-- ============================================================
+     MODALS
+============================================================ -->
+
+<!-- Results modal (I Need) -->
+<div class="modal-overlay" id="results-modal" onclick="closeModal('results-modal')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="results-title">Nearest Bars</div>
+    <div id="results-list"></div>
+    <button class="modal-close" onclick="closeModal('results-modal')">Close</button>
+  </div>
+</div>
+
+<!-- Trip Map Modal -->
+<div class="modal-overlay" id="tripmap-modal" onclick="closeModal('tripmap-modal')">
+  <div class="modal-sheet" style="max-height:90vh;" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="modal-title" style="margin-bottom:0;">🗺️ Trip Check-In Map</div>
+      <div style="font-size:11px;color:var(--text-muted);">Developer View</div>
+    </div>
+    <div id="tripmap-container">
+      <div class="loading"><div class="spinner"></div>Loading check-ins...</div>
+    </div>
+    <button class="modal-close" onclick="closeModal('tripmap-modal')">Close</button>
+  </div>
+</div>
+<div class="modal-overlay" id="checkin-modal" onclick="closeModal('checkin-modal')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📍 Check In</div>
+    <input class="input-field" id="checkin-name" placeholder="Your name" />
+    <input class="input-field" id="checkin-where" placeholder="Where are you? (e.g. Sloppy Joe's Bar)" />
+    <button class="primary-btn" onclick="submitCheckin()">Check In & Notify Everyone</button>
+    <button class="modal-close" onclick="closeModal('checkin-modal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Add Event modal -->
+<div class="modal-overlay" id="add-event-modal" onclick="closeModal('add-event-modal')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📅 Add Event</div>
+    <input class="input-field" id="evt-title" placeholder="Event name" />
+    <input class="input-field" id="evt-date" placeholder="Date (e.g. Jun 10)" />
+    <input class="input-field" id="evt-time" placeholder="Time (e.g. 2:00 PM)" />
+    <input class="input-field" id="evt-location" placeholder="Location / address (for directions)" />
+    <select class="input-field" id="evt-type">
+      <option value="group">👥 Group Event</option>
+      <option value="couple">💑 Couple Event</option>
+    </select>
+    <button class="primary-btn" onclick="submitEvent()">Add to Calendar</button>
+    <button class="modal-close" onclick="closeModal('add-event-modal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Help modal -->
+<div class="modal-overlay" id="help-modal" onclick="closeModal('help-modal')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title" style="color:#FF6B6B">🚨 I Need Help</div>
+
+    <div class="place-result" onclick="callNumber('911')">
+      <div class="place-num" style="background:linear-gradient(135deg,#FF6B6B,#cc0000)">🚨</div>
+      <div class="place-info">
+        <div class="place-name">Emergency — Call 911</div>
+        <div class="place-meta">Police · Fire · Ambulance</div>
+      </div>
+      <button class="place-dir-btn" style="background:linear-gradient(135deg,#FF6B6B,#cc0000)">Call</button>
+    </div>
+
+    <div class="place-result" onclick="getDirections('Lower Keys Medical Center, 5900 College Rd, Key West, FL 33040')">
+      <div class="place-num" style="background:linear-gradient(135deg,var(--coral),var(--purple-mid))">🏥</div>
+      <div class="place-info">
+        <div class="place-name">Lower Keys Medical Center</div>
+        <div class="place-meta">5900 College Rd · 24hr Emergency</div>
+      </div>
+      <button class="place-dir-btn">Directions</button>
+    </div>
+
+    <div class="place-result" onclick="getDirections('CVS Pharmacy, 530 Truman Ave, Key West, FL 33040')">
+      <div class="place-num" style="background:linear-gradient(135deg,var(--teal),var(--teal-dark))">💊</div>
+      <div class="place-info">
+        <div class="place-name">CVS Pharmacy</div>
+        <div class="place-meta">530 Truman Ave · Open late</div>
+      </div>
+      <button class="place-dir-btn">Directions</button>
+    </div>
+
+      <div class="place-result" onclick="goToHotel()">
+        <div class="place-num">🏨</div>
+        <div class="place-info">
+          <div class="place-name">The Reach Key West</div>
+          <div class="place-meta">1435 Simonton St · Curio by Hilton</div>
+        </div>
+        <button class="place-dir-btn">Back to Hotel</button>
+      </div>
+
+      <div class="place-result" onclick="callNumber('13052965000')">
+        <div class="place-num">📞</div>
+        <div class="place-info">
+          <div class="place-name">Call The Reach Front Desk</div>
+          <div class="place-meta">+1 305-296-5000 · 24 hours</div>
+        </div>
+        <button class="place-dir-btn">Call</button>
+      </div>
+
+    <button class="modal-close" onclick="closeModal('help-modal')">Close</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+/* ================================================================
+   CONFIG — Replace with real values
+================================================================ */
+var CONFIG = {
+  tripName: "Keys Trip 2026",
+  hotelName: "The Reach Key West, Curio Collection by Hilton",
+  hotelAddress: "1435 Simonton Street, Key West, FL 33040",
+  hotelPhone: "+13052965000",
+  hotelLat: 24.5478,
+  hotelLng: -81.8008,
+  keyWestLat: 24.5551,
+  keyWestLng: -81.7800,
+  tripStart: new Date("2026-07-07"),
+  tripEnd:   new Date("2026-07-11"),
+  airlineStatusUrl: "https://www.united.com/en/us/flightstatus",
+  manageBookingUrl: "https://www.united.com/en/us/manageres",
+  // Replace with real credentials:
+  // firebaseConfig: { ... },
+  // twilioAccountSid: "...",
+  // flightAwareApiKey: "...",
+  // googlePlacesApiKey: "...",
+};
+
+/* ================================================================
+   SAMPLE DATA — Replace / extend with real trip data
+================================================================ */
+var EVENTS = [
+  { id:1, date:"Jul 7",  time:"3:07 PM",  title:"Arrive Key West — Check In to The Reach", type:"group",  lat:24.5478, lng:-81.8008, address:"1435 Simonton Street, Key West, FL 33040" },
+  { id:2, date:"Jul 7",  time:"5:30 PM",  title:"Sunset Sail — Fury Water Adventures", type:"group",  lat:24.5558, lng:-81.8046, address:"Fury Water Adventures, 245 Front St, Key West" },
+  { id:3, date:"Jul 8",  time:"10:00 AM", title:"Key West Distillery Tour",             type:"group",  lat:24.5575, lng:-81.8062, address:"Key West First Legal Rum Distillery, 105 Simonton St" },
+  { id:4, date:"Jul 8",  time:"2:00 PM",  title:"Couples Massage — Spa Terre",         type:"couple", lat:24.5540, lng:-81.7990, address:"Spa Terre, 1500 Reynolds St, Key West" },
+  { id:5, date:"Jul 9",  time:"7:00 AM",  title:"Fishing Charter — Capt. Hook",        type:"couple", lat:24.5530, lng:-81.8050, address:"Charter Boat Row, Key West" },
+  { id:6, date:"Jul 9",  time:"6:30 PM",  title:"Group Dinner — Latitudes",            type:"group",  lat:24.5520, lng:-81.8070, address:"Latitudes Restaurant, Sunset Key, Key West" },
+  { id:7, date:"Jul 10", time:"7:00 AM",  title:"Dry Tortugas Day Trip",               type:"group",  lat:24.6285, lng:-82.8733, address:"Fort Jefferson, Dry Tortugas National Park" },
+  { id:8, date:"Jul 10", time:"8:00 PM",  title:"Free Night — Duval Street",           type:"group",  lat:24.5561, lng:-81.8062, address:"Duval Street, Key West, FL" },
+  { id:9, date:"Jul 11", time:"11:00 AM", title:"Check Out — The Reach Key West",       type:"group",  lat:24.5478, lng:-81.8008, address:"1435 Simonton Street, Key West, FL 33040" },
+  { id:10, date:"Jul 11", time:"4:00 PM", title:"Depart — UA 3499 EYW → ORD",         type:"group",  lat:24.5562, lng:-81.7595, address:"Key West International Airport, 3491 S Roosevelt Blvd, Key West" },
+];
+
+var CHECKINS = [
+  { name:"Christy",  initials:"CT", location:"Not checked in yet", time:"", phone:"5023867261" },
+  { name:"Bill",     initials:"BI", location:"Not checked in yet", time:"", phone:"5023141100" },
+  { name:"Leighann", initials:"LE", location:"Not checked in yet", time:"", phone:"5025932734" },
+  { name:"Mike",     initials:"MI", location:"Not checked in yet", time:"", phone:"5025522716" },
+  { name:"Lisa",     initials:"LI", location:"Not checked in yet", time:"", phone:"5023876804" },
+  { name:"Chris",    initials:"CH", location:"Not checked in yet", time:"", phone:"5027673116" },
+  { name:"Rachel",   initials:"RA", location:"Not checked in yet", time:"", phone:"5026086354" },
+  { name:"Andrew",   initials:"AN", location:"Not checked in yet", time:"", phone:"5025527573" },
+];
+
+var RECS = [
+  { category:"🎭 Attractions & Landmarks", items:[
+    { emoji:"🗿", name:"Southernmost Point Buoy",        stars:"4.7", reviews:"14,820", price:"Free", lat:24.5461, lng:-81.8001, address:"Southernmost Point, Key West, FL 33040" },
+    { emoji:"🌅", name:"Mallory Square Sunset",          stars:"4.8", reviews:"12,400", price:"Free", lat:24.5594, lng:-81.8075, address:"Mallory Square, Key West", note:"Free nightly celebration at sunset. Street performers, artists, food vendors. Get there 30 minutes early for a good spot." },
+    { emoji:"🏠", name:"Hemingway Home & Museum",        stars:"4.6", reviews:"9,340",  price:"$$",   lat:24.5492, lng:-81.8020, address:"907 Whitehead St, Key West", note:"Hemingway lived here 1931-1939. Famous for the six-toed cats that still roam the property — descendants of his own cat. One of the most visited attractions in Key West." },
+    { emoji:"🥃", name:"Pilar Rum Distillery",           stars:"4.7", reviews:"2,140",  price:"$$",   lat:24.5575, lng:-81.8062, address:"201 Simonton St, Key West" },
+    { emoji:"🎵", name:"Duval Street",                   stars:"4.6", reviews:"18,200", price:"Free", lat:24.5561, lng:-81.8062, address:"Duval Street, Key West, FL", note:"The main drag. Bars, restaurants, shops from one end to the other. Chris's natural habitat." },
+    { emoji:"🚂", name:"Conch Tour Train",               stars:"4.6", reviews:"5,440",  price:"$$",   lat:24.5594, lng:-81.8060, address:"303 Front St, Key West", note:"Good orientation tour on Day 1. 90 minutes, narrated, covers the whole island." },
+    { emoji:"🌺", name:"West Martello Tower & Gardens",  stars:"4.6", reviews:"1,980",  price:"Free", lat:24.5451, lng:-81.7776, address:"1100 Atlantic Blvd, Key West" },
+    { emoji:"⚓", name:"Charter Boat Row",               stars:"4.5", reviews:"3,100",  price:"$$$$", lat:24.5530, lng:-81.8050, address:"Charter Boat Row, Key West" },
+    { emoji:"🦋", name:"Key West Butterfly Conservatory", stars:"4.7", reviews:"3,210", price:"$$",  lat:24.5484, lng:-81.8012, address:"1316 Duval St, Key West" },
+    { emoji:"🏛️", name:"Key West Museum of Art",         stars:"4.5", reviews:"1,876",  price:"$",   lat:24.5567, lng:-81.8050, address:"281 Front St, Key West" },
+    { emoji:"⛵", name:"Fury Water Adventures",           stars:"4.6", reviews:"4,320",  price:"$$$", lat:24.5558, lng:-81.8046, address:"245 Front St, Key West" },
+    { emoji:"🚢", name:"Key West Shipwreck Museum",      stars:"4.6", reviews:"3,840",  price:"$$",  lat:24.5591, lng:-81.8068, address:"1 Whitehead St, Key West", note:"Right on Mallory Square. Dramatic exhibits, great views from the tower. Worth an hour." },
+    { emoji:"💡", name:"Key West Lighthouse",            stars:"4.7", reviews:"4,120",  price:"$$",  lat:24.5487, lng:-81.8017, address:"938 Whitehead St, Key West", note:"88 steps to the top. Views over the whole island. Right next to Hemingway House — do both in one walk." },
+    { emoji:"🐟", name:"WTFish Lounge",                   stars:"4.8", reviews:"890",    price:"$$",  lat:24.5594, lng:-81.8068, address:"431 Front St, Key West", note:"Fish pedicure — submerge your feet in a tank of Garra Rufa fish that exfoliate them. Includes chocolate, warm lotion rub, and a selfie stand. Weird, fun, and very Key West. Open daily 10am-9pm. Book ahead at wtfishlounge.com." },
+  ]},
+  { category:"🍹 Bars & Nightlife", items:[
+    { emoji:"🎵", name:"Sloppy Joe's Bar",               stars:"4.5", reviews:"8,241",  price:"$$",   lat:24.5585, lng:-81.8060, address:"201 Duval St, Key West" },
+    { emoji:"🎸", name:"Hog's Breath Saloon",            stars:"4.4", reviews:"5,103",  price:"$$",   lat:24.5565, lng:-81.8066, address:"400 Front St, Key West" },
+    { emoji:"🍸", name:"Green Parrot Bar",               stars:"4.6", reviews:"3,892",  price:"$",    lat:24.5527, lng:-81.8010, address:"601 Whitehead St, Key West", note:"Multiple locals call this their favorite bar in America. Live music calendar at greenparrot.com. Order a Root Beer Barrel." },
+    { emoji:"🌊", name:"Schooner Wharf Bar",             stars:"4.5", reviews:"4,210",  price:"$$",   lat:24.5545, lng:-81.8045, address:"202 William St, Key West" },
+    { emoji:"🎤", name:"Irish Kevin's Bar",              stars:"4.5", reviews:"6,730",  price:"$$",   lat:24.5574, lng:-81.8058, address:"211 Duval St, Key West" },
+    { emoji:"🥃", name:"Rum Bar",                        stars:"4.7", reviews:"1,840",  price:"$$",   lat:24.5528, lng:-81.8005, address:"218 Duval St, Key West", note:"Build your own rum flight — locals say this is the best rum selection on the island." },
+    { emoji:"🌴", name:"Tiki House",                     stars:"4.4", reviews:"980",    price:"$$",   lat:24.5582, lng:-81.8061, address:"202 Duval St, Key West", note:"Now on Duval between Sloppy Joe's and Irish Kevin's. Real tiki bar, not the watered-down tourist version. Cocktail making classes in the back bar room. They sell mugs." },
+    { emoji:"🎩", name:"The Saint",                      stars:"4.7", reviews:"1,120",  price:"$$$",  lat:24.5565, lng:-81.8040, address:"422 Appelrouth Ln, Key West", note:"If you know, you know — creative cocktails, local favorite." },
+    { emoji:"🐓", name:"The Roost",                      stars:"4.6", reviews:"890",    price:"$$",   lat:24.5560, lng:-81.8035, address:"532 Grinnell St, Key West", note:"Great drinks but gets packed — put your patient pants on." },
+    { emoji:"🌺", name:"Hemingway Social Club",          stars:"4.6", reviews:"760",    price:"$$",   lat:24.5492, lng:-81.8022, address:"916 Duval St, Key West", note:"Locals love it — great vibe, friendly staff." },
+    { emoji:"✈", name:"First Flight Island Restaurant", stars:"4.5", reviews:"2,340",  price:"$$",   lat:24.5567, lng:-81.8048, address:"301 Whitehead St, Key West", note:"Laid-back local hangout away from the Duval chaos. Good spot to decompress." },
+    { emoji:"🍺", name:"Don's Place",                    stars:"4.6", reviews:"410",    price:"$",    lat:24.5535, lng:-81.8018, address:"1000 Truman Ave, Key West", note:"Local favorite, not on the tourist trail. Locals drink here with the breakfast club. If you want to meet real Key West people, this is the place." },
+    { emoji:"🍸", name:"Mary Ellen's",                    stars:"4.5", reviews:"620",    price:"$$",   lat:24.5572, lng:-81.8057, address:"213 Duval St, Key West", note:"Famous for frozen Irish coffee topped with Captain Crunch. Also hosts drunken spelling bees and events that have raised $300K+ for local charities. Weirder and better than it sounds." },
+  ]},
+  { category:"🍳 Breakfast & Brunch", items:[
+    { emoji:"🌺", name:"Blue Heaven",                    stars:"4.6", reviews:"8,110",  price:"$$",   lat:24.5530, lng:-81.8018, address:"729 Thomas St, Key West", note:"Key West classic. Roosters wander the yard. Get there early or expect a wait — worth it. They sell key lime pie slices at breakfast starting at 9am. Someone on Reddit had one with a beer at 9am and called it the most Key West thing ever. They were not wrong. Also renowned for key lime pie with meringue — though locals say Moondog gives them a run for their money." },
+    { emoji:"☕", name:"Pepe's Cafe",                    stars:"4.5", reviews:"3,220",  price:"$$",   lat:24.5558, lng:-81.8038, address:"806 Caroline St, Key West", note:"One of the oldest restaurants in Key West. Classic breakfast, local institution. Also recommended for key lime pie." },
+    { emoji:"🥞", name:"Banana Cafe",                    stars:"4.5", reviews:"2,870",  price:"$$",   lat:24.5573, lng:-81.8058, address:"1211 Duval St, Key West", note:"Consistently recommended for breakfast. French-inspired, casual, reliable." },
+    { emoji:"🥐", name:"La Creperie",                    stars:"4.7", reviews:"1,640",  price:"$$",   lat:24.5570, lng:-81.8052, address:"300 Petronia St, Key West", note:"'We go daily when visiting' — that's about as strong an endorsement as you'll get." },
+    { emoji:"🍳", name:"Sarabeth's",                     stars:"4.5", reviews:"1,980",  price:"$$$",  lat:24.5568, lng:-81.8050, address:"530 Simonton St, Key West", note:"Upscale breakfast worth a splurge morning." },
+    { emoji:"🍽️", name:"Azur Restaurant",                stars:"4.7", reviews:"1,640",  price:"$$$",  lat:24.5562, lng:-81.8038, address:"425 Grinnell St, Key West", note:"Local favorite, not on the tourist trail. Never a bad meal according to regulars. Key lime pie french toast and bellinis for brunch are specifically called out. Good escape from the crowds." },
+  ]},
+  { category:"🍽️ Dinner", items:[
+    { emoji:"🦞", name:"Latitudes",                      stars:"4.7", reviews:"2,180",  price:"$$$$", lat:24.5520, lng:-81.8070, address:"Sunset Key, Key West", note:"Free ferry from Sunset Key pier. Make reservations well in advance." },
+    { emoji:"🐟", name:"Louie's Backyard",               stars:"4.6", reviews:"3,440",  price:"$$$",  lat:24.5480, lng:-81.7940, address:"700 Waddell Ave, Key West", note:"Praised specifically for lunch. Ocean views. One of the best on the island." },
+    { emoji:"🌮", name:"Santiago's Bodega",              stars:"4.7", reviews:"2,876",  price:"$$",   lat:24.5530, lng:-81.8020, address:"207 Petronia St, Key West" },
+    { emoji:"🥩", name:"Seven Fish",                     stars:"4.8", reviews:"1,990",  price:"$$$",  lat:24.5540, lng:-81.8002, address:"632 Olivia St, Key West", note:"Make reservations. Small place, fills up fast." },
+    { emoji:"🥩", name:"Tavern N Town",                  stars:"4.6", reviews:"2,110",  price:"$$$",  lat:24.5551, lng:-81.8015, address:"3841 N Roosevelt Blvd, Key West", note:"The go-to for steak according to locals who visit six times a year. That's a meaningful data point." },
+    { emoji:"🍚", name:"El Siboney",                   stars:"4.5", reviews:"3,780",  price:"$",    lat:24.5538, lng:-81.8004, address:"900 Catherine St, Key West", note:"Local favorite, not on the tourist trail. Cuban food, no frills, no tourists, just good food." },
+    { emoji:"🐟", name:"Blackfin Bistro",                stars:"4.6", reviews:"1,870",  price:"$$$",  lat:24.5566, lng:-81.8049, address:"829 Duval St, Key West", note:"Solid reliable dinner, repeatedly recommended by frequent visitors." },
+    { emoji:"🔥", name:"Flaming Buoy Filet Co.",         stars:"4.7", reviews:"1,240",  price:"$$$",  lat:24.5543, lng:-81.8010, address:"1100 Packer St, Key West", note:"Creative menu, worth a reservation." },
+    { emoji:"🍜", name:"Miso Happy",                     stars:"4.5", reviews:"980",    price:"$$",   lat:24.5560, lng:-81.8042, address:"1118 White St, Key West", note:"Thai and sushi — good option when eight people are done with seafood." },
+    { emoji:"🦪", name:"DJ's Clam Shack",                stars:"4.4", reviews:"1,560",  price:"$",    lat:24.5563, lng:-81.8044, address:"629 Duval St, Key West", note:"Quick, easy, casual. Good for a low-key lunch or early dinner." },
+    { emoji:"🍕", name:"Roostica",                       stars:"4.5", reviews:"1,120",  price:"$$",   lat:24.5568, lng:-81.8048, address:"1001 Truman Ave, Key West", note:"Good pizza when the group wants something casual." },
+    { emoji:"🍋", name:"Kermit's Key Lime Shoppe",       stars:"4.8", reviews:"5,620",  price:"$",    lat:24.5571, lng:-81.8055, address:"200 Elizabeth St, Key West", note:"Non-negotiable. Key lime pie on a stick, chocolate dipped. Also does meringue and whipped cream versions. Nut and fruit breads worth grabbing too. Don't leave Key West without one." },
+    { emoji:"🦪", name:"Thirsty Mermaid",                stars:"4.6", reviews:"1,840",  price:"$$",   lat:24.5568, lng:-81.8049, address:"521 Fleming St, Key West", note:"Happy hour oysters $8 for 6 — Apalachicola style. Also known for fresh catch. Described as a hidden gem that's not that hidden." },
+    { emoji:"🦪", name:"Half Shell Raw Bar",              stars:"4.5", reviews:"4,210",  price:"$$",   lat:24.5545, lng:-81.8046, address:"231 Margaret St, Key West", note:"Key West OG. The go-to for oysters according to locals — 16 upvotes don't lie." },
+    { emoji:"🐟", name:"Red Shoe Bistro",                 stars:"4.7", reviews:"620",    price:"$$$",  lat:24.5562, lng:-81.8042, address:"Key West, FL", note:"Very small place — make a reservation. Locals say it has the best fresh catch in town. Get whatever they caught that day." },
+    { emoji:"🍽️", name:"Azur Restaurant",                stars:"4.7", reviews:"1,640",  price:"$$$",  lat:24.5562, lng:-81.8038, address:"425 Grinnell St, Key West", note:"25 upvotes on Reddit, highly detailed rave review. Tile fish special, rack of lamb, salmon carpaccio all called out. A little off the regular path but 100% worth it. Never had a bad meal here." },
+    { emoji:"🦞", name:"A&B Lobster House",               stars:"4.6", reviews:"2,980",  price:"$$$$", lat:24.5546, lng:-81.8044, address:"700 Front St, Key West", note:"Solid seafood institution. Locals rate it a close second for key lime pie. Make reservations." },
+    { emoji:"🌙", name:"Moondog Cafe",                    stars:"4.7", reviews:"1,120",  price:"$$",   lat:24.5536, lng:-81.8006, address:"823 Whitehead St, Key West", note:"Multiple locals say hands down the best key lime pie with meringue in Key West. Perfect firm creamy texture with a distinct slightly burnt meringue — their words, not ours." },
+    { emoji:"🥧", name:"Key Lime Pie Co.",                 stars:"4.7", reviews:"2,340",  price:"$",    lat:24.5567, lng:-81.8053, address:"511 Greene St, Key West", note:"Traditional, authentic, not too sweet. The purist's choice for key lime pie." },
+    { emoji:"🍰", name:"Virgilio's",                       stars:"4.5", reviews:"890",    price:"$$",   lat:24.5570, lng:-81.8055, address:"524 Duval St, Key West", note:"Cheesecake-style key lime pie — denser and richer if you want something different from the classic." },
+    { emoji:"🌿", name:"Kaya",                              stars:"4.6", reviews:"1,240",  price:"$$$",  lat:24.5563, lng:-81.8041, address:"1209 Duval St, Key West", note:"Full restaurant with a devoted following for key lime pie — one reviewer rated it above Kermit's with 4 upvotes. Worth a visit." },
+    { emoji:"☀️", name:"Cafe Sole",                         stars:"4.6", reviews:"980",    price:"$$$",  lat:24.5541, lng:-81.8003, address:"1029 Southard St, Key West", note:"Solid full restaurant mentioned alongside Blue Heaven and Old Town Bakery for key lime pie." },
+  ]},
+  { category:"🏖️ Beaches & Outdoors", items:[
+    { emoji:"🌅", name:"Smathers Beach",                 stars:"4.4", reviews:"6,120",  price:"Free", lat:24.5450, lng:-81.7740, address:"S Roosevelt Blvd, Key West" },
+    { emoji:"🌴", name:"Fort Zachary Taylor Beach",      stars:"4.7", reviews:"4,890",  price:"$",    lat:24.5445, lng:-81.8090, address:"601 Howard England Way, Key West", note:"Best beach in Key West proper. Small entry fee, worth every penny." },
+    { emoji:"🤿", name:"Dry Tortugas National Park",     stars:"4.9", reviews:"7,230",  price:"$$",   lat:24.6285, lng:-82.8733, address:"Garden Key, Dry Tortugas", note:"70 miles offshore. Ferry from Key West. Full day trip — snorkeling, Fort Jefferson, pristine water." },
+  ]},
+
+];
+
+var ITINERARY = [
+  { day:1, name:"Arrival Day", date:"Tuesday, July 7", items:[
+    { time:"9:00 AM",  text:"Depart Louisville — UA 3696 SDF → ORD" },
+    { time:"10:38 AM", text:"Land Chicago O'Hare — connection to Key West" },
+    { time:"11:43 AM", text:"Depart O'Hare — UA 3690 ORD → EYW" },
+    { time:"3:07 PM",  text:"Arrive Key West! Check in to The Reach Key West — Hilton Curio 🌴" },
+    { time:"4:00 PM",  text:"Settle in, explore Old Town, grab a drink" },
+    { time:"5:30 PM",  text:"Sunset Sail with Fury Water Adventures — all 8!" },
+    { time:"8:00 PM",  text:"Welcome dinner — group vote on location" },
+  ]},
+  { day:2, name:"Rum & Relaxation", date:"Wednesday, July 8", items:[
+    { time:"9:00 AM",  text:"Breakfast on your own — try Blue Heaven" },
+    { time:"10:00 AM", text:"Key West Rum Distillery tour — all 8" },
+    { time:"12:30 PM", text:"Lunch at Santiago's Bodega" },
+    { time:"2:00 PM",  text:"Couple's massage at Spa Terre (2 couples)" },
+    { time:"2:00 PM",  text:"Free afternoon — pool, beach, or explore" },
+    { time:"6:30 PM",  text:"Group happy hour — Schooner Wharf Bar" },
+    { time:"8:00 PM",  text:"Dinner on your own or group by vote" },
+  ]},
+  { day:3, name:"Fishing & Fun", date:"Thursday, July 9", items:[
+    { time:"6:00 AM",  text:"Early rise — Fishing charter departs" },
+    { time:"9:00 AM",  text:"Free morning — Hemingway House, shopping, beach" },
+    { time:"12:00 PM", text:"Lunch — Seven Fish (make reservations!)" },
+    { time:"5:00 PM",  text:"Fishing charter returns" },
+    { time:"6:30 PM",  text:"Group dinner at Latitudes — Sunset Key" },
+    { time:"9:00 PM",  text:"Duval Street nightlife 🍹" },
+  ]},
+  { day:4, name:"Dry Tortugas Adventure", date:"Friday, July 10", items:[
+    { time:"6:30 AM",  text:"Early rise — Dry Tortugas ferry check-in" },
+    { time:"8:00 AM",  text:"Depart for Dry Tortugas — Yankee Freedom III" },
+    { time:"10:30 AM", text:"Arrive Fort Jefferson — snorkeling, beach, history" },
+    { time:"3:00 PM",  text:"Return ferry to Key West" },
+    { time:"5:30 PM",  text:"Mallory Square Sunset Celebration" },
+    { time:"7:30 PM",  text:"Final group dinner — make it count 🦞" },
+    { time:"10:00 PM", text:"One last lap of Duval Street 🎉" },
+  ]},
+  { day:5, name:"Departure Day", date:"Saturday, July 11", items:[
+    { time:"8:00 AM",  text:"Breakfast and pack up" },
+    { time:"11:00 AM", text:"Check out of The Reach Key West" },
+    { time:"1:30 PM",  text:"Arrive Key West International Airport" },
+    { time:"4:00 PM",  text:"UA 3499 departs EYW → ORD" },
+    { time:"7:55 PM",  text:"Land Chicago O'Hare" },
+    { time:"9:02 PM",  text:"UA 3551 departs ORD → SDF" },
+    { time:"~10:00 PM",text:"Home. Already planning next year 🌴" },
+  ]},
+];
+
+/* ================================================================
+   TRIP CHECK-IN LOG — persists all check-ins with GPS for end-of-trip map
+   NOTE: Wire to Firebase for persistence across sessions
+================================================================ */
+var TRIP_LOG = [
+  // Seeded with a few sample entries so the map renders during development
+  { name:"Mike",     location:"Sloppy Joe's Bar",          date:"Jul 7",  time:"9:14 PM",  lat:24.5585, lng:-81.8060 },
+  { name:"Christy",  location:"Mallory Square Sunset",     date:"Jul 7",  time:"7:32 PM",  lat:24.5594, lng:-81.8075 },
+  { name:"Andrew",   location:"Fort Zachary Taylor Beach", date:"Jul 8",  time:"2:15 PM",  lat:24.5445, lng:-81.8090 },
+  { name:"Lisa",     location:"Hemingway Home",            date:"Jul 8",  time:"11:00 AM", lat:24.5492, lng:-81.8020 },
+  { name:"Bill",     location:"Rum Bar",                   date:"Jul 8",  time:"8:45 PM",  lat:24.5528, lng:-81.8005 },
+  { name:"Rachel",   location:"Kermit's Key Lime Shoppe",  date:"Jul 9",  time:"10:30 AM", lat:24.5571, lng:-81.8055 },
+  { name:"Chris",    location:"Sloppy Joe's Bar",          date:"Jul 9",  time:"4:00 PM",  lat:24.5585, lng:-81.8060 },
+  { name:"Leighann", location:"Smathers Beach",            date:"Jul 9",  time:"1:00 PM",  lat:24.5450, lng:-81.7740 },
+  { name:"Chris",    location:"The Roost",                 date:"Jul 9",  time:"10:22 PM", lat:24.5560, lng:-81.8035 },
+  { name:"Mike",     location:"Green Parrot Bar",          date:"Jul 10", time:"7:00 PM",  lat:24.5527, lng:-81.8010 },
+  { name:"Chris",    location:"Sloppy Joe's Bar",          date:"Jul 10", time:"3:30 PM",  lat:24.5585, lng:-81.8060 },
+  { name:"Andrew",   location:"Southernmost Point",        date:"Jul 10", time:"9:00 AM",  lat:24.5461, lng:-81.8001 },
+  { name:"Bill",     location:"Charter Boat Row",          date:"Jul 9",  time:"6:00 AM",  lat:24.5530, lng:-81.8050 },
+  { name:"Christy",  location:"The Saint",                 date:"Jul 10", time:"9:45 PM",  lat:24.5565, lng:-81.8040 },
+];
+
+// Person colors for map pins
+var PERSON_COLORS = {
+  'Christy':  '#0ABFBC',
+  'Bill':     '#FFD166',
+  'Leighann': '#A855F7',
+  'Mike':     '#7EECEA',
+  'Lisa':     '#FF6B6B',
+  'Chris':    '#F97316',
+  'Rachel':   '#34D399',
+  'Andrew':   '#60A5FA',
+};
+
+function showTripMap() {
+  document.getElementById('tripmap-modal').classList.add('open');
+  renderTripMap();
+}
+
+function renderTripMap() {
+  var container = document.getElementById('tripmap-container');
+
+  if (TRIP_LOG.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:14px;">No check-ins recorded yet.<br>Check-ins will appear here as the trip unfolds.</div>';
+    return;
+  }
+
+  // Build Google Maps Static API URL with all pins
+  // NOTE: When Google Maps API key is available, replace YOUR_KEY below
+  // For now renders an interactive summary table + deep link to Maps
+
+  // Build legend
+  var people = {};
+  TRIP_LOG.forEach(function(e){
+    if (!people[e.name]) people[e.name] = 0;
+    people[e.name]++;
+  });
+
+  var legendHtml = '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
+  Object.keys(people).forEach(function(name){
+    var color = PERSON_COLORS[name] || '#ffffff';
+    legendHtml += '<div style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.06);border-radius:20px;padding:4px 10px;">';
+    legendHtml += '<div style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0;"></div>';
+    legendHtml += '<span style="font-size:12px;color:var(--white);font-weight:500;">' + name + ' (' + people[name] + ')</span>';
+    legendHtml += '</div>';
+  });
+  legendHtml += '</div>';
+
+  // Build pin list grouped by day
+  var days = {};
+  TRIP_LOG.forEach(function(e){
+    if (!days[e.date]) days[e.date] = [];
+    days[e.date].push(e);
+  });
+
+  var listHtml = '';
+  Object.keys(days).sort().forEach(function(day){
+    listHtml += '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal-light);padding:10px 0 6px;">' + day + '</div>';
+    days[day].sort(function(a,b){ return a.ts - b.ts; }).forEach(function(e){
+      var color = PERSON_COLORS[e.name] || '#ffffff';
+      listHtml += '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--card-border);" onclick="openPinDirections(' + e.lat + ',' + e.lng + ',\'' + e.location.replace(/'/g,"\\'") + '\')">';
+      listHtml += '<div style="width:10px;height:10px;border-radius:50%;background:' + color + ';flex-shrink:0;"></div>';
+      listHtml += '<div style="flex:1;">';
+      listHtml += '<div style="font-size:14px;font-weight:600;color:var(--white);">' + e.name + '</div>';
+      listHtml += '<div style="font-size:12px;color:var(--text-muted);">📍 ' + e.location + ' · ' + e.time + '</div>';
+      listHtml += '</div>';
+      listHtml += '<div style="font-size:16px;opacity:0.5;">🗺️</div>';
+      listHtml += '</div>';
+    });
+  });
+
+  // Build Google Maps URL with all waypoints for the "Open Full Map" button
+  var mapUrl = 'https://www.google.com/maps/dir/' + TRIP_LOG.map(function(e){ return e.lat + ',' + e.lng; }).join('/');
+
+  container.innerHTML =
+    '<div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">' + TRIP_LOG.length + ' check-ins · ' + Object.keys(people).length + ' people · ' + Object.keys(days).length + ' days</div>' +
+    legendHtml +
+    '<button onclick="openFullTripMap()" style="width:100%;background:linear-gradient(135deg,var(--teal),var(--purple-mid));border:none;border-radius:10px;color:var(--white);font-family:\'DM Sans\',sans-serif;font-size:14px;font-weight:600;padding:14px;cursor:pointer;margin-bottom:16px;">🗺️ Open All Pins in Google Maps</button>' +
+    listHtml;
+}
+
+function openPinDirections(lat, lng, name) {
+  window.open('https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lng, '_blank');
+}
+
+function openFullTripMap() {
+  var center = TRIP_LOG[0];
+  var url = 'https://www.google.com/maps/@' + center.lat + ',' + center.lng + ',14z';
+  window.open(url, '_blank');
+}
+
+/* ================================================================
+   IDENTITY SYSTEM
+================================================================ */
+var CURRENT_USER = null;
+
+var USER_COLORS = {
+  'Christy':  'linear-gradient(135deg,#0ABFBC,#0891A0)',
+  'Bill':     'linear-gradient(135deg,#FFD166,#e6a800)',
+  'Leighann': 'linear-gradient(135deg,#A855F7,#7C3AED)',
+  'Mike':     'linear-gradient(135deg,#7EECEA,#0ABFBC)',
+  'Lisa':     'linear-gradient(135deg,#FF6B6B,#cc4444)',
+  'Chris':    'linear-gradient(135deg,#F97316,#ea580c)',
+  'Rachel':   'linear-gradient(135deg,#34D399,#059669)',
+  'Andrew':   'linear-gradient(135deg,#60A5FA,#2563EB)',
+};
+
+function setIdentity(name) {
+  try { localStorage.setItem('kw2026_user', name); } catch(e) {}
+  CURRENT_USER = name;
+  document.getElementById('identity-screen').style.display = 'none';
+  applyIdentity(name);
+}
+
+function applyIdentity(name) {
+  CURRENT_USER = name;
+  var hour = new Date().getHours();
+  var timeGreeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+  var emoji = name === 'Chris' ? '🍺' : '🌴';
+  var greetingEl = document.getElementById('home-greeting');
+  if (greetingEl) greetingEl.textContent = timeGreeting + ', ' + name + ' ' + emoji;
+  var checkinNameEl = document.getElementById('checkin-name');
+  if (checkinNameEl) checkinNameEl.value = name;
+}
+
+function switchIdentity() {
+  try { localStorage.removeItem('kw2026_user'); } catch(e) {}
+  CURRENT_USER = null;
+  document.getElementById('identity-screen').style.display = 'flex';
+}
+
+function loadIdentity() {
+  var saved = null;
+  try { saved = localStorage.getItem('kw2026_user'); } catch(e) {}
+  if (saved) {
+    CURRENT_USER = saved;
+    document.getElementById('identity-screen').style.display = 'none';
+    applyIdentity(saved);
+  }
+}
+
+/* ================================================================
+   DO NOT PUSH
+================================================================ */
+var DNP_COUNTS = {
+  'Christy': 0, 'Bill': 0, 'Leighann': 0, 'Mike': 0,
+  'Lisa': 0, 'Chris': 962, 'Rachel': 0, 'Andrew': 0
+};
+
+function pushButton() {
+  if (!CURRENT_USER) return;
+  DNP_COUNTS[CURRENT_USER] = (DNP_COUNTS[CURRENT_USER] || 0) + 1;
+  renderDNP(true);
+  // NOTE: When Firebase connected, persist DNP_COUNTS here
+}
+
+function renderDNP(animate) {
+  var names = ['Christy','Bill','Leighann','Mike','Lisa','Chris','Rachel','Andrew'];
+  var sorted = names.slice().sort(function(a,b){
+    return (DNP_COUNTS[b]||0) - (DNP_COUNTS[a]||0);
+  });
+  var html = '';
+  sorted.forEach(function(name) {
+    var count = DNP_COUNTS[name] || 0;
+    var color = USER_COLORS[name] || 'linear-gradient(135deg,var(--teal),var(--purple-mid))';
+    var initials = name.substring(0,2).toUpperCase();
+    var isMe = name === CURRENT_USER;
+    html += '<div class="dnp-row">';
+    html += '<div class="dnp-person">';
+    html += '<div class="avatar" style="background:' + color + ';width:38px;height:38px;font-size:13px;flex-shrink:0;">' + initials + '</div>';
+    html += '<div style="font-size:15px;font-weight:' + (isMe?'700':'500') + ';color:' + (isMe?'var(--white)':'var(--off-white)') + ';">' + name + (name==='Chris'?' 🍺':'') + (isMe?' ← you':'') + '</div>';
+    html += '</div>';
+    html += '<div class="dnp-count" id="dnp-count-' + name + '">' + count.toLocaleString() + '</div>';
+    html += '</div>';
+  });
+  var el = document.getElementById('dnp-leaderboard');
+  if (el) el.innerHTML = html;
+  if (animate && CURRENT_USER) {
+    var countEl = document.getElementById('dnp-count-' + CURRENT_USER);
+    if (countEl) {
+      countEl.classList.add('bump');
+      setTimeout(function(){ countEl.classList.remove('bump'); }, 300);
+    }
+  }
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
+  var s = document.getElementById('screen-' + name);
+  if (s) s.classList.add('active');
+  var n = document.getElementById('nav-' + name);
+  if (n) n.classList.add('active');
+  window.scrollTo(0,0);
+  // Special handling
+  if (name === 'donotpush') {
+    pushButton();
+  }
+}
+
+/* ================================================================
+   MODALS
+================================================================ */
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function openCheckinModal() {
+  document.getElementById('checkin-modal').classList.add('open');
+}
+
+function openAddEventModal() {
+  document.getElementById('add-event-modal').classList.add('open');
+}
+
+function showHelp() {
+  document.getElementById('help-modal').classList.add('open');
+}
+
+/* ================================================================
+   HOME SCREEN
+================================================================ */
+function initHome() {
+  var now = new Date();
+  // Allow dev date override from dev panel
+  if (window.DEV_DATE) now = new Date(window.DEV_DATE);
+
+  var start = CONFIG.tripStart;
+  var end   = CONFIG.tripEnd;
+
+  var monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var dayNames   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+  document.getElementById('home-date-sub').textContent = dayNames[now.getDay()] + ', ' + monthNames[now.getMonth()] + ' ' + now.getDate();
+
+  // Refresh greeting in case time of day changed
+  if (CURRENT_USER) applyIdentity(CURRENT_USER);
+
+  var msPerDay = 86400000;
+  var todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var tripMidnight  = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  var daysUntil = Math.round((tripMidnight - todayMidnight) / msPerDay);
+
+  if (daysUntil > 0) {
+    // ── PRE-TRIP COUNTDOWN ──
+    document.getElementById('home-day-title').textContent = daysUntil + (daysUntil === 1 ? ' Day' : ' Days') + ' Until Key West';
+    document.getElementById('today-schedule').innerHTML =
+      '<div style="text-align:center;padding:20px 10px;color:var(--text-muted);font-size:14px;line-height:1.7;">' +
+      '🌴 Your trip is ' + (daysUntil === 1 ? 'tomorrow!' : 'coming up!') + '<br>' +
+      'The calendar, recs, itinerary and all features<br>are ready whenever you are.' +
+      '</div>';
+
+  } else if (daysUntil === 0 || now <= end) {
+    // ── TRIP IS HAPPENING ──
+    var dayNum = Math.floor((todayMidnight - tripMidnight) / msPerDay) + 1;
+    if (dayNum < 1) dayNum = 1;
+    if (dayNum > 5) dayNum = 5;
+
+    var dayLabels = [
+      "Day 1 in Paradise",
+      "Day 2 in the Keys",
+      "Day 3 — Island Life",
+      "Day 4 — Last Full Day",
+      "Day 5 — Heading Home"
+    ];
+
+    document.getElementById('home-day-title').textContent = dayLabels[dayNum - 1] || "Keys Trip 2026";
+
+    var dayDateStrs = ["Jul 7","Jul 8","Jul 9","Jul 10","Jul 11"];
+    var todayStr = dayDateStrs[dayNum - 1];
+    var todayEvents = EVENTS.filter(function(e){ return e.date === todayStr; });
+
+    var html = '';
+    if (todayEvents.length === 0) {
+      html = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:14px;">Nothing scheduled — enjoy the freedom! 🌴</div>';
+    } else {
+      todayEvents.forEach(function(e){
+        html += '<div class="schedule-item" onclick="getDirections(\'' + e.address.replace(/'/g,"\\'") + '\')">';
+        html += '<div class="schedule-time">' + e.time + '</div>';
+        html += '<div class="schedule-info">';
+        html += '<div class="schedule-title">' + e.title + '</div>';
+        html += '<div class="schedule-tags">';
+        if (e.type === 'group') html += '<span class="tag tag-group">👥 All</span>';
+        else html += '<span class="tag tag-couple">💑 Couple</span>';
+        if (e.address) html += '<span class="tag" style="background:rgba(255,255,255,0.06);color:var(--text-muted);">Tap for directions</span>';
+        html += '</div></div>';
+        html += '<div class="schedule-dir">🗺️</div>';
+        html += '</div>';
+      });
+    }
+    document.getElementById('today-schedule').innerHTML = html;
+
+  } else {
+    // ── POST-TRIP ──
+    document.getElementById('home-day-title').textContent = "Back Home 🌴";
+    document.getElementById('today-schedule').innerHTML =
+      '<div style="text-align:center;padding:20px 10px;color:var(--text-muted);font-size:14px;line-height:1.7;">' +
+      'The trip is over but the memories aren\'t.<br>Photos and check-in map still available.' +
+      '</div>';
+  }
+}
+
+/* ================================================================
+   CALENDAR
+================================================================ */
+function initCalendar() {
+  var days = ["Jul 7","Jul 8","Jul 9","Jul 10","Jul 11"];
+  var dayLabels = {
+    "Jul 7":  "Tuesday, July 7 — Arrival",
+    "Jul 8":  "Wednesday, July 8",
+    "Jul 9":  "Thursday, July 9",
+    "Jul 10": "Friday, July 10",
+    "Jul 11": "Saturday, July 11 — Departure",
+  };
+
+  var html = '';
+  days.forEach(function(d){
+    html += '<div class="cal-day-header">' + dayLabels[d] + '</div>';
+    var dayEvents = EVENTS.filter(function(e){ return e.date === d; });
+    dayEvents.forEach(function(e){
+      html += '<div class="cal-event" onclick="getDirections(\'' + e.address.replace(/'/g,"\\'") + '\')">';
+      html += '<div class="cal-dot ' + (e.type==='group'?'dot-group':'dot-couple') + '"></div>';
+      html += '<div class="cal-event-info">';
+      html += '<div class="cal-event-title">' + e.title + '</div>';
+      html += '<div class="cal-event-meta">';
+      html += '<span>' + e.time + '</span>';
+      if (e.type==='group') html += '<span style="color:var(--teal-light)">👥 All</span>';
+      else html += '<span style="color:var(--purple-light)">💑 Couple</span>';
+      html += '</div></div>';
+      html += '<div class="cal-event-dir">🗺️</div>';
+      html += '</div>';
+    });
+  });
+  document.getElementById('calendar-content').innerHTML = html;
+}
+
+/* ================================================================
+   ITINERARY
+================================================================ */
+function initItinerary() {
+  var html = '';
+  ITINERARY.forEach(function(day){
+    html += '<div class="itin-day">';
+    html += '<div class="itin-day-header">';
+    html += '<div class="itin-day-num">' + day.day + '</div>';
+    html += '<div class="itin-day-info"><div class="itin-day-name">' + day.name + '</div><div class="itin-day-date">' + day.date + '</div></div>';
+    html += '</div>';
+    html += '<div class="itin-items">';
+    day.items.forEach(function(item){
+      html += '<div class="itin-item"><div class="itin-item-time">' + item.time + '</div><div>' + item.text + '</div></div>';
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('itinerary-content').innerHTML = html;
+}
+
+/* ================================================================
+   CHECK-INS
+================================================================ */
+function initCheckins() {
+  var html = '';
+  CHECKINS.forEach(function(c){
+    var colors = ['linear-gradient(135deg,#0ABFBC,#0891A0)','linear-gradient(135deg,#7C3AED,#A855F7)','linear-gradient(135deg,#FF6B6B,#cc4444)','linear-gradient(135deg,#FFD166,#e6a800)','linear-gradient(135deg,#0ABFBC,#7C3AED)','linear-gradient(135deg,#A855F7,#FF6B6B)','linear-gradient(135deg,#0891A0,#FFD166)','linear-gradient(135deg,#7C3AED,#0ABFBC)'];
+    var idx = CHECKINS.indexOf(c) % colors.length;
+    var isIn = c.time !== "";
+    html += '<div class="checkin-person">';
+    html += '<div class="avatar" style="background:' + (isIn ? colors[idx] : 'rgba(255,255,255,0.08)') + ';border:' + (isIn ? 'none' : '1px dashed rgba(255,255,255,0.2)') + '">' + c.initials + '</div>';
+    html += '<div class="checkin-info"><div class="checkin-name" style="font-size:16px">' + c.name + '</div>';
+    if (isIn) {
+      html += '<div class="checkin-location" style="font-size:13px">📍 ' + c.location + '</div>';
+      html += '<div class="checkin-time" style="font-size:12px;color:var(--text-muted);margin-top:2px">Last update: ' + c.time + '</div>';
+    } else {
+      html += '<div class="checkin-location" style="color:var(--text-muted);opacity:0.5;font-size:13px">Not checked in yet</div>';
+    }
+    html += '</div>';
+    html += '<div style="display:flex;gap:8px;flex-shrink:0">';
+    html += '<a href="sms:' + c.phone + '" style="width:42px;height:42px;border-radius:50%;background:rgba(10,191,188,0.15);border:1px solid rgba(10,191,188,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;">💬</a>';
+    html += '<a href="tel:' + c.phone + '" style="width:42px;height:42px;border-radius:50%;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;">📞</a>';
+    html += '</div>';
+    html += '</div>';
+  });
+  document.getElementById('checkin-list').innerHTML = html;
+}
+
+function submitCheckin() {
+  var name = document.getElementById('checkin-name').value.trim();
+  var where = document.getElementById('checkin-where').value.trim();
+  if (!name || !where) { alert('Please enter your name and location.'); return; }
+
+  var now = new Date();
+  var timeStr = now.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'});
+  var dateStr = now.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+
+  // Grab GPS silently at moment of check-in
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos){
+      recordCheckin(name, where, timeStr, dateStr, pos.coords.latitude, pos.coords.longitude);
+    }, function(){
+      recordCheckin(name, where, timeStr, dateStr, CONFIG.keyWestLat, CONFIG.keyWestLng);
+    }, { timeout: 6000 });
+  } else {
+    recordCheckin(name, where, timeStr, dateStr, CONFIG.keyWestLat, CONFIG.keyWestLng);
+  }
+}
+
+function recordCheckin(name, where, timeStr, dateStr, lat, lng) {
+  // Update live board
+  var existing = null; for (var ci = 0; ci < CHECKINS.length; ci++) { if (CHECKINS[ci].name.toLowerCase() === name.toLowerCase()) { existing = CHECKINS[ci]; break; } }
+  if (existing) {
+    existing.location = where;
+    existing.time = timeStr;
+  } else {
+    CHECKINS.unshift({ name:name, initials:name.substring(0,2).toUpperCase(), location:where, time:timeStr, phone:'' });
+  }
+  initCheckins();
+
+  // Store in trip history log with GPS
+  TRIP_LOG.push({
+    name: name,
+    location: where,
+    date: dateStr,
+    time: timeStr,
+    lat: lat,
+    lng: lng,
+    ts: Date.now()
+  });
+
+  closeModal('checkin-modal');
+  document.getElementById('checkin-name').value = '';
+  document.getElementById('checkin-where').value = '';
+
+  // NOTE: When Firebase connected, write here:
+  // firebase.database().ref('checkins').push({ name, where, lat, lng, time: Date.now() });
+  alert('✅ Checked in! In the full version, everyone will get a text notification.');
+}
+
+function submitEvent() {
+  var title = document.getElementById('evt-title').value.trim();
+  var date  = document.getElementById('evt-date').value.trim();
+  var time  = document.getElementById('evt-time').value.trim();
+  var addr  = document.getElementById('evt-location').value.trim();
+  var type  = document.getElementById('evt-type').value;
+  if (!title || !date || !time) { alert('Please fill in event name, date, and time.'); return; }
+
+  EVENTS.push({ id: Date.now(), date:date, time:time, title:title, type:type, address:addr, lat:CONFIG.keyWestLat, lng:CONFIG.keyWestLng });
+  initCalendar();
+  initHome();
+  closeModal('add-event-modal');
+  ['evt-title','evt-date','evt-time','evt-location'].forEach(function(id){ document.getElementById(id).value = ''; });
+}
+
+/* ================================================================
+   WEATHER — Open-Meteo (free, no API key)
+================================================================ */
+function loadWeather() {
+  // Set friendly placeholders immediately — shown if fetch fails or is blocked
+  var placeholders = {
+    icon: '🌤️', temp: '84°', desc: 'Key West, FL',
+    rain: '--', wind: '--', uv: '--', humid: '--'
+  };
+  document.getElementById('home-wx-icon').textContent = placeholders.icon;
+  document.getElementById('home-wx-temp').textContent = placeholders.temp;
+  document.getElementById('home-wx-desc').textContent = placeholders.desc;
+  document.getElementById('wx-big-icon').textContent = placeholders.icon;
+  document.getElementById('wx-big-temp').textContent = placeholders.temp;
+  document.getElementById('wx-feels').textContent = 'Loading forecast...';
+  document.getElementById('wx-updated').textContent = 'Fetching current conditions...';
+
+  var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + CONFIG.keyWestLat + '&longitude=' + CONFIG.keyWestLng + '&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,precipitation_probability,weather_code,uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&wind_speed_unit=mph&forecast_days=5&timezone=America%2FNew_York';
+
+  try {
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        try {
+          var c = data.current;
+          var icon = wxCodeToIcon(c.weather_code);
+          var desc = wxCodeToDesc(c.weather_code);
+
+          // Update home strip
+          document.getElementById('home-wx-icon').textContent = icon;
+          document.getElementById('home-wx-temp').textContent = Math.round(c.temperature_2m) + '°';
+          document.getElementById('home-wx-desc').textContent = desc;
+          document.getElementById('home-wx-rain').textContent = (c.precipitation_probability || 0) + '%';
+          document.getElementById('home-wx-wind').textContent = Math.round(c.wind_speed_10m) + 'mph';
+          var uvLevel = c.uv_index < 3 ? 'Low' : c.uv_index < 6 ? 'Moderate' : c.uv_index < 8 ? 'High' : 'Very High';
+          document.getElementById('home-wx-uv').textContent = uvLevel;
+
+          // Update full weather screen
+          document.getElementById('wx-big-icon').textContent = icon;
+          document.getElementById('wx-big-temp').textContent = Math.round(c.temperature_2m) + '°F';
+          document.getElementById('wx-feels').textContent = 'Feels like ' + Math.round(c.apparent_temperature) + '° · ' + desc;
+          document.getElementById('wx-rain').textContent = (c.precipitation_probability || 0) + '%';
+          document.getElementById('wx-humid').textContent = c.relative_humidity_2m + '%';
+          document.getElementById('wx-wind').textContent = Math.round(c.wind_speed_10m) + 'mph';
+          document.getElementById('wx-uv').textContent = Math.round(c.uv_index || 0);
+          document.getElementById('wx-updated').textContent = 'Updated just now · Key West, FL';
+
+          // 5-day forecast
+          var days = data.daily;
+          var dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+          var html = '';
+          for (var i = 0; i < days.time.length; i++) {
+            var d = new Date(days.time[i] + 'T12:00:00');
+            var label = i === 0 ? 'Today' : dayNames[d.getDay()];
+            html += '<div class="forecast-row">';
+            html += '<div class="fc-day">' + label + '</div>';
+            html += '<div class="fc-icon">' + wxCodeToIcon(days.weather_code[i]) + '</div>';
+            html += '<div style="flex:1;text-align:center;font-size:11px;color:var(--text-muted)">' + days.precipitation_probability_max[i] + '% 💧</div>';
+            html += '<div class="fc-range"><strong>' + Math.round(days.temperature_2m_max[i]) + '°</strong> / ' + Math.round(days.temperature_2m_min[i]) + '°</div>';
+            html += '</div>';
+          }
+          document.getElementById('forecast-list').innerHTML = html;
+        } catch(innerErr) {
+          // Data parse error — show placeholder silently
+          document.getElementById('wx-updated').textContent = 'Tap to retry · Key West, FL';
+        }
+      })
+      .catch(function() {
+        // Network blocked (preview mode, no connection) — fail silently
+        document.getElementById('wx-updated').textContent = 'Open in Safari for live weather 🌤️';
+        document.getElementById('wx-feels').textContent = 'Key West, FL · Forecast unavailable in preview';
+      });
+  } catch(e) {
+    // fetch() itself threw (very restricted environment) — fail silently
+    document.getElementById('wx-updated').textContent = 'Open in Safari for live weather 🌤️';
+  }
+}
+
+function wxCodeToIcon(code) {
+  if (code === 0) return '☀️';
+  if (code <= 2) return '🌤️';
+  if (code <= 3) return '☁️';
+  if (code <= 48) return '🌫️';
+  if (code <= 57) return '🌧️';
+  if (code <= 65) return '🌧️';
+  if (code <= 77) return '🌨️';
+  if (code <= 82) return '🌦️';
+  if (code <= 99) return '⛈️';
+  return '🌤️';
+}
+
+function wxCodeToDesc(code) {
+  if (code === 0) return 'Clear Sky';
+  if (code <= 2) return 'Partly Cloudy';
+  if (code <= 3) return 'Overcast';
+  if (code <= 48) return 'Foggy';
+  if (code <= 57) return 'Light Rain';
+  if (code <= 65) return 'Rain';
+  if (code <= 77) return 'Snow';
+  if (code <= 82) return 'Showers';
+  if (code <= 99) return 'Thunderstorms';
+  return 'Partly Cloudy';
+}
+
+/* ================================================================
+   LOCAL RECS
+================================================================ */
+function filterRecs(query) {
+  var q = query.trim().toLowerCase();
+  var countEl = document.getElementById('recs-search-count');
+
+  if (!q) {
+    // No search — show everything normally
+    countEl.style.display = 'none';
+    initRecs();
+    return;
+  }
+
+  // Search across name, note, category, price
+  var matches = [];
+  RECS.forEach(function(cat) {
+    cat.items.forEach(function(item) {
+      var searchable = (item.name + ' ' + (item.note || '') + ' ' + cat.category + ' ' + (item.price || '')).toLowerCase();
+      if (searchable.indexOf(q) !== -1) {
+        matches.push({ item: item, category: cat.category });
+      }
+    });
+  });
+
+  // Show count
+  countEl.style.display = 'block';
+  if (matches.length === 0) {
+    countEl.textContent = 'No results for "' + query + '"';
+    document.getElementById('recs-content').innerHTML =
+      '<div style="text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px;">Nothing matched.<br>Try "oysters", "breakfast", or "cheap".</div>';
+    return;
+  }
+
+  countEl.textContent = matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' for "' + query + '"';
+
+  // Render matches
+  var html = '<div class="card" style="margin-bottom:14px;">';
+  matches.forEach(function(m) {
+    var item = m.item;
+    html += '<div class="rec-item" onclick="getDirections('' + item.address.replace(/'/g,"\'") + '')">';
+    html += '<div class="rec-emoji">' + item.emoji + '</div>';
+    html += '<div class="rec-info">';
+    html += '<div class="rec-name">' + item.name + '</div>';
+    html += '<div style="font-size:11px;color:var(--teal-light);margin-bottom:3px;">' + m.category + '</div>';
+    html += '<div class="rec-meta">';
+    html += '<span class="rec-stars">★ ' + item.stars + '</span>';
+    html += '<span>(' + item.reviews + ')</span>';
+    html += '<span class="rec-price">' + item.price + '</span>';
+    html += '</div>';
+    if (item.note) html += '<div style="font-size:11px;color:var(--teal-light);margin-top:4px;font-style:italic;">💬 ' + item.note + '</div>';
+    html += '</div>';
+    html += '<button class="rec-dir-btn" onclick="event.stopPropagation();getDirections('' + item.address.replace(/'/g,"\'") + '')">🗺️</button>';
+    html += '</div>';
+  });
+  html += '</div>';
+  document.getElementById('recs-content').innerHTML = html;
+}
+
+function initRecs() {
+  var html = '';
+  RECS.forEach(function(cat){
+    html += '<div class="rec-category">' + cat.category + '</div>';
+    html += '<div class="card" style="margin-bottom:14px;">';
+    cat.items.forEach(function(item){
+      html += '<div class="rec-item" onclick="getDirections(\'' + item.address.replace(/'/g,"\\'") + '\')">';
+      html += '<div class="rec-emoji">' + item.emoji + '</div>';
+      html += '<div class="rec-info">';
+      html += '<div class="rec-name">' + item.name + '</div>';
+      html += '<div class="rec-meta">';
+      html += '<span class="rec-stars">★ ' + item.stars + '</span>';
+      html += '<span>(' + item.reviews + ')</span>';
+      html += '<span class="rec-price">' + item.price + '</span>';
+      html += '</div>';
+      if (item.note) html += '<div style="font-size:11px;color:var(--teal-light);margin-top:4px;font-style:italic;">💬 ' + item.note + '</div>';
+      html += '</div>';
+      html += '<button class="rec-dir-btn" onclick="event.stopPropagation();getDirections(\'' + item.address.replace(/'/g,"\\'") + '\')">🗺️</button>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  document.getElementById('recs-content').innerHTML = html;
+}
+
+/* ================================================================
+   I NEED — GPS-based nearest places
+================================================================ */
+function findNearby(type, title) {
+  document.getElementById('results-title').textContent = title;
+  document.getElementById('results-list').innerHTML = '<div class="loading"><div class="spinner"></div>Finding nearest locations...</div>';
+  document.getElementById('results-modal').classList.add('open');
+
+  // Get current GPS position then open Google Maps nearby search
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var lat = pos.coords.latitude;
+      var lng = pos.coords.longitude;
+      showNearbyResults(type, title, lat, lng);
+    }, function(){
+      // Fallback to Key West center
+      showNearbyResults(type, title, CONFIG.keyWestLat, CONFIG.keyWestLng);
+    }, { timeout: 8000 });
+  } else {
+    showNearbyResults(type, title, CONFIG.keyWestLat, CONFIG.keyWestLng);
+  }
+}
+
+function showNearbyResults(type, title, lat, lng) {
+  // NOTE: When Google Places API key is configured, replace with real API call.
+  // For now, show curated Key West options filtered by type.
+
+  var typeMap = {
+    'bar':        RECS[1].items,  // Bars & Nightlife (index 1)
+    'restaurant': RECS[3].items,  // Dinner (index 3)
+    'beach':      RECS[3].items,  // Beaches & Outdoors (index 3)
+    'store':      [
+      { emoji:'🛍️', name:'Kino Sandals',         stars:'4.8', reviews:'2,100', address:'107 Fitzpatrick St, Key West' },
+      { emoji:'🧢', name:'Fast Buck Freddie\'s',  stars:'4.6', reviews:'1,230', address:'500 Duval St, Key West' },
+      { emoji:'🎨', name:'Key West Art Center',   stars:'4.7', reviews:'890',   address:'301 Front St, Key West' },
+    ],
+    'cafe':       [
+      { emoji:'☕', name:'Sippin\' Coffee House',  stars:'4.7', reviews:'1,340', address:'424 Eaton St, Key West' },
+      { emoji:'☕', name:'Cuban Coffee Queen',     stars:'4.8', reviews:'3,200', address:'284 Margaret St, Key West' },
+      { emoji:'☕', name:'Glazed Donuts & Coffee', stars:'4.6', reviews:'980',   address:'420 Eaton St, Key West' },
+    ],
+  };
+
+  var places = (typeMap[type] || []).slice(0,3);
+  var html = '';
+
+  places.forEach(function(p, i){
+    html += '<div class="place-result">';
+    html += '<div class="place-num">' + (i+1) + '</div>';
+    html += '<div class="place-info">';
+    html += '<div class="place-name">' + (p.emoji||'') + ' ' + p.name + '</div>';
+    html += '<div class="place-meta">';
+    if (p.stars) html += '<span class="stars">★ ' + p.stars + '</span>';
+    if (p.reviews) html += '<span>(' + p.reviews + ')</span>';
+    html += '</div></div>';
+    html += '<button class="place-dir-btn" onclick="getDirections(\'' + p.address.replace(/'/g,"\\'") + '\')">Go →</button>';
+    html += '</div>';
+  });
+
+  document.getElementById('results-list').innerHTML = html || '<div style="text-align:center;padding:20px;color:var(--text-muted)">No results found nearby.</div>';
+}
+
+function goToHotel() {
+  closeModal('help-modal');
+  getDirections(CONFIG.hotelAddress);
+}
+
+function showKeyLimePie() {
+  var places = [
+    { emoji:"🍋", name:"Kermit's Key Lime Shoppe",    stars:"4.8", reviews:"5,620", address:"200 Elizabeth St, Key West", note:"Frozen on a stick dipped in chocolate — the move. Also does classic meringue and whipped cream. Most mentioned by name across all Reddit threads." },
+    { emoji:"🌙", name:"Moondog Cafe",                 stars:"4.7", reviews:"1,120", address:"823 Whitehead St, Key West", note:"Multiple locals say best meringue in Key West. Perfect firm creamy texture, distinct slightly burnt meringue. Next level." },
+    { emoji:"🌺", name:"Blue Heaven",                  stars:"4.6", reviews:"8,110", address:"729 Thomas St, Key West",    note:"Most authentic version on the island — meringue as originally made by Aunt Sally of the Curry family, credited with developing the recipe. 203-upvote post called it life-changing. They sell slices at 9am with a beer. Most Key West thing ever." },
+    { emoji:"🥧", name:"Key Lime Pie Co.",             stars:"4.7", reviews:"2,340", address:"511 Greene St, Key West",   note:"Traditional, authentic, not too sweet. The purist's choice." },
+    { emoji:"🍰", name:"Virgilio's",                   stars:"4.5", reviews:"890",   address:"524 Duval St, Key West",    note:"Cheesecake-style — denser and richer. For the New York cheesecake crowd." },
+    { emoji:"🍊", name:"Limes and Pies",               stars:"4.5", reviews:"340",   address:"Front of 801 Bourbon Bar, Key West", note:"3D printed lime on white chocolate. Patio seating, great people watching. Unique presentation." },
+    { emoji:"🌿", name:"Kaya",                         stars:"4.6", reviews:"1,240", address:"1209 Duval St, Key West",   note:"Full restaurant with devoted key lime pie following. One reviewer rated it above Kermit's. Bold claim, worth investigating." },
+    { emoji:"🍳", name:"Pepe's Cafe",                  stars:"4.5", reviews:"3,220", address:"806 Caroline St, Key West", note:"One of the oldest restaurants in Key West. Also recommended for key lime pie alongside their breakfast." },
+    { emoji:"☀️", name:"Cafe Sole",                    stars:"4.6", reviews:"980",   address:"1029 Southard St, Key West", note:"Solid full restaurant, mentioned alongside Blue Heaven for key lime pie by locals." },
+  ];
+
+  document.getElementById('results-title').textContent = '🍋 Key Lime Pie Guide';
+  var html = '<div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;font-style:italic;">Fair warning: Key West takes key lime pie seriously. Strong opinions exist about meringue vs whipped cream vs cheesecake-style. Choose your allegiance carefully.</div>';
+function getDirections(address) {
+  if (!address) return;
+  var encoded = encodeURIComponent(address);
+  // Try to get current location for origin
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var origin = pos.coords.latitude + ',' + pos.coords.longitude;
+      window.open('https://www.google.com/maps/dir/?api=1&origin=' + origin + '&destination=' + encoded + '&travelmode=walking', '_blank');
+    }, function(){
+      window.open('https://www.google.com/maps/dir/?api=1&destination=' + encoded + '&travelmode=walking', '_blank');
+    }, { timeout:5000 });
+  } else {
+    window.open('https://www.google.com/maps/dir/?api=1&destination=' + encoded + '&travelmode=walking', '_blank');
+  }
+}
+
+/* ================================================================
+   PHOTOS
+================================================================ */
+var photos = [];
+
+function handlePhotoUpload(input) {
+  var files = Array.prototype.slice.call(input.files);
+  if (!files.length) return;
+
+  files.forEach(function(file){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      photos.unshift({ src: e.target.result, uploader: 'You', time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) });
+      renderPhotos();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  input.value = '';
+  // NOTE: When Firebase Storage is configured, upload here:
+  // uploadToFirebase(file);
+}
+
+function renderPhotos() {
+  document.getElementById('photo-count').textContent = photos.length + ' photo' + (photos.length!==1?'s':'') + ' shared';
+  if (!photos.length) {
+    document.getElementById('photo-grid').innerHTML = '<div class="photo-empty">📸<br><br>No photos yet.<br>Be the first to share one!</div>';
+    return;
+  }
+  var html = '';
+  photos.forEach(function(p){
+    html += '<div class="photo-thumb"><img src="' + p.src + '" alt="Trip photo"><span class="photo-uploader">' + p.uploader + '</span></div>';
+  });
+  document.getElementById('photo-grid').innerHTML = html;
+}
+
+/* ================================================================
+   FLIGHT
+================================================================ */
+function openAirlineStatus() {
+  window.open(CONFIG.airlineStatusUrl, '_blank');
+  // NOTE: When FlightAware API key is configured, fetch live data here
+}
+
+/* ================================================================
+   HELPERS
+================================================================ */
+function callNumber(num) {
+  window.location.href = 'tel:' + num;
+}
+
+function simulateDate(dateStr) {
+  if (!dateStr) {
+    window.DEV_DATE = null;
+  } else {
+    window.DEV_DATE = dateStr;
+  }
+  initHome();
+  document.getElementById('dev-panel').style.display = 'none';
+  showScreen('home');
+}
+
+/* ================================================================
+   DEVELOPER PIN
+================================================================ */
+var devPinBuffer = '';
+
+function handleDevTap() {
+  var pin = prompt('🔐 Developer Access\nEnter PIN:');
+  if (pin === '5411') {
+    document.getElementById('dev-panel').style.display = 'block';
+    document.getElementById('dev-panel').scrollIntoView({ behavior: 'smooth' });
+  } else if (pin !== null) {
+    alert('Incorrect PIN.');
+  }
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+document.addEventListener('DOMContentLoaded', function(){
+  loadIdentity();
+  initHome();
+  initCalendar();
+  initItinerary();
+  initCheckins();
+  initRecs();
+  loadWeather();
+  renderPhotos();
+  renderDNP(false);
+});
+</script>
+
+<!-- ============================================================
+     COPYRIGHT FOOTER
+============================================================ -->
+<div style="text-align:center;padding:24px 20px 100px;position:relative;z-index:1;">
+  <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">
+    &copy; 2026 &nbsp;
+    <span onclick="handleDevTap()" style="color:var(--text-muted);cursor:pointer;border-bottom:1px dotted rgba(143,180,196,0.4);padding-bottom:1px;">Michael Pusateri</span>
+    &nbsp; · &nbsp; v0.9
+  </div>
+  <div style="font-size:11px;color:rgba(143,180,196,0.4);">Keys Trip 2026 · All rights reserved</div>
+</div>
+
+<!-- ============================================================
+     DEVELOPER NOTES PANEL (pin protected)
+============================================================ -->
+<div id="dev-panel" style="display:none;margin:0 16px 100px;position:relative;z-index:1;">
+  <div style="background:rgba(0,0,0,0.6);border:1px solid rgba(10,191,188,0.4);border-radius:16px;padding:20px;">
+
+    <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--teal-light);margin-bottom:16px;">
+      🛠️ Developer Notes — v0.9
+    </div>
+
+    <div style="font-size:13px;color:var(--off-white);line-height:1.8;">
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Date Simulator</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Simulate a different date to preview home screen:</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px;">
+          <button onclick="simulateDate('2026-06-01')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px 4px;cursor:pointer;">Jun 1<br><span style="color:var(--text-muted);font-size:10px;">36 days out</span></button>
+          <button onclick="simulateDate('2026-07-06')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px 4px;cursor:pointer;">Jul 6<br><span style="color:var(--text-muted);font-size:10px;">1 day out</span></button>
+          <button onclick="simulateDate('2026-07-07')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--teal-light);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px 4px;cursor:pointer;border-color:rgba(10,191,188,0.4);">Jul 7<br><span style="font-size:10px;">Day 1 🌴</span></button>
+          <button onclick="simulateDate('2026-07-09')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px 4px;cursor:pointer;">Jul 9<br><span style="color:var(--text-muted);font-size:10px;">Day 3</span></button>
+          <button onclick="simulateDate('2026-07-11')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px 4px;cursor:pointer;">Jul 11<br><span style="color:var(--text-muted);font-size:10px;">Departure</span></button>
+          <button onclick="simulateDate('2026-07-15')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px 4px;cursor:pointer;">Jul 15<br><span style="color:var(--text-muted);font-size:10px;">Post-trip</span></button>
+        </div>
+        <button onclick="simulateDate(null)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px;cursor:pointer;">Reset to Today</button>
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">App Status</div>
+      Functional prototype. All UI complete. Static data. Real weather via Open-Meteo API active. Firebase, Twilio, FlightAware, and Google Places pending credential setup.
+      <br><br>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Pending — To Go Live</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        🔴 <strong>Firebase Realtime DB</strong> — Check-ins persist across all 8 devices<br>
+        🔴 <strong>Firebase Storage</strong> — Photos shared across group, survive session<br>
+        🔴 <strong>Twilio SMS</strong> — Push notifications on check-in &amp; weather alerts<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• A2P 10DLC registration required (~$4 one-time)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Phone number rental ~$1.15/mo<br>
+        🔴 <strong>FlightAware AeroAPI</strong> — Live flight status (currently static)<br>
+        🔴 <strong>Google Places API</strong> — Live ratings on recs (currently static)<br>
+        🔴 <strong>GitHub Pages</strong> — Host at permanent URL to share with group
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Estimated Trip Cost</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        Firebase: $0 &nbsp;|&nbsp; Firebase Storage: ~$0.50<br>
+        Twilio number: $1.15 &nbsp;|&nbsp; A2P reg: $4.00 (one-time)<br>
+        Twilio SMS (~300 msgs): ~$2.50<br>
+        FlightAware: ~$1.50 &nbsp;|&nbsp; Google Places: ~$2.00<br>
+        GitHub Pages: $0 &nbsp;|&nbsp; Open-Meteo: $0<br>
+        <strong style="color:var(--teal-light);">Total estimated: ~$11.65</strong>
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Known Issues / To-Do</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        • I Need → Bars still showing landmarks on cached versions (fixed in v0.9, force-reload required)<br>
+        • Check-in data resets on page reload until Firebase connected<br>
+        • Photos lost on reload until Firebase Storage connected<br>
+        • Flight status is static until FlightAware key added<br>
+        • Ratings are static until Google Places key added<br>
+        • FAA drone restriction note for Andrew is advisory only 😄
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Commercial Notes</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        This trip serves as v0.9 live beta. Key West July 2026 is the test case.<br>
+        Commercial model: $15–20 per trip, up to 20 users, 30-day window.<br>
+        Target market: multigenerational family trips, friend group vacations, golf weekends, bachelorette trips.<br>
+        Killer features to highlight: shared photos, I Need buttons, tappable directions, funny help screen.<br>
+        Next milestone: v1.0 with Firebase live + hosted URL.
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Built By</div>
+      Michael Pusateri &amp; Claude (Anthropic) · May 2026<br>
+      Single-file HTML · Vanilla JS · No frameworks · No build system
+    </div>
+
+    <button onclick="showTripMap()" style="width:100%;margin-top:16px;background:linear-gradient(135deg,var(--teal),var(--purple-mid));border:none;border-radius:10px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;padding:14px;cursor:pointer;">
+      🗺️ View Trip Check-In Map
+    </button>
+
+    <button onclick="document.getElementById('dev-panel').style.display='none'" style="width:100%;margin-top:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:12px;cursor:pointer;">
+      Close Developer Notes
+    </button>
+  </div>
+</div>
+
+</body>
+</html>
