@@ -3299,10 +3299,11 @@ function handlePhotoUpload(input) {
   var files = Array.prototype.slice.call(input.files);
   if (!files.length) return;
 
+  // Show photos locally immediately
   files.forEach(function(file){
     var reader = new FileReader();
     reader.onload = function(e){
-      photos.unshift({ src: e.target.result, uploader: 'You', time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) });
+      photos.unshift({ src: e.target.result, uploader: CURRENT_USER || 'You', time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) });
       renderPhotos();
     };
     reader.readAsDataURL(file);
@@ -3310,9 +3311,9 @@ function handlePhotoUpload(input) {
 
   input.value = '';
 
-  // Upload to Firebase Storage
+  // Upload to Firebase Storage using already-captured files array
   if (storage && db) {
-    Array.prototype.slice.call(input.files).forEach(function(file) {
+    files.forEach(function(file) {
       var fileName = Date.now() + '_' + file.name;
       var ref = storage.ref('photos/' + fileName);
       ref.put(file).then(function(snapshot) {
