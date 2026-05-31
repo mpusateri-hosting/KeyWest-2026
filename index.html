@@ -3391,7 +3391,7 @@ function handlePhotoUpload(input) {
   files.forEach(function(file){
     var reader = new FileReader();
     reader.onload = function(e){
-      photos.unshift({ src: e.target.result, uploader: CURRENT_USER || 'You', time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) });
+      photos.unshift({ src: e.target.result, uploader: CURRENT_USER || 'You', time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}), date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}) });
       renderPhotos();
     };
     reader.readAsDataURL(file);
@@ -3410,6 +3410,7 @@ function handlePhotoUpload(input) {
             src: url,
             uploader: CURRENT_USER || 'Someone',
             time: new Date().toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'}),
+            date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'}),
             ts: Date.now()
           });
         });
@@ -3465,8 +3466,9 @@ function showViewerPhoto() {
     img.src = p.src;
     img.onload = function() { img.style.opacity = '1'; };
   }, 50);
+  var dateStr = p.date ? p.date + ' · ' : '';
   document.getElementById('photo-viewer-info').textContent =
-    (p.uploader || 'Someone') + ' · ' + (p.time || '');
+    (p.uploader || 'Someone') + ' · ' + dateStr + (p.time || '');
   document.getElementById('photo-viewer-counter').textContent =
     (viewerIndex + 1) + ' of ' + photos.length;
   document.getElementById('photo-nav-prev').style.display = photos.length > 1 ? 'flex' : 'none';
