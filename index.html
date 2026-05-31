@@ -1218,6 +1218,10 @@
     color: var(--coral);
   }
 </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 </head>
 <body>
 
@@ -2118,6 +2122,15 @@ var CONFIG = {
   airlineStatusUrl: "https://www.united.com/en/us/flightstatus",
   manageBookingUrl: "https://www.united.com/en/us/manageres",
   googlePlacesApiKey: "",  // Loaded server-side via Netlify function
+  firebaseConfig: {
+    apiKey: "AIzaSyCDvwRIMI1IZ4XKpy4zKqtti6-gdLZSFT0",
+    authDomain: "keywest-2026.firebaseapp.com",
+    databaseURL: "https://keywest-2026-default-rtdb.firebaseio.com",
+    projectId: "keywest-2026",
+    storageBucket: "keywest-2026.firebasestorage.app",
+    messagingSenderId: "626124914999",
+    appId: "1:626124914999:web:27a2035a6cf4d10a6e5ab2"
+  }
   // Replace with real credentials:
   // firebaseConfig: { ... },
   // twilioAccountSid: "...",
@@ -2270,6 +2283,70 @@ var ITINERARY = [
     { time:"~10:00 PM",text:"Home. Already planning next year 🌴" },
   ]},
 ];
+
+/* ================================================================
+   FIREBASE INITIALIZATION
+================================================================ */
+var db = null;
+var storage = null;
+
+function initFirebase() {
+  try {
+    firebase.initializeApp(CONFIG.firebaseConfig);
+    db = firebase.database();
+    storage = firebase.storage();
+    console.log("Firebase connected");
+    listenForCheckins();
+    listenForDNP();
+    loadFirebasePhotos();
+  } catch(e) {
+    console.log("Firebase init error:", e);
+  }
+}
+
+function listenForCheckins() {
+  if (!db) return;
+  db.ref('checkins').on('value', function(snapshot) {
+    var data = snapshot.val();
+    if (!data) return;
+    // Update CHECKINS from Firebase
+    Object.keys(data).forEach(function(name) {
+      for (var i = 0; i < CHECKINS.length; i++) {
+        if (CHECKINS[i].name === name) {
+          CHECKINS[i].location = data[name].location || 'Not checked in yet';
+          CHECKINS[i].time = data[name].time || '';
+          break;
+        }
+      }
+    });
+    initCheckins();
+  });
+}
+
+function listenForDNP() {
+  if (!db) return;
+  db.ref('dnp').on('value', function(snapshot) {
+    var data = snapshot.val();
+    if (!data) return;
+    Object.keys(data).forEach(function(name) {
+      DNP_COUNTS[name] = data[name] || 0;
+    });
+    renderDNP(false);
+  });
+}
+
+function loadFirebasePhotos() {
+  if (!db) return;
+  db.ref('photos').orderByChild('ts').limitToLast(50).on('value', function(snapshot) {
+    var data = snapshot.val();
+    if (!data) return;
+    photos = [];
+    Object.keys(data).forEach(function(key) {
+      photos.unshift(data[key]);
+    });
+    renderPhotos();
+  });
+}
 
 /* ================================================================
    TRIP CHECK-IN LOG — persists all check-ins with GPS for end-of-trip map
@@ -2444,7 +2521,10 @@ function pushButton() {
   if (!CURRENT_USER) return;
   DNP_COUNTS[CURRENT_USER] = (DNP_COUNTS[CURRENT_USER] || 0) + 1;
   renderDNP(true);
-  // NOTE: When Firebase connected, persist DNP_COUNTS here
+  // Write to Firebase
+  if (db) {
+    db.ref('dnp/' + CURRENT_USER).set(DNP_COUNTS[CURRENT_USER]);
+  }
 }
 
 function renderDNP(animate) {
@@ -2728,8 +2808,16 @@ function recordCheckin(name, where, timeStr, dateStr, lat, lng) {
   document.getElementById('checkin-name').value = '';
   document.getElementById('checkin-where').value = '';
 
-  // NOTE: When Firebase connected, write here:
-  // firebase.database().ref('checkins').push({ name, where, lat, lng, time: Date.now() });
+  // Write to Firebase
+  if (db) {
+    db.ref('checkins/' + name).set({
+      location: where,
+      time: timeStr,
+      lat: lat,
+      lng: lng,
+      ts: Date.now()
+    });
+  }
   alert('✅ Checked in! In the full version, everyone will get a text notification.');
 }
 
@@ -3222,8 +3310,24 @@ function handlePhotoUpload(input) {
   });
 
   input.value = '';
-  // NOTE: When Firebase Storage is configured, upload here:
-  // uploadToFirebase(file);
+
+  // Upload to Firebase Storage
+  if (storage && db) {
+    Array.prototype.slice.call(input.files).forEach(function(file) {
+      var fileName = Date.now() + '_' + file.name;
+      var ref = storage.ref('photos/' + fileName);
+      ref.put(file).then(function(snapshot) {
+        snapshot.ref.getDownloadURL().then(function(url) {
+          db.ref('photos/' + Date.now()).set({
+            src: url,
+            uploader: CURRENT_USER || 'Someone',
+            time: new Date().toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'}),
+            ts: Date.now()
+          });
+        });
+      }).catch(function(e) { console.log('Upload error:', e); });
+    });
+  }
 }
 
 function renderPhotos() {
@@ -3294,6 +3398,7 @@ document.addEventListener('DOMContentLoaded', function(){
   renderPhotos();
   renderDNP(false);
   loadPlacesRatings();
+  initFirebase();
 });
 </script>
 
