@@ -1150,7 +1150,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--white);
   }
@@ -1231,35 +1231,35 @@
 
   <div class="identity-grid">
     <div class="identity-btn" onclick="setIdentity('Christy')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#0ABFBC,#0891A0)">CT</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#0ABFBC,#0891A0)">🍷</div>
       <div class="id-name">Christy</div>
     </div>
     <div class="identity-btn" onclick="setIdentity('Bill')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#FFD166,#e6a800)">BI</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#FFD166,#e6a800)">🥃</div>
       <div class="id-name">Bill</div>
     </div>
     <div class="identity-btn" onclick="setIdentity('Leighann')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#A855F7,#7C3AED)">LE</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#A855F7,#7C3AED)">🧉</div>
       <div class="id-name">Leighann</div>
     </div>
     <div class="identity-btn" onclick="setIdentity('Mike')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#7EECEA,#0ABFBC)">MI</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#7EECEA,#0ABFBC)">🍻</div>
       <div class="id-name">Mike</div>
     </div>
     <div class="identity-btn" onclick="setIdentity('Lisa')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#FF6B6B,#cc4444)">LI</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#FF6B6B,#cc4444)">🍺</div>
       <div class="id-name">Lisa</div>
     </div>
     <div class="identity-btn" onclick="setIdentity('Chris')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#F97316,#ea580c)">CH</div>
-      <div class="id-name">Chris 🍺</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#F97316,#ea580c)">🫗</div>
+      <div class="id-name">Chris 🫗</div>
     </div>
     <div class="identity-btn" onclick="setIdentity('Rachel')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#34D399,#059669)">RA</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#34D399,#059669)">🍹</div>
       <div class="id-name">Rachel</div>
     </div>
     <div class="identity-btn" onclick="setIdentity('Andrew')">
-      <div class="id-avatar" style="background:linear-gradient(135deg,#60A5FA,#2563EB)">AN</div>
+      <div class="id-avatar" style="background:linear-gradient(135deg,#60A5FA,#2563EB)">🧃</div>
       <div class="id-name">Andrew</div>
     </div>
   </div>
@@ -1424,6 +1424,14 @@
           <div class="ineed-sub">The definitive guide</div>
         </div>
       </div>
+
+      <div class="ineed-btn" style="border-color:rgba(10,191,188,0.4);background:rgba(10,191,188,0.06);" onclick="showOysters()">
+        <div class="ineed-icon">🦪</div>
+        <div class="ineed-text">
+          <div class="ineed-title" style="color:var(--teal-light);">I Need Oysters</div>
+          <div class="ineed-sub">Where to shuck</div>
+        </div>
+      </div>
     </div>
 
     <!-- I Need Help — full width -->
@@ -1451,7 +1459,7 @@
       📍 Check In My Location
     </button>
 
-    <a href="sms:5023867261,5023141100,5025932734,5025522716,5023876804,5027673116,5026086354,5025527573"
+    <a href="sms:5023867261;5023141100;5025932734;5025522716;5023876804;5027673116;5026086354;5025527573"
        style="display:block;width:calc(100% - 32px);margin: 0 16px 14px;background:rgba(10,191,188,0.12);border:1px solid rgba(10,191,188,0.3);border-radius:var(--radius);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:16px;text-align:center;text-decoration:none;letter-spacing:0.3px;">
       💬 Text the Whole Group
     </a>
@@ -1771,6 +1779,15 @@
     </div>
 
     <div class="card" style="border-color:rgba(255,209,102,0.4);">
+      <div class="card-header"><span class="card-icon">👤</span><span class="card-title">Who Are You</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        The first time you open the app you'll see a screen asking who you are. Tap your drink emoji. The app remembers you forever after that — your name shows up in the greeting, your check-ins are tagged to you, and your Do Not Push count is yours.<br><br>
+        If you picked the wrong person — it happens, especially after a few drinks — tap <strong style="color:var(--teal-light);">Not you?</strong> under your name on the home screen and pick again.<br><br>
+        <span style="color:var(--text-muted);font-size:13px;">Your drink emoji: Christy 🍷 · Bill 🥃 · Leighann 🧉 · Mike 🍻 · Lisa 🍺 · Chris 🫗 · Rachel 🍹 · Andrew 🧃</span>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(255,209,102,0.4);">
       <div class="card-header"><span class="card-icon">📲</span><span class="card-title">Add This To Your Home Screen</span></div>
       <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
         Do this now. Before you forget. Before the rum.<br><br>
@@ -1790,29 +1807,71 @@
     </div>
 
     <div class="card">
-      <div class="card-header"><span class="card-icon">📍</span><span class="card-title">The Check-In Thing</span></div>
+      <div class="card-header"><span class="card-icon">📅</span><span class="card-title">The Calendar</span></div>
       <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
-        When you go somewhere, tap <strong style="color:var(--teal-light)">Where Is Everyone</strong> and check in. Takes five seconds.<br><br>
-        This is not real-time GPS tracking. Nobody is watching you. Your phone is not an ankle monitor. It simply lets the group know your last known location so that when someone asks <em>"where's Chris?"</em> at 11pm, the answer isn't a group shrug and a prayer.<br><br>
+        All trip events live here — group events and couple events. Tap any event to get walking directions from wherever you're standing right now.<br><br>
+        Tap the <strong style="color:var(--teal-light);">✏️ icon</strong> on any event to edit the details or delete it entirely. Tap <strong style="color:var(--teal-light);">+ Add Event</strong> at the bottom to add something new.<br><br>
+        The home screen shows today's schedule automatically — no need to dig into the calendar just to know what's happening.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">📍</span><span class="card-title">Where Is Everyone</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        When you go somewhere, tap <strong style="color:var(--teal-light);">Check In My Location</strong> and enter where you are. Takes five seconds.<br><br>
+        Each person has a <strong style="color:var(--teal-light);">💬 text</strong> and <strong style="color:var(--teal-light);">📞 call</strong> button next to their name — tap either to reach them directly without leaving the app.<br><br>
+        There's also a <strong style="color:var(--teal-light);">💬 Text the Whole Group</strong> button at the top — one tap opens a pre-addressed text to all 8 people simultaneously.<br><br>
         <span style="color:var(--coral);">⚠️ Important:</span> Checking in at Sloppy Joe's at 4pm and then going dark does not mean you are still at Sloppy Joe's at midnight. It means you were at Sloppy Joe's at 4pm. Nobody knows where you are now. You could be at The Roost. You could be at The Saint. You could be face down in an alley off Duval Street serenading a stray cat.<br><br>
         <strong style="color:var(--purple-light);">Chris.</strong> We are looking at you. Update your check-in. Lisa found you once. She divorced you once too. Don't push it.
       </div>
     </div>
 
     <div class="card">
-      <div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Directions</span></div>
+      <div class="card-header"><span class="card-icon">🆘</span><span class="card-title">I Need...</span></div>
       <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
-        Almost everything in this app is tappable for directions. Calendar events, local recs, landmarks — tap it and Google Maps opens with walking directions from wherever you're standing.<br><br>
-        Key West is about two miles end to end. You are almost certainly closer than you think. Unless you are Chris, in which case your exact position is unknown and has been for the last three hours.
+        Your lifeline tab. Eight buttons covering every vacation emergency:<br><br>
+        🍺 <strong style="color:var(--teal-light);">I'm Thirsty</strong> — nearest 3 bars with directions<br>
+        🍔 <strong style="color:var(--teal-light);">I'm Hungry</strong> — nearest 3 restaurants<br>
+        ☕ <strong style="color:var(--teal-light);">Need Coffee</strong> — nearest 3 cafes<br>
+        🏖️ <strong style="color:var(--teal-light);">Beach Me</strong> — nearest beach access<br>
+        🛍️ <strong style="color:var(--teal-light);">I Want to Shop</strong> — nearest shops<br>
+        🛏️ <strong style="color:var(--teal-light);">I Need Sleep</strong> — directions back to The Reach. No thinking required. Designed for use after midnight on Duval Street when thinking is no longer an option.<br>
+        🍋 <strong style="color:var(--teal-light);">I Need Key Lime Pie</strong> — the definitive guide to 9 spots ranked by local consensus<br>
+        🦪 <strong style="color:var(--teal-light);">I Need Oysters</strong> — 6 spots ranked by Reddit, with honest notes<br><br>
+        🚨 <strong style="color:var(--coral);">I Need Help</strong> — genuine emergencies only. Hospital, pharmacy, 911, hotel phone. We hope you never need it. We're also realists about four nights on Duval Street.
       </div>
     </div>
 
     <div class="card">
-      <div class="card-header"><span class="card-icon">🆘</span><span class="card-title">The I Need Button</span></div>
+      <div class="card-header"><span class="card-icon">💡</span><span class="card-title">Local Recs</span></div>
       <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
-        The <strong style="color:var(--teal-light)">I Need...</strong> tab is your lifeline. Thirsty? Hungry? Need coffee to survive the morning after? One tap finds the nearest options with directions.<br><br>
-        <strong style="color:var(--purple-light);">🛏️ I Need Sleep</strong> sends you directly back to The Reach. No thinking required. This button was designed for use after midnight on Duval Street when coherent thought is no longer among your available options. It works even if you have forgotten the hotel name, the street name, and what city you are in. Tap it. Go home. Drink water.<br><br>
-        <strong style="color:var(--coral);">🚨 I Need Help</strong> is for genuine emergencies — hospital, pharmacy, 911. We hope you never need it. We are also realists about what happens when eight people attack Duval Street for four consecutive nights. The hospital address is pre-loaded. You're welcome, Chris.
+        Over 50 curated spots across bars, breakfast, dinner, beaches, attractions and landmarks. Ratings from Google. The <strong style="color:var(--teal-light);">💬 teal notes</strong> are actual local intel from Reddit — people who live there, not TripAdvisor sponsored content.<br><br>
+        Use the <strong style="color:var(--teal-light);">search bar</strong> at the top to find anything instantly. Type "oysters," "breakfast," "cheap," "meringue," or "local" and matching spots appear immediately. No scrolling required.<br><br>
+        Every listing is tappable for walking directions.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">📸</span><span class="card-title">Photos</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Take photos with your regular camera app like a normal person. Then come here and tap <strong style="color:var(--teal-light);">Upload Photos</strong> to share your favorites with the group.<br><br>
+        Or tap <strong style="color:var(--teal-light);">Take Photo</strong> to shoot directly in the app. Quality is slightly lower but perfectly fine for "proof that Bill actually caught a fish" and "evidence of whatever Chris was doing at 1am."<br><br>
+        At the end of the trip everyone has access to everyone else's photos. No more group texts with 47 attachments that half the group never downloads.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">✈️</span><span class="card-title">Flights</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        All four flight legs are in here — SDF to ORD, ORD to EYW, and both legs home. Tap <strong style="color:var(--teal-light);">Live Flight Status</strong> for real-time updates on United's site. Tap <strong style="color:var(--teal-light);">My Booking</strong> to manage your own reservation privately — because your confirmation number is your business.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🗺️</span><span class="card-title">Directions</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Almost everything in this app is tappable for directions. Calendar events, local recs, landmarks, I Need results — tap it and Google Maps opens with walking directions from wherever you're standing.<br><br>
+        Key West is about two miles end to end. You are almost certainly closer than you think. Unless you are Chris, in which case your exact position is unknown and has been for the last three hours.
       </div>
     </div>
 
@@ -1822,32 +1881,7 @@
         Andrew has a drone. Possibly two. Nobody is surprised.<br><br>
         Key West has FAA flight restrictions over parts of the island and near the airport. Before Andrew launches anything over Duval Street at sunset, someone should probably mention this. That someone is not going to be Chris, who will be busy.<br><br>
         On the bright side, if Chris does go missing, Andrew's drone has a better chance of finding him than any of us do on foot. Every group needs a drone guy. We've got ours.<br><br>
-        <span style="color:var(--text-muted);font-size:13px;">📸 Any aerial photos Andrew takes are welcome in the shared photo gallery. Drone shots of the sunset over Mallory Square will be accepted without complaint.</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><span class="card-icon">📸</span><span class="card-title">Photos</span></div>
-      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
-        Take photos with your regular camera app like a normal person. Then come here and tap <strong style="color:var(--teal-light)">Upload Photos</strong> to share your favorites with the group.<br><br>
-        Or tap <strong style="color:var(--teal-light)">Take Photo</strong> to shoot directly in the app. Quality is slightly lower but perfectly fine for "proof that Bill actually caught a fish" and "evidence of whatever Chris was doing at 1am."<br><br>
-        At the end of the trip everyone has access to everyone else's photos. No more group texts with 47 attachments that half the group never downloads. You're welcome.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><span class="card-icon">✈️</span><span class="card-title">Flights</span></div>
-      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
-        All four flight legs are in here — both connections out and both home. Tap <strong style="color:var(--teal-light)">Live Flight Status</strong> for real-time updates on United's site. Tap <strong style="color:var(--teal-light)">My Booking</strong> to manage your own reservation — because your confirmation number is your business and nobody needs to know what you paid.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><span class="card-icon">💡</span><span class="card-title">Local Recs</span></div>
-      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
-        Curated spots across bars, restaurants, beaches, landmarks and attractions. Ratings from Google. The 💬 teal notes are actual local intel from people who live there — not TripAdvisor, not a sponsored post, not the hotel concierge trying to send you somewhere they get a kickback.<br><br>
-        The Roost is great but gets three deep at the bar. The Saint is the locals' secret. Rum Bar has the best rum selection on the island. Kermit's Key Lime Shoppe is non-negotiable.<br><br>
-        Chris will find Sloppy Joe's without the app. He always does.
+        <span style="color:var(--text-muted);font-size:13px;">📸 Aerial photos from Andrew's drone are welcome in the shared photo gallery.</span>
       </div>
     </div>
 
@@ -1872,7 +1906,8 @@
 
     <div style="height:20px;"></div>
   </div>
-  <!-- ========================================================
+
+    <!-- ========================================================
        DO NOT PUSH SCREEN
   ======================================================== -->
   <div id="screen-donotpush" class="screen">
@@ -1975,7 +2010,7 @@
     <div class="modal-handle"></div>
     <div class="modal-title">📅 Add Event</div>
     <input class="input-field" id="evt-title" placeholder="Event name" />
-    <input class="input-field" id="evt-date" placeholder="Date (e.g. Jun 10)" />
+    <input class="input-field" id="evt-date" placeholder="Date (e.g. Jul 8)" />
     <input class="input-field" id="evt-time" placeholder="Time (e.g. 2:00 PM)" />
     <input class="input-field" id="evt-location" placeholder="Location / address (for directions)" />
     <select class="input-field" id="evt-type">
@@ -1984,6 +2019,26 @@
     </select>
     <button class="primary-btn" onclick="submitEvent()">Add to Calendar</button>
     <button class="modal-close" onclick="closeModal('add-event-modal')">Cancel</button>
+  </div>
+</div>
+
+<!-- Edit Event modal -->
+<div class="modal-overlay" id="edit-event-modal" onclick="closeModal('edit-event-modal')">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">✏️ Edit Event</div>
+    <input class="input-field" id="edit-evt-title" placeholder="Event name" />
+    <input class="input-field" id="edit-evt-date" placeholder="Date (e.g. Jul 8)" />
+    <input class="input-field" id="edit-evt-time" placeholder="Time (e.g. 2:00 PM)" />
+    <input class="input-field" id="edit-evt-location" placeholder="Location / address (for directions)" />
+    <select class="input-field" id="edit-evt-type">
+      <option value="group">👥 Group Event</option>
+      <option value="couple">💑 Couple Event</option>
+    </select>
+    <input type="hidden" id="edit-evt-id" />
+    <button class="primary-btn" onclick="saveEditEvent()">Save Changes</button>
+    <button class="primary-btn" style="background:linear-gradient(135deg,#cc0000,#ff4444);margin-top:0;" onclick="deleteEvent()">🗑️ Delete Event</button>
+    <button class="modal-close" onclick="closeModal('edit-event-modal')">Cancel</button>
   </div>
 </div>
 
@@ -2062,11 +2117,11 @@ var CONFIG = {
   tripEnd:   new Date("2026-07-11"),
   airlineStatusUrl: "https://www.united.com/en/us/flightstatus",
   manageBookingUrl: "https://www.united.com/en/us/manageres",
+  googlePlacesApiKey: "AIzaSyCaUtqVh8x7V5ViKY57MfEGbMYkf_3ENI0",
   // Replace with real credentials:
   // firebaseConfig: { ... },
   // twilioAccountSid: "...",
   // flightAwareApiKey: "...",
-  // googlePlacesApiKey: "...",
 };
 
 /* ================================================================
@@ -2086,14 +2141,14 @@ var EVENTS = [
 ];
 
 var CHECKINS = [
-  { name:"Christy",  initials:"CT", location:"Not checked in yet", time:"", phone:"5023867261" },
-  { name:"Bill",     initials:"BI", location:"Not checked in yet", time:"", phone:"5023141100" },
-  { name:"Leighann", initials:"LE", location:"Not checked in yet", time:"", phone:"5025932734" },
-  { name:"Mike",     initials:"MI", location:"Not checked in yet", time:"", phone:"5025522716" },
-  { name:"Lisa",     initials:"LI", location:"Not checked in yet", time:"", phone:"5023876804" },
-  { name:"Chris",    initials:"CH", location:"Not checked in yet", time:"", phone:"5027673116" },
-  { name:"Rachel",   initials:"RA", location:"Not checked in yet", time:"", phone:"5026086354" },
-  { name:"Andrew",   initials:"AN", location:"Not checked in yet", time:"", phone:"5025527573" },
+  { name:"Christy",  initials:"🍷", location:"Not checked in yet", time:"", phone:"5023867261" },
+  { name:"Bill",     initials:"🥃", location:"Not checked in yet", time:"", phone:"5023141100" },
+  { name:"Leighann", initials:"🧉", location:"Not checked in yet", time:"", phone:"5025932734" },
+  { name:"Mike",     initials:"🍻", location:"Not checked in yet", time:"", phone:"5025522716" },
+  { name:"Lisa",     initials:"🍺", location:"Not checked in yet", time:"", phone:"5023876804" },
+  { name:"Chris",    initials:"🫗", location:"Not checked in yet", time:"", phone:"5027673116" },
+  { name:"Rachel",   initials:"🍹", location:"Not checked in yet", time:"", phone:"5026086354" },
+  { name:"Andrew",   initials:"🧃", location:"Not checked in yet", time:"", phone:"5025527573" },
 ];
 
 var RECS = [
@@ -2154,6 +2209,7 @@ var RECS = [
     { emoji:"🐟", name:"Red Shoe Bistro",                 stars:"4.7", reviews:"620",    price:"$$$",  lat:24.5562, lng:-81.8042, address:"Key West, FL", note:"Very small place — make a reservation. Locals say it has the best fresh catch in town. Get whatever they caught that day." },
     { emoji:"🍽️", name:"Azur Restaurant",                stars:"4.7", reviews:"1,640",  price:"$$$",  lat:24.5562, lng:-81.8038, address:"425 Grinnell St, Key West", note:"25 upvotes on Reddit, highly detailed rave review. Tile fish special, rack of lamb, salmon carpaccio all called out. A little off the regular path but 100% worth it. Never had a bad meal here." },
     { emoji:"🦞", name:"A&B Lobster House",               stars:"4.6", reviews:"2,980",  price:"$$$$", lat:24.5546, lng:-81.8044, address:"700 Front St, Key West", note:"Solid seafood institution. Locals rate it a close second for key lime pie. Make reservations." },
+    { emoji:"🦪", name:"Alonzo's Oyster Bar",              stars:"4.4", reviews:"2,870",  price:"$$$",  lat:24.5545, lng:-81.8044, address:"700 Front St, Key West", note:"Key West oyster institution. Multiple recommendations but one honest note — a Redditor found shell shards in shucked oysters twice. Stick to raw to be safe." },
     { emoji:"🌙", name:"Moondog Cafe",                    stars:"4.7", reviews:"1,120",  price:"$$",   lat:24.5536, lng:-81.8006, address:"823 Whitehead St, Key West", note:"Multiple locals say hands down the best key lime pie with meringue in Key West. Perfect firm creamy texture with a distinct slightly burnt meringue — their words, not ours." },
     { emoji:"🥧", name:"Key Lime Pie Co.",                 stars:"4.7", reviews:"2,340",  price:"$",    lat:24.5567, lng:-81.8053, address:"511 Greene St, Key West", note:"Traditional, authentic, not too sweet. The purist's choice for key lime pie." },
     { emoji:"🍰", name:"Virgilio's",                       stars:"4.5", reviews:"890",    price:"$$",   lat:24.5570, lng:-81.8055, address:"524 Duval St, Key West", note:"Cheesecake-style key lime pie — denser and richer if you want something different from the classic." },
@@ -2353,7 +2409,7 @@ function applyIdentity(name) {
   CURRENT_USER = name;
   var hour = new Date().getHours();
   var timeGreeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-  var emoji = name === 'Chris' ? '🍺' : '🌴';
+  var emoji = name === 'Chris' ? '🫗' : '🌴';
   var greetingEl = document.getElementById('home-greeting');
   if (greetingEl) greetingEl.textContent = timeGreeting + ', ' + name + ' ' + emoji;
   var checkinNameEl = document.getElementById('checkin-name');
@@ -2521,7 +2577,10 @@ function initHome() {
         else html += '<span class="tag tag-couple">💑 Couple</span>';
         if (e.address) html += '<span class="tag" style="background:rgba(255,255,255,0.06);color:var(--text-muted);">Tap for directions</span>';
         html += '</div></div>';
+        html += '<div style="display:flex;gap:6px;align-items:center;">';
         html += '<div class="schedule-dir">🗺️</div>';
+        html += '<div onclick="event.stopPropagation();openEditEvent(' + e.id + ')" style="font-size:14px;cursor:pointer;opacity:0.5;">✏️</div>';
+        html += '</div>';
         html += '</div>';
       });
     }
@@ -2564,7 +2623,10 @@ function initCalendar() {
       if (e.type==='group') html += '<span style="color:var(--teal-light)">👥 All</span>';
       else html += '<span style="color:var(--purple-light)">💑 Couple</span>';
       html += '</div></div>';
+      html += '<div style="display:flex;gap:8px;align-items:center;">';
       html += '<div class="cal-event-dir">🗺️</div>';
+      html += '<div onclick="event.stopPropagation();openEditEvent(' + e.id + ')" style="font-size:16px;cursor:pointer;opacity:0.6;padding:4px;">✏️</div>';
+      html += '</div>';
       html += '</div>';
     });
   });
@@ -2669,6 +2731,52 @@ function recordCheckin(name, where, timeStr, dateStr, lat, lng) {
   // NOTE: When Firebase connected, write here:
   // firebase.database().ref('checkins').push({ name, where, lat, lng, time: Date.now() });
   alert('✅ Checked in! In the full version, everyone will get a text notification.');
+}
+
+function openEditEvent(id) {
+  var e = null;
+  for (var i = 0; i < EVENTS.length; i++) {
+    if (EVENTS[i].id === id) { e = EVENTS[i]; break; }
+  }
+  if (!e) return;
+  document.getElementById('edit-evt-id').value = id;
+  document.getElementById('edit-evt-title').value = e.title;
+  document.getElementById('edit-evt-date').value = e.date;
+  document.getElementById('edit-evt-time').value = e.time;
+  document.getElementById('edit-evt-location').value = e.address || '';
+  document.getElementById('edit-evt-type').value = e.type;
+  document.getElementById('edit-event-modal').classList.add('open');
+}
+
+function saveEditEvent() {
+  var id = parseInt(document.getElementById('edit-evt-id').value);
+  for (var i = 0; i < EVENTS.length; i++) {
+    if (EVENTS[i].id === id) {
+      EVENTS[i].title   = document.getElementById('edit-evt-title').value.trim();
+      EVENTS[i].date    = document.getElementById('edit-evt-date').value.trim();
+      EVENTS[i].time    = document.getElementById('edit-evt-time').value.trim();
+      EVENTS[i].address = document.getElementById('edit-evt-location').value.trim();
+      EVENTS[i].type    = document.getElementById('edit-evt-type').value;
+      break;
+    }
+  }
+  closeModal('edit-event-modal');
+  initCalendar();
+  initHome();
+}
+
+function deleteEvent() {
+  var id = parseInt(document.getElementById('edit-evt-id').value);
+  if (!confirm('Delete this event?')) return;
+  for (var i = 0; i < EVENTS.length; i++) {
+    if (EVENTS[i].id === id) {
+      EVENTS.splice(i, 1);
+      break;
+    }
+  }
+  closeModal('edit-event-modal');
+  initCalendar();
+  initHome();
 }
 
 function submitEvent() {
@@ -2849,6 +2957,58 @@ function filterRecs(query) {
   document.getElementById('recs-content').innerHTML = html;
 }
 
+function loadPlacesRatings() {
+  // Load ratings for all recs via Netlify proxy — one at a time to avoid rate limits
+  var allItems = [];
+  RECS.forEach(function(cat) {
+    cat.items.forEach(function(item) {
+      allItems.push(item);
+    });
+  });
+
+  var index = 0;
+  function loadNext() {
+    if (index >= allItems.length) {
+      initRecs(); // Re-render once all done
+      return;
+    }
+    var item = allItems[index];
+    index++;
+    fetchPlaceByName(item, function() {
+      setTimeout(loadNext, 200); // 200ms between requests to avoid quota
+    });
+  }
+  loadNext();
+}
+
+function fetchPlaceByName(item, callback) {
+  var query = item.name + ' Key West FL';
+  var url = '/.netlify/functions/places?query=' + encodeURIComponent(query);
+
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.candidates && data.candidates[0]) {
+        var c = data.candidates[0];
+        if (c.rating) item.stars = c.rating.toFixed(1);
+        if (c.user_ratings_total) item.reviews = c.user_ratings_total.toLocaleString();
+        if (c.price_level !== undefined && c.price_level > 0) {
+          item.price = '$'.repeat(c.price_level);
+        }
+      }
+      callback();
+    })
+    .catch(function() { callback(); });
+}
+
+function fetchNearbyPlaces(type, lat, lng, callback) {
+  var url = '/.netlify/functions/places?type=' + type + '&lat=' + lat + '&lng=' + lng + '&radius=800';
+  fetch(url)
+    .then(function(r) { return r.json(); })
+    .then(function(data) { callback(data.results || []); })
+    .catch(function() { callback([]); });
+}
+
 function initRecs() {
   var html = '';
   RECS.forEach(function(cat){
@@ -2898,8 +3058,35 @@ function findNearby(type, title) {
 }
 
 function showNearbyResults(type, title, lat, lng) {
-  // NOTE: When Google Places API key is configured, replace with real API call.
-  // For now, show curated Key West options filtered by type.
+  // Use live Places API via Netlify proxy
+  fetchNearbyPlaces(type, lat, lng, function(results) {
+    if (results && results.length > 0) {
+      var html = '';
+      results.slice(0, 3).forEach(function(p, i) {
+        var stars = p.rating ? p.rating.toFixed(1) : '';
+        var reviews = p.user_ratings_total ? '(' + p.user_ratings_total.toLocaleString() + ')' : '';
+        var addr = p.vicinity || '';
+        html += '<div class="place-result">';
+        html += '<div class="place-num">' + (i+1) + '</div>';
+        html += '<div class="place-info">';
+        html += '<div class="place-name">' + p.name + '</div>';
+        html += '<div class="place-meta">';
+        if (stars) html += '<span class="stars">&#9733; ' + stars + '</span>';
+        if (reviews) html += '<span>' + reviews + '</span>';
+        html += '</div></div>';
+        html += '<button class="place-dir-btn" onclick="getDirections(\'' + addr.replace(/'/g,"\\'") + ', Key West\')">Go &#8594;</button>';
+        html += '</div>';
+      });
+      document.getElementById('results-list').innerHTML = html;
+      return;
+    }
+    // Fallback to curated list if API returns nothing
+    showCuratedResults(type);
+  });
+}
+
+function showCuratedResults(type) {
+  // Fallback curated list
 
   var typeMap = {
     'bar':        RECS[1].items,  // Bars & Nightlife (index 1)
@@ -2941,6 +3128,34 @@ function goToHotel() {
   getDirections(CONFIG.hotelAddress);
 }
 
+function showOysters() {
+  var places = [
+    { emoji:"🦪", name:"Half Shell Raw Bar",       stars:"4.5", reviews:"4,210", address:"231 Margaret St, Key West",      note:"The clear consensus winner. Multiple locals say it sells more oysters than anywhere else. One local lived in the Keys 25 years and never had a bad oyster here. Super casual — picnic tables. First stop after dropping bags at the hotel." },
+    { emoji:"🦪", name:"Thirsty Mermaid",           stars:"4.6", reviews:"1,840", address:"521 Fleming St, Key West",       note:"Consistently top 3 across all Reddit threads. Happy hour oysters $8 for 6. More of a date-night vibe than Half Shell. Check their menu online for happy hour times." },
+    { emoji:"🦪", name:"Alonzo's Oyster Bar",       stars:"4.4", reviews:"2,870", address:"700 Front St, Key West",         note:"Key West institution, multiple recommendations. Honest note: one Redditor found shell shards in shucked oysters twice. Go for the experience but stick to raw to be safe." },
+    { emoji:"🦞", name:"A&B Lobster House",         stars:"4.6", reviews:"2,980", address:"700 Front St, Key West",         note:"Upscale seafood institution. Solid oyster selection as part of a proper dinner. Make reservations." },
+    { emoji:"🍳", name:"Pepe's Cafe",               stars:"4.5", reviews:"3,220", address:"806 Caroline St, Key West",      note:"Happy hour oysters historically $1 each. New ownership recently — worth checking current HH prices before you go." },
+    { emoji:"🦪", name:"DJ's Clam Shack",           stars:"4.4", reviews:"1,560", address:"629 Duval St, Key West",         note:"Quick and casual. Good for a fast oyster fix without committing to a full sit-down meal." },
+  ];
+
+  document.getElementById('results-title').textContent = '🦪 Oysters in Key West';
+  var html = "<div style='font-size:13px;color:var(--text-muted);margin-bottom:14px;font-style:italic;'>Pro tip: raw oysters in Key West all come off the same two trucks. For raw it matters less where you go. For baked oysters the kitchen makes all the difference.</div>";
+
+  places.forEach(function(p) {
+    html += '<div class="place-result">';
+    html += '<div class="place-num" style="font-size:16px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));min-width:32px;height:32px;">' + p.emoji + '</div>';
+    html += '<div class="place-info">';
+    html += '<div class="place-name">' + p.name + '</div>';
+    html += '<div class="place-meta"><span class="stars">&#9733; ' + p.stars + '</span><span>(' + p.reviews + ')</span></div>';
+    if (p.note) html += '<div style="font-size:11px;color:var(--teal-light);margin-top:3px;font-style:italic;">&#x1F4AC; ' + p.note + '</div>';
+    html += '</div>';
+    html += '<button class="place-dir-btn" onclick="getDirections(\'' + p.address.replace(/'/g,"\\'") + '\')">Go &#8594;</button>';
+    html += '</div>';
+  });
+
+  document.getElementById('results-list').innerHTML = html;
+  document.getElementById('results-modal').classList.add('open');
+}
 function showKeyLimePie() {
   var places = [
     { emoji:"🍋", name:"Kermit's Key Lime Shoppe",    stars:"4.8", reviews:"5,620", address:"200 Elizabeth St, Key West", note:"Frozen on a stick dipped in chocolate — the move. Also does classic meringue and whipped cream. Most mentioned by name across all Reddit threads." },
@@ -3078,6 +3293,7 @@ document.addEventListener('DOMContentLoaded', function(){
   loadWeather();
   renderPhotos();
   renderDNP(false);
+  loadPlacesRatings();
 });
 </script>
 
