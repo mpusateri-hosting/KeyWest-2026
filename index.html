@@ -2700,13 +2700,50 @@ function initHome() {
   var daysUntil = Math.round((tripMidnight - todayMidnight) / msPerDay);
 
   if (daysUntil > 0) {
-    // ── PRE-TRIP COUNTDOWN ──
+    // ── PRE-TRIP COUNTDOWN --
+    var cm = {
+      36:"Pack your sunscreen. No seriously. Key West UV is not a suggestion.",
+      35:"Chris has already looked up Sloppy Joe's hours. We're not surprised.",
+      34:"The trip is close enough to get excited and far enough to still pretend you're being calm about it.",
+      33:"Andrew is probably already researching FAA drone regulations. He won't listen.",
+      32:"Start pretending you're going to work out before the trip.",
+      31:"One month and one day. The group chat is about to get very active.",
+      30:"One month out. Time to start worrying about your swimsuit situation.",
+      29:"Don't forget your bathing suit. Both of them. You'll want options.",
+      28:"Four weeks. Have you told your boss yet or are you still figuring out the timing?",
+      27:"27 days. Chris has already packed. It's mostly beer cozies.",
+      26:"Key West average July temperature: 90F. Pack light. Leave room for things you'll buy on Duval Street.",
+      25:"Mallory Square sunset is free, starts at dusk, and is non-negotiable. Just show up.",
+      24:"Someone in this group has already checked the weather forecast three times this week. You know who you are.",
+      23:"Start breaking in your flip flops now. Your feet will thank you on Day 2.",
+      22:"Three weeks and one day. Someone text everyone to confirm they have their IDs.",
+      21:"Three weeks. This is happening. Key lime pie is waiting.",
+      20:"The rum distillery tour is on the calendar. Consider this your liver's two week notice.",
+      19:"The Reach Key West has a private beach. You're welcome in advance.",
+      18:"If you haven't started packing yet that's fine. You'll pack the night before anyway. We all will.",
+      17:"Reminder: Latitudes at Sunset Key requires a ferry AND a reservation. Someone handle that.",
+      16:"The Green Parrot has live music almost every night. Start mentally preparing.",
+      15:"Two weeks and one day. The countdown is getting real.",
+      14:"Two weeks. Start doing laundry so you know what you actually own.",
+      13:"13 days. Lucky number. Probably fine.",
+      12:"Less than two weeks. Someone confirm the airport meeting time.",
+      11:"The Thirsty Mermaid has happy hour oysters for $8 a half dozen. File that away.",
+      10:"Ten days. Double digits are over. Single digits incoming.",
+      9:"Charge your phone. Download the app. Tell Chris to charge his phone too.",
+      8:"Eight days. The weather forecast for Key West is perfect. Of course it is.",
+      7:"ONE WEEK. Pack your bags. Not tomorrow. Now.",
+      6:"Check your passport. Check it again. Does Chris know where his ID is? These are different questions.",
+      5:"Five days. The Key lime pie at Moondog is waiting. It has been waiting patiently.",
+      4:"Four days. Dry Tortugas water is 84 degrees. Just saying.",
+      3:"Three days. Rachel, the oysters at Half Shell Raw Bar are ready for you.",
+      2:"Two days. 48 hours. Someone text everyone to confirm the airport meeting time. Yes, again.",
+      1:"Tomorrow. TOMORROW. Is your bag packed? Is your phone charged? Does Chris know what city he is flying to? These are all valid questions."
+    };
+    var msg = cm[daysUntil] || 'The trip is coming up. Get excited.';
     document.getElementById('home-day-title').textContent = daysUntil + (daysUntil === 1 ? ' Day' : ' Days') + ' Until Key West';
     document.getElementById('today-schedule').innerHTML =
-      '<div style="text-align:center;padding:20px 10px;color:var(--text-muted);font-size:14px;line-height:1.7;">' +
-      '🌴 Your trip is ' + (daysUntil === 1 ? 'tomorrow!' : 'coming up!') + '<br>' +
-      'The calendar, recs, itinerary and all features<br>are ready whenever you are.' +
-      '</div>';
+      '<div style="text-align:center;padding:20px 16px;color:var(--off-white);font-size:15px;line-height:1.7;">' +
+      String.fromCodePoint(127796) + ' ' + msg + '</div>';
 
   } else if (daysUntil === 0 || now <= end) {
     // ── TRIP IS HAPPENING ──
