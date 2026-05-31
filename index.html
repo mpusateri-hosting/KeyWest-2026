@@ -3190,18 +3190,21 @@ function initRecs() {
     html += '<div class="rec-category">' + cat.category + '</div>';
     html += '<div class="card" style="margin-bottom:14px;">';
     cat.items.forEach(function(item){
-      html += '<div class="rec-item" onclick="getDirections(\'' + item.address.replace(/'/g,"\\'") + '\')">';
+      var addr = (item.address || '').replace(/"/g, '&quot;');
+      html += '<div class="rec-item" onclick="getDirections(&quot;' + addr + '&quot;)">';
       html += '<div class="rec-emoji">' + item.emoji + '</div>';
       html += '<div class="rec-info">';
       html += '<div class="rec-name">' + item.name + '</div>';
       html += '<div class="rec-meta">';
-      html += '<span class="rec-stars">★ ' + item.stars + '</span>';
+      html += '<span class="rec-stars">&#9733; ' + item.stars + '</span>';
       html += '<span>(' + item.reviews + ')</span>';
       html += '<span class="rec-price">' + item.price + '</span>';
+      if (item.isOpen === true) html += '<span style="color:#34D399;font-size:10px;"> &#9679; Open</span>';
+      if (item.isOpen === false) html += '<span style="color:#FF6B6B;font-size:10px;"> &#9679; Closed</span>';
       html += '</div>';
-      if (item.note) html += '<div style="font-size:11px;color:var(--teal-light);margin-top:4px;font-style:italic;">💬 ' + item.note + '</div>';
+      if (item.note) html += '<div style="font-size:11px;color:var(--teal-light);margin-top:4px;font-style:italic;">&#x1F4AC; ' + item.note + '</div>';
       html += '</div>';
-      html += '<button class="rec-dir-btn" onclick="event.stopPropagation();getDirections(\'' + item.address.replace(/'/g,"\\'") + '\')">🗺️</button>';
+      html += '<button class="rec-dir-btn" onclick="event.stopPropagation();getDirections(&quot;' + addr + '&quot;)">&#x1F5FA;</button>';
       html += '</div>';
     });
     html += '</div>';
@@ -3209,9 +3212,6 @@ function initRecs() {
   document.getElementById('recs-content').innerHTML = html;
 }
 
-/* ================================================================
-   I NEED — GPS-based nearest places
-================================================================ */
 function findNearby(type, title) {
   document.getElementById('results-title').textContent = title;
   document.getElementById('results-list').innerHTML = '<div class="loading"><div class="spinner"></div>Finding nearest locations...</div>';
@@ -3364,6 +3364,10 @@ function showKeyLimePie() {
 }
 function getDirections(address) {
   if (!address) return;
+  // Decode any HTML entities
+  var txt = document.createElement('textarea');
+  txt.innerHTML = address;
+  address = txt.value;
   var encoded = encodeURIComponent(address);
   // Try to get current location for origin
   if (navigator.geolocation) {
