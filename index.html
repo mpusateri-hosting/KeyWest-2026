@@ -1551,10 +1551,9 @@
       📍 Check In My Location
     </button>
 
-    <a href="sms:5023867261;5023141100;5025932734;5025522716;5023876804;5027673116;5026086354;5025527573"
-       style="display:block;width:calc(100% - 32px);margin: 0 16px 14px;background:rgba(10,191,188,0.12);border:1px solid rgba(10,191,188,0.3);border-radius:var(--radius);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:16px;text-align:center;text-decoration:none;letter-spacing:0.3px;">
+    <button onclick="openGroupText()" style="display:block;width:calc(100% - 32px);margin: 0 16px 14px;background:rgba(10,191,188,0.12);border:1px solid rgba(10,191,188,0.3);border-radius:var(--radius);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:16px;text-align:center;letter-spacing:0.3px;cursor:pointer;">
       💬 Text the Whole Group
-    </a>
+    </button>
 
     <div class="card">
       <div class="card-header">
@@ -3486,6 +3485,18 @@ function renderPhotos() {
 function openAirlineStatus() {
   window.open(CONFIG.airlineStatusUrl, '_blank');
   // NOTE: When FlightAware API key is configured, fetch live data here
+}
+
+function openGroupText() {
+  var numbers = [
+    '5023867261','5023141100','5025932734','5025522716',
+    '5023876804','5027673116','5026086354','5025527573'
+  ];
+  // Try comma format first (works on some iOS), fall back to semicolon
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPad|iPhone|iPod/.test(ua);
+  var sep = isIOS ? '&' : ',';
+  window.location.href = 'sms:' + numbers.join(sep);
 }
 
 /* ================================================================
