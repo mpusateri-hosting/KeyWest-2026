@@ -2903,6 +2903,14 @@ function recordCheckin(name, where, timeStr, dateStr, lat, lng) {
       ts: Date.now()
     });
   }
+
+  // Send SMS notifications via Twilio
+  var phones = CHECKINS.map(function(c) { return c.phone; }).filter(function(p) { return p; });
+  fetch('/.netlify/functions/notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: name, location: where, phones: phones })
+  }).catch(function() {});
   alert('✅ Checked in! In the full version, everyone will get a text notification.');
 }
 
