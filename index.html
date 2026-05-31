@@ -3457,14 +3457,16 @@ function showViewerPhoto() {
   if (!photos.length) return;
   var p = photos[viewerIndex];
   var img = document.getElementById('photo-viewer-img');
+  img.src = '';
   img.style.opacity = '0';
-  img.src = p.src;
-  img.onload = function() { img.style.opacity = '1'; };
+  setTimeout(function() {
+    img.src = p.src;
+    img.onload = function() { img.style.opacity = '1'; };
+  }, 50);
   document.getElementById('photo-viewer-info').textContent =
     (p.uploader || 'Someone') + ' · ' + (p.time || '');
   document.getElementById('photo-viewer-counter').textContent =
     (viewerIndex + 1) + ' of ' + photos.length;
-  // Show/hide nav arrows
   document.getElementById('photo-nav-prev').style.display = photos.length > 1 ? 'flex' : 'none';
   document.getElementById('photo-nav-next').style.display = photos.length > 1 ? 'flex' : 'none';
 }
