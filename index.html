@@ -2651,6 +2651,9 @@ function showScreen(name) {
   if (name === 'donotpush') {
     pushButton();
   }
+  if (name === 'flight') {
+    loadFlightStatus();
+  }
 }
 
 /* ================================================================
@@ -3478,9 +3481,56 @@ function renderPhotos() {
 /* ================================================================
    FLIGHT
 ================================================================ */
+function loadFlightStatus() {
+  var flights = [
+    { id:'out1', num:'UA3696', date:'2026-07-07', el:'out1-status' },
+    { id:'out2', num:'UA3690', date:'2026-07-07', el:'out2-status' },
+    { id:'ret1', num:'UA3499', date:'2026-07-11', el:'ret1-status' },
+    { id:'ret2', num:'UA3551', date:'2026-07-11', el:'ret2-status' },
+  ];
+
+  flights.forEach(function(f) {
+    var url = '/.netlify/functions/flight?flightNum=' + f.num + '&date=' + f.date;
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var el = document.getElementById(f.el);
+        if (!el) return;
+        if (!data.flights || !data.flights[0]) return;
+
+        var flight = data.flights[0];
+        var status = flight.status || '';
+        var cancelled = status.toLowerCase().indexOf('cancel') > -1;
+        var delayed = status.toLowerCase().indexOf('delay') > -1;
+        var diverted = status.toLowerCase().indexOf('divert') > -1;
+
+        if (cancelled) {
+          el.textContent = '❌ CANCELLED';
+          el.className = 'flight-status-badge status-delayed';
+        } else if (delayed) {
+          el.textContent = '⚠️ DELAYED';
+          el.className = 'flight-status-badge status-delayed';
+          // Update times if available
+          if (flight.estimated_out) {
+            var t = new Date(flight.estimated_out);
+            var timeStr = t.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit', timeZone:'America/New_York'});
+            var depEl = document.getElementById(f.id + '-departs');
+            if (depEl) depEl.textContent = timeStr + ' (est)';
+          }
+        } else if (diverted) {
+          el.textContent = '⚡ DIVERTED';
+          el.className = 'flight-status-badge status-delayed';
+        } else if (status) {
+          el.textContent = '✅ ON TIME';
+          el.className = 'flight-status-badge status-ontime';
+        }
+      })
+      .catch(function() {}); // Fail silently if not yet flying
+  });
+}
+
 function openAirlineStatus() {
   window.open(CONFIG.airlineStatusUrl, '_blank');
-  // NOTE: When FlightAware API key is configured, fetch live data here
 }
 
 function openGroupText() {
