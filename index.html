@@ -2122,15 +2122,7 @@ var CONFIG = {
   airlineStatusUrl: "https://www.united.com/en/us/flightstatus",
   manageBookingUrl: "https://www.united.com/en/us/manageres",
   googlePlacesApiKey: "",  // Loaded server-side via Netlify function
-  firebaseConfig: {
-    apiKey: "AIzaSyCDvwRIMI1IZ4XKpy4zKqtti6-gdLZSFT0",
-    authDomain: "keywest-2026.firebaseapp.com",
-    databaseURL: "https://keywest-2026-default-rtdb.firebaseio.com",
-    projectId: "keywest-2026",
-    storageBucket: "keywest-2026.firebasestorage.app",
-    messagingSenderId: "626124914999",
-    appId: "1:626124914999:web:27a2035a6cf4d10a6e5ab2"
-  }
+  firebaseConfig: null  // Loaded from /.netlify/functions/config
   // Replace with real credentials:
   // firebaseConfig: { ... },
   // twilioAccountSid: "...",
@@ -2291,17 +2283,24 @@ var db = null;
 var storage = null;
 
 function initFirebase() {
-  try {
-    firebase.initializeApp(CONFIG.firebaseConfig);
-    db = firebase.database();
-    storage = firebase.storage();
-    console.log("Firebase connected");
-    listenForCheckins();
-    listenForDNP();
-    loadFirebasePhotos();
-  } catch(e) {
-    console.log("Firebase init error:", e);
-  }
+  fetch('/.netlify/functions/config')
+    .then(function(r) { return r.json(); })
+    .then(function(cfg) {
+      try {
+        firebase.initializeApp(cfg);
+        db = firebase.database();
+        storage = firebase.storage();
+        console.log("Firebase connected");
+        listenForCheckins();
+        listenForDNP();
+        loadFirebasePhotos();
+      } catch(e) {
+        console.log("Firebase init error:", e);
+      }
+    })
+    .catch(function(e) {
+      console.log("Config fetch error:", e);
+    });
 }
 
 function listenForCheckins() {
