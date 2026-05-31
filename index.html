@@ -2215,18 +2215,7 @@ var CONFIG = {
 /* ================================================================
    SAMPLE DATA — Replace / extend with real trip data
 ================================================================ */
-var EVENTS = [
-  { id:1, date:"Jul 7",  time:"3:07 PM",  title:"Arrive Key West — Check In to The Reach", type:"group",  lat:24.5478, lng:-81.8008, address:"1435 Simonton Street, Key West, FL 33040" },
-  { id:2, date:"Jul 7",  time:"5:30 PM",  title:"Sunset Sail — Fury Water Adventures", type:"group",  lat:24.5558, lng:-81.8046, address:"Fury Water Adventures, 245 Front St, Key West" },
-  { id:3, date:"Jul 8",  time:"10:00 AM", title:"Key West Distillery Tour",             type:"group",  lat:24.5575, lng:-81.8062, address:"Key West First Legal Rum Distillery, 105 Simonton St" },
-  { id:4, date:"Jul 8",  time:"2:00 PM",  title:"Couples Massage — Spa Terre",         type:"couple", lat:24.5540, lng:-81.7990, address:"Spa Terre, 1500 Reynolds St, Key West" },
-  { id:5, date:"Jul 9",  time:"7:00 AM",  title:"Fishing Charter — Capt. Hook",        type:"couple", lat:24.5530, lng:-81.8050, address:"Charter Boat Row, Key West" },
-  { id:6, date:"Jul 9",  time:"6:30 PM",  title:"Group Dinner — Latitudes",            type:"group",  lat:24.5520, lng:-81.8070, address:"Latitudes Restaurant, Sunset Key, Key West" },
-  { id:7, date:"Jul 10", time:"7:00 AM",  title:"Dry Tortugas Day Trip",               type:"group",  lat:24.6285, lng:-82.8733, address:"Fort Jefferson, Dry Tortugas National Park" },
-  { id:8, date:"Jul 10", time:"8:00 PM",  title:"Free Night — Duval Street",           type:"group",  lat:24.5561, lng:-81.8062, address:"Duval Street, Key West, FL" },
-  { id:9, date:"Jul 11", time:"11:00 AM", title:"Check Out — The Reach Key West",       type:"group",  lat:24.5478, lng:-81.8008, address:"1435 Simonton Street, Key West, FL 33040" },
-  { id:10, date:"Jul 11", time:"4:00 PM", title:"Depart — UA 3499 EYW → ORD",         type:"group",  lat:24.5562, lng:-81.7595, address:"Key West International Airport, 3491 S Roosevelt Blvd, Key West" },
-];
+var EVENTS = [];
 
 var CHECKINS = [
   { name:"Christy",  initials:"🍷", location:"Not checked in yet", time:"", phone:"5023867261" },
@@ -3511,6 +3500,34 @@ function showViewerPhoto() {
   document.getElementById('photo-nav-next').style.display = photos.length > 1 ? 'flex' : 'none';
 }
 
+function deletePhoto(index) {
+  if (!confirm('Delete this photo?')) return;
+  var p = photos[index];
+
+  // Delete from Firebase Storage and Database
+  if (storage && db && p.src && p.src.indexOf('firebasestorage') > -1) {
+    // Delete from Storage using the URL
+    try {
+      var storageRef = storage.refFromURL(p.src);
+      storageRef.delete().catch(function(e) { console.log('Storage delete error:', e); });
+    } catch(e) { console.log('Storage ref error:', e); }
+
+    // Delete from Database - find by src
+    db.ref('photos').orderByChild('src').equalTo(p.src).once('value', function(snapshot) {
+      snapshot.forEach(function(child) {
+        child.ref.remove();
+      });
+    });
+  }
+
+  // Remove from local array
+  photos.splice(index, 1);
+  renderPhotos();
+
+  // Close viewer if open
+  closeViewer();
+}
+
 function renderPhotos() {
   document.getElementById('photo-count').textContent = photos.length + ' photo' + (photos.length!==1?'s':'') + ' shared';
   if (!photos.length) {
@@ -3519,7 +3536,14 @@ function renderPhotos() {
   }
   var html = '';
   photos.forEach(function(p, i){
-    html += '<div class="photo-thumb" onclick="openViewer(' + i + ')"><img src="' + p.src + '" alt="Trip photo"><span class="photo-uploader">' + (p.uploader || 'Someone') + '</span></div>';
+    var isOwner = CURRENT_USER && p.uploader === CURRENT_USER;
+    html += '<div class="photo-thumb" onclick="openViewer(' + i + ')" style="position:relative;">';
+    html += '<img src="' + p.src + '" alt="Trip photo">';
+    html += '<span class="photo-uploader">' + (p.uploader || 'Someone') + '</span>';
+    if (isOwner) {
+      html += '<button onclick="event.stopPropagation();deletePhoto(' + i + ')" style="position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;background:rgba(255,0,0,0.7);border:none;color:white;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&#x2715;</button>';
+    }
+    html += '</div>';
   });
   document.getElementById('photo-grid').innerHTML = html;
 }
