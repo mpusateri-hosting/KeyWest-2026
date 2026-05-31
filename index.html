@@ -3368,24 +3368,12 @@ function getDirections(address) {
   var txt = document.createElement('textarea');
   txt.innerHTML = address;
   address = txt.value;
+  if (!address) return;
   var encoded = encodeURIComponent(address);
-  // Try to get current location for origin
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(pos){
-      var origin = pos.coords.latitude + ',' + pos.coords.longitude;
-      window.open('https://www.google.com/maps/dir/?api=1&origin=' + origin + '&destination=' + encoded + '&travelmode=walking', '_blank');
-    }, function(){
-      window.open('https://www.google.com/maps/dir/?api=1&destination=' + encoded + '&travelmode=walking', '_blank');
-    }, { timeout:5000 });
-  } else {
-    window.open('https://www.google.com/maps/dir/?api=1&destination=' + encoded + '&travelmode=walking', '_blank');
-  }
+  // Open Maps immediately — don't wait for GPS
+  window.open('https://www.google.com/maps/dir/?api=1&destination=' + encoded + '&travelmode=walking', '_blank');
 }
 
-/* ================================================================
-   PHOTOS
-================================================================ */
-var photos = [];
 
 function handlePhotoUpload(input) {
   var files = Array.prototype.slice.call(input.files);
