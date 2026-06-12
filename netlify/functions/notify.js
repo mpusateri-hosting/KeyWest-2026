@@ -1,16 +1,14 @@
 const https = require('https');
+const querystring = require('querystring');
 
 exports.handler = async function(event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method not allowed' };
   }
 
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const fromNumber = process.env.TWILIO_FROM_NUMBER;
-
-  if (!accountSid || !authToken || !fromNumber) {
-    return { statusCode: 500, body: 'Missing Twilio credentials' };
+  const apiKey = process.env.TEXTBELT_KEY;
+  if (!apiKey) {
+    return { statusCode: 500, body: 'Missing Textbelt API key' };
   }
 
   let body;
@@ -27,30 +25,28 @@ exports.handler = async function(event) {
 
   const message = '\uD83D\uDCCD ' + name + ' just checked in at ' + location + ' \u2014 Keys Trip 2026';
 
-  // Send to all numbers in parallel
   const sends = phones.map(function(phone) {
     return new Promise(function(resolve) {
-      const postData = new URLSearchParams({
-        To: '+1' + phone.replace(/\D/g, ''),
-        From: fromNumber,
-        Body: message
-      }).toString();
+      const postData = querystring.stringify({
+        phone: phone.replace(/\D/g, ''),
+        message: message,
+        key: apiKey
+      });
 
       const options = {
-        hostname: 'api.twilio.com',
-        path: '/2010-04-01/Accounts/' + accountSid + '/Messages.json',
+        hostname: 'textbelt.com',
+        path: '/text',
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': Buffer.byteLength(postData),
-          'Authorization': 'Basic ' + Buffer.from(accountSid + ':' + authToken).toString('base64')
+          'Content-Length': Buffer.byteLength(postData)
         }
       };
 
       const req = https.request(options, function(res) {
         let data = '';
         res.on('data', chunk => data += chunk);
-        res.on('end', () => resolve({ phone, status: res.statusCode }));
+        res.on('end', () => resolve({ phone, status: res.statusCode, response: data }));
       });
 
       req.on('error', function(e) {
