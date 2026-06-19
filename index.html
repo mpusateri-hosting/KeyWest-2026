@@ -354,7 +354,7 @@
   ============================================================ */
   .quick-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin: 0 16px 14px;
   }
@@ -363,26 +363,27 @@
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-sm);
-    padding: 12px 6px 10px;
+    padding: 16px 10px 14px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 5px;
+    justify-content: flex-start;
+    gap: 12px;
     cursor: pointer;
     transition: transform 0.15s, background 0.15s;
     backdrop-filter: blur(12px);
   }
 
-  .quick-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.1); }
+  .quick-btn:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
 
-  .quick-btn .qb-icon { font-size: 22px; }
+  .quick-btn .qb-icon { font-size: 28px; flex-shrink: 0; }
   .quick-btn .qb-label {
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 600;
-    color: var(--text-muted);
-    text-align: center;
-    letter-spacing: 0.3px;
-    line-height: 1.2;
+    color: var(--off-white);
+    text-align: left;
+    letter-spacing: 0.2px;
+    line-height: 1.3;
   }
 
   /* ============================================================
@@ -1443,6 +1444,10 @@
         <div class="qb-icon">❓</div>
         <div class="qb-label">How To</div>
       </div>
+      <div class="quick-btn" onclick="showScreen('notes')">
+        <div class="qb-icon">📝</div>
+        <div class="qb-label">Group Notes</div>
+      </div>
     </div>
 
     <!-- Do Not Push -->
@@ -1998,6 +2003,28 @@
   </div>
 
     <!-- ========================================================
+       GROUP NOTES SCREEN
+  ======================================================== -->
+  <div id="screen-notes" class="screen">
+    <div class="app-header">
+      <h1>Group Notes</h1>
+      <div class="subtitle">Quick notes for the whole group to see</div>
+    </div>
+
+    <div style="margin:0 16px 14px;">
+      <textarea id="note-input" maxlength="280" oninput="updateNoteCharCount()" placeholder="Leave a note for the group... (280 char max)" style="width:100%;min-height:80px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);color:var(--off-white);font-family:'DM Sans',sans-serif;font-size:15px;padding:14px;resize:none;box-sizing:border-box;"></textarea>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
+        <span id="note-char-count" style="font-size:12px;color:var(--text-muted);">280 characters left</span>
+        <button onclick="submitNote()" style="background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:var(--radius-sm);color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;cursor:pointer;">Post Note</button>
+      </div>
+    </div>
+
+    <div id="notes-list" style="margin:0 16px;"></div>
+
+    <div style="height:20px;"></div>
+  </div>
+
+    <!-- ========================================================
        DO NOT PUSH SCREEN
   ======================================================== -->
   <div id="screen-donotpush" class="screen">
@@ -2290,6 +2317,7 @@ var RECS = [
     { emoji:"🍽️", name:"Azur Restaurant",                stars:"4.7", reviews:"1,640",  price:"$$$",  lat:24.5562, lng:-81.8038, address:"425 Grinnell St, Key West", note:"25 upvotes on Reddit, highly detailed rave review. Tile fish special, rack of lamb, salmon carpaccio all called out. A little off the regular path but 100% worth it. Never had a bad meal here." },
     { emoji:"🦞", name:"A&B Lobster House",               stars:"4.6", reviews:"2,980",  price:"$$$$", lat:24.5546, lng:-81.8044, address:"700 Front St, Key West", note:"Solid seafood institution. Locals rate it a close second for key lime pie. Make reservations." },
     { emoji:"🦪", name:"Alonzo's Oyster Bar",              stars:"4.4", reviews:"2,870",  price:"$$$",  lat:24.5545, lng:-81.8044, address:"700 Front St, Key West", note:"Key West oyster institution. Multiple recommendations but one honest note — a Redditor found shell shards in shucked oysters twice. Stick to raw to be safe." },
+    { emoji:"🍢", name:"Santiago's Bodega",                stars:"4.7", reviews:"3,253",  price:"$$",   lat:24.5562, lng:-81.8023, address:"207 Petronia St #101, Key West", note:"Recommended by Christy. Intimate tapas bar with global small plates and signature sangria in Bahama Village. Diners love the beef short ribs." },
     { emoji:"🌙", name:"Moondog Cafe",                    stars:"4.7", reviews:"1,120",  price:"$$",   lat:24.5536, lng:-81.8006, address:"823 Whitehead St, Key West", note:"Multiple locals say hands down the best key lime pie with meringue in Key West. Perfect firm creamy texture with a distinct slightly burnt meringue — their words, not ours." },
     { emoji:"🥧", name:"Key Lime Pie Co.",                 stars:"4.7", reviews:"2,340",  price:"$",    lat:24.5567, lng:-81.8053, address:"511 Greene St, Key West", note:"Traditional, authentic, not too sweet. The purist's choice for key lime pie." },
     { emoji:"🍰", name:"Virgilio's",                       stars:"4.5", reviews:"890",    price:"$$",   lat:24.5570, lng:-81.8055, address:"524 Duval St, Key West", note:"Cheesecake-style key lime pie — denser and richer if you want something different from the classic." },
@@ -2357,6 +2385,7 @@ var ITINERARY = [
 var db = null;
 var storage = null;
 var photos = [];
+var groupNotes = [];
 
 function initFirebase() {
   fetch('/.netlify/functions/config')
@@ -2370,6 +2399,7 @@ function initFirebase() {
         listenForCheckins();
         listenForDNP();
         loadFirebasePhotos();
+        listenForNotes();
       } catch(e) {
         console.log("Firebase init error:", e);
       }
@@ -2420,6 +2450,22 @@ function loadFirebasePhotos() {
       photos.unshift(data[key]);
     });
     renderPhotos();
+  });
+}
+
+function listenForNotes() {
+  if (!db) return;
+  db.ref('groupNotes').orderByChild('ts').limitToLast(100).on('value', function(snapshot) {
+    var data = snapshot.val();
+    groupNotes = [];
+    if (data) {
+      Object.keys(data).forEach(function(key) {
+        var n = data[key];
+        n.id = key;
+        groupNotes.unshift(n);
+      });
+    }
+    renderNotes();
   });
 }
 
@@ -2646,6 +2692,9 @@ function showScreen(name) {
   }
   if (name === 'flight') {
     loadFlightStatus();
+  }
+  if (name === 'notes') {
+    renderNotes();
   }
 }
 
@@ -2941,7 +2990,6 @@ function recordCheckin(name, where, timeStr, dateStr, lat, lng) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: name, location: where, phones: phones })
   }).catch(function() {});
-  alert('✅ Checked in! In the full version, everyone will get a text notification.');
 }
 
 function openEditEvent(id) {
@@ -3501,6 +3549,75 @@ function showViewerPhoto() {
     (viewerIndex + 1) + ' of ' + photos.length;
   document.getElementById('photo-nav-prev').style.display = photos.length > 1 ? 'flex' : 'none';
   document.getElementById('photo-nav-next').style.display = photos.length > 1 ? 'flex' : 'none';
+}
+
+function submitNote() {
+  var input = document.getElementById('note-input');
+  var text = input.value.trim();
+  if (!text) return;
+  if (text.length > 280) text = text.substring(0, 280);
+
+  var note = {
+    text: text,
+    author: CURRENT_USER || 'Someone',
+    time: new Date().toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit'}),
+    date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric'}),
+    ts: Date.now()
+  };
+
+  if (db) {
+    db.ref('groupNotes/' + Date.now()).set(note);
+  } else {
+    // Fallback local-only if Firebase not yet connected
+    note.id = 'local-' + Date.now();
+    groupNotes.unshift(note);
+    renderNotes();
+  }
+
+  input.value = '';
+  updateNoteCharCount();
+}
+
+function deleteNote(id) {
+  if (!confirm('Delete this note?')) return;
+  if (db && id.indexOf('local-') !== 0) {
+    db.ref('groupNotes/' + id).remove();
+  } else {
+    groupNotes = groupNotes.filter(function(n) { return n.id !== id; });
+    renderNotes();
+  }
+}
+
+function updateNoteCharCount() {
+  var input = document.getElementById('note-input');
+  var counter = document.getElementById('note-char-count');
+  if (!input || !counter) return;
+  var remaining = 280 - input.value.length;
+  counter.textContent = remaining + ' characters left';
+}
+
+function renderNotes() {
+  var list = document.getElementById('notes-list');
+  if (!list) return;
+  if (!groupNotes.length) {
+    list.innerHTML = '<div style="text-align:center;padding:30px 10px;color:var(--text-muted);font-size:14px;">No notes yet. Be the first to leave one!</div>';
+    return;
+  }
+  var html = '';
+  groupNotes.forEach(function(n) {
+    var isOwner = CURRENT_USER && n.author === CURRENT_USER;
+    html += '<div class="card" style="margin-bottom:10px;padding:14px;position:relative;">';
+    html += '<div style="font-size:14px;color:var(--off-white);line-height:1.5;margin-bottom:8px;">' + n.text + '</div>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+    html += '<span style="font-size:12px;color:var(--teal-light);font-weight:600;">' + (n.author || 'Someone') + '</span>';
+    html += '<span style="font-size:11px;color:var(--text-muted);">' + (n.date || '') + ' · ' + (n.time || '') + '</span>';
+    html += '</div>';
+    if (isOwner) {
+      html += '<button onclick="deleteNote(\'' + n.id + '\')" style="position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:rgba(255,0,0,0.5);border:none;color:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&#x2715;</button>';
+    }
+    html += '</div>';
+  });
+  list.innerHTML = html;
 }
 
 function deletePhoto(index) {
