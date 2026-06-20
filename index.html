@@ -3962,6 +3962,7 @@ var TRIVIA_QUESTIONS = {
 var trivState = {}; // { questionId: {attempts: n, correct: bool, locked: bool} }
 var trivCurrentCat = null;
 var trivCurrentQuestion = null;
+var trivShuffledMap = [];
 var trivScores = {}; // { name: totalCorrectCount }
 
 function listenForTrivia() {
@@ -4093,21 +4094,35 @@ function trivLoadNextQuestion() {
   document.getElementById('trivia-feedback').textContent = '';
   document.getElementById('trivia-next-btn').style.display = 'none';
 
+  // Shuffle option order so the correct answer isn't always first.
+  // trivShuffledMap maps displayed position -> original option index.
+  var indices = next.o.map(function(opt, i) { return i; });
+  for (var s = indices.length - 1; s > 0; s--) {
+    var r = Math.floor(Math.random() * (s + 1));
+    var tmp = indices[s]; indices[s] = indices[r]; indices[r] = tmp;
+  }
+  trivShuffledMap = indices;
+
   var html = '';
-  next.o.forEach(function(opt, i) {
-    html += '<button onclick="trivAnswer(' + i + ')" class="trivia-opt-btn" style="display:block;width:100%;text-align:left;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--off-white);font-family:\'DM Sans\',sans-serif;font-size:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;">' + opt + '</button>';
+  indices.forEach(function(origIndex, displayIndex) {
+    var opt = next.o[origIndex];
+    html += '<button onclick="trivAnswer(' + displayIndex + ')" class="trivia-opt-btn" style="display:block;width:100%;text-align:left;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--off-white);font-family:\'DM Sans\',sans-serif;font-size:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;">' + opt + '</button>';
   });
   document.getElementById('trivia-options').innerHTML = html;
 }
 
-function trivAnswer(choiceIndex) {
+function trivAnswer(displayIndex) {
   var q = trivCurrentQuestion;
   if (!q) return;
   var existing = trivState[q.id] || { attempts: 0, correct: false, locked: false };
   if (existing.locked) return;
 
+  // Translate the displayed (shuffled) position back to the original option index
+  var origIndex = trivShuffledMap[displayIndex];
+  var correctDisplayIndex = trivShuffledMap.indexOf(q.a);
+
   existing.attempts = (existing.attempts || 0) + 1;
-  var isCorrect = (choiceIndex === q.a);
+  var isCorrect = (origIndex === q.a);
   var feedback = document.getElementById('trivia-feedback');
   var buttons = document.querySelectorAll('.trivia-opt-btn');
 
@@ -4116,23 +4131,23 @@ function trivAnswer(choiceIndex) {
     existing.locked = true;
     feedback.textContent = '\u2705 Correct!';
     feedback.style.color = '#34D399';
-    buttons[choiceIndex].style.borderColor = '#34D399';
-    buttons[choiceIndex].style.background = 'rgba(52,211,153,0.15)';
+    buttons[displayIndex].style.borderColor = '#34D399';
+    buttons[displayIndex].style.background = 'rgba(52,211,153,0.15)';
     document.getElementById('trivia-next-btn').style.display = 'block';
   } else if (existing.attempts >= 2) {
     existing.locked = true;
     feedback.textContent = '\u274C Out of attempts. The answer was: ' + q.o[q.a];
     feedback.style.color = '#FF6B6B';
-    buttons[choiceIndex].style.borderColor = '#FF6B6B';
-    buttons[choiceIndex].style.background = 'rgba(255,107,107,0.15)';
-    buttons[q.a].style.borderColor = '#34D399';
+    buttons[displayIndex].style.borderColor = '#FF6B6B';
+    buttons[displayIndex].style.background = 'rgba(255,107,107,0.15)';
+    buttons[correctDisplayIndex].style.borderColor = '#34D399';
     document.getElementById('trivia-next-btn').style.display = 'block';
   } else {
     feedback.textContent = '\u274C Not quite. One more try!';
     feedback.style.color = '#FF6B6B';
-    buttons[choiceIndex].style.borderColor = '#FF6B6B';
-    buttons[choiceIndex].style.background = 'rgba(255,107,107,0.15)';
-    buttons[choiceIndex].disabled = true;
+    buttons[displayIndex].style.borderColor = '#FF6B6B';
+    buttons[displayIndex].style.background = 'rgba(255,107,107,0.15)';
+    buttons[displayIndex].disabled = true;
   }
 
   trivState[q.id] = existing;
