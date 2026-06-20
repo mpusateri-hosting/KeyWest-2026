@@ -1448,6 +1448,10 @@
         <div class="qb-icon">📝</div>
         <div class="qb-label">Group Notes</div>
       </div>
+      <div class="quick-btn" onclick="showScreen('trivia')">
+        <div class="qb-icon">🎯</div>
+        <div class="qb-label">Trivia</div>
+      </div>
     </div>
 
     <!-- Do Not Push -->
@@ -2025,6 +2029,41 @@
   </div>
 
     <!-- ========================================================
+       TRIVIA SCREEN
+  ======================================================== -->
+  <div id="screen-trivia" class="screen">
+    <div class="app-header">
+      <h1>Trivia</h1>
+      <div class="subtitle">10 categories. 2 chances per question.</div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="card" style="margin:0 16px 14px;">
+      <div class="card-header"><span class="card-icon">🏆</span><span class="card-title">Leaderboard</span></div>
+      <div id="trivia-leaderboard" style="padding:0 4px;"></div>
+    </div>
+
+    <!-- Category picker -->
+    <div id="trivia-picker" style="margin:0 16px;">
+      <div id="trivia-categories"></div>
+    </div>
+
+    <!-- Question view (hidden until a category is chosen) -->
+    <div id="trivia-question-view" style="display:none;margin:0 16px;">
+      <button onclick="trivExitToCategories()" style="background:none;border:none;color:var(--teal-light);font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:12px;cursor:pointer;padding:0;">&#8592; Back to Categories</button>
+      <div class="card" style="padding:18px;">
+        <div id="trivia-progress" style="font-size:12px;color:var(--text-muted);margin-bottom:10px;"></div>
+        <div id="trivia-question-text" style="font-size:17px;font-weight:600;color:var(--off-white);margin-bottom:16px;line-height:1.4;"></div>
+        <div id="trivia-options"></div>
+        <div id="trivia-feedback" style="margin-top:12px;font-size:14px;font-weight:600;"></div>
+        <button id="trivia-next-btn" onclick="trivNextQuestion()" style="display:none;width:100%;margin-top:14px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:var(--radius-sm);color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;padding:12px;cursor:pointer;">Next Question &#8594;</button>
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+  </div>
+
+    <!-- ========================================================
        DO NOT PUSH SCREEN
   ======================================================== -->
   <div id="screen-donotpush" class="screen">
@@ -2400,6 +2439,7 @@ function initFirebase() {
         listenForDNP();
         loadFirebasePhotos();
         listenForNotes();
+        listenForTrivia();
       } catch(e) {
         console.log("Firebase init error:", e);
       }
@@ -2695,6 +2735,12 @@ function showScreen(name) {
   }
   if (name === 'notes') {
     renderNotes();
+  }
+  if (name === 'trivia') {
+    document.getElementById('trivia-picker').style.display = 'block';
+    document.getElementById('trivia-question-view').style.display = 'none';
+    renderTriviaCategories();
+    renderTriviaLeaderboard();
   }
 }
 
@@ -3618,6 +3664,267 @@ function renderNotes() {
     html += '</div>';
   });
   list.innerHTML = html;
+}
+
+/* ================================================================
+   TRIVIA — QUESTIONS DATA
+================================================================ */
+var TRIVIA_CATS = [
+  { id:'fk', label:'Florida Keys', emoji:'🌴' },
+  { id:'bb', label:'Kentucky Bourbon Trivia', emoji:'🥃' },
+  { id:'m80', label:"1980's Music", emoji:'🎵' }
+];
+
+var TRIVIA_QUESTIONS = {
+  fk: [
+    {id:'fk001',q:"What is the southernmost city in the continental United States?",o:["Key West","Miami","Marathon","Key Largo"],a:0},
+    {id:'fk002',q:"The Florida Keys are connected to the mainland by what famous highway?",o:["Overseas Highway","Sunshine Skyway","Tamiami Trail","Gulf Coast Highway"],a:0},
+    {id:'fk003',q:"What is the nickname for the Florida Keys' independence movement that started as a publicity stunt in 1982?",o:["Conch Republic","Keys Federation","Reef Nation","Tropic Republic"],a:0},
+    {id:'fk004',q:"Which famous author lived in Key West and is honored with a museum there?",o:["Ernest Hemingway","Mark Twain","F. Scott Fitzgerald","John Steinbeck"],a:0},
+    {id:'fk005',q:"What is the official state pie of Florida, famously made in the Keys?",o:["Key Lime Pie","Sweet Potato Pie","Orange Pie","Coconut Cream Pie"],a:0},
+    {id:'fk006',q:"What body of water lies to the south of the Florida Keys?",o:["Florida Straits","Gulf of Mexico","Atlantic Ocean","Caribbean Sea"],a:0},
+    {id:'fk007',q:"The famous Seven Mile Bridge connects which two areas?",o:["Marathon and the Lower Keys","Key West and Key Largo","Islamorada and Marathon","Big Pine Key and Key West"],a:0},
+    {id:'fk008',q:"What marker in Key West claims to be the southernmost point in the continental US?",o:["The Southernmost Point Buoy","Mile Marker 0","The Conch Monument","Sunset Pier"],a:0},
+    {id:'fk009',q:"Which famous bar in Key West is associated with Ernest Hemingway's drinking days?",o:["Sloppy Joe's","The Green Parrot","Captain Tony's","Schooner Wharf Bar"],a:0},
+    {id:'fk010',q:"What unusual animal is famous for roaming free around Hemingway's House in Key West?",o:["Six-toed cats","Iguanas","Roosters","Peacocks"],a:0},
+    {id:'fk011',q:"What is the name of the National Park accessible by boat or seaplane from Key West, home to Fort Jefferson?",o:["Dry Tortugas National Park","Biscayne National Park","Everglades National Park","Big Cypress National Preserve"],a:0},
+    {id:'fk012',q:"What nightly tradition draws crowds to Mallory Square in Key West?",o:["Sunset Celebration","Fireworks Show","Night Market","Moonlight Parade"],a:0},
+    {id:'fk013',q:"What is the main street in Key West known for bars, shops, and nightlife?",o:["Duval Street","Whitehead Street","Truman Avenue","Simonton Street"],a:0},
+    {id:'fk014',q:"Roughly how many islands make up the Florida Keys archipelago?",o:["About 1,700","About 200","About 50","About 5,000"],a:0},
+    {id:'fk015',q:"What is the primary industry that historically built Key West's economy in the 1800s?",o:["Wrecking (salvage)","Citrus farming","Tobacco","Cattle ranching"],a:0},
+    {id:'fk016',q:"Which Keys island is known as the Sport Fishing Capital of the World?",o:["Islamorada","Marathon","Key Largo","Big Pine Key"],a:0},
+    {id:'fk017',q:"What endangered small deer species is found primarily on Big Pine Key?",o:["Key Deer","Whitetail Deer","Pygmy Deer","Marsh Deer"],a:0},
+    {id:'fk018',q:"What is the famous coral reef system that runs along the Florida Keys?",o:["Florida Reef","Great Barrier Reef","Belize Barrier Reef","Mesoamerican Reef"],a:0},
+    {id:'fk019',q:"What was Key West's primary connection to the mainland before the Overseas Highway was built?",o:["Railroad","Ferry only","No connection existed","Telegraph cable"],a:0},
+    {id:'fk020',q:"What hurricane in 1935 destroyed the railroad that once connected Key West to the mainland?",o:["The Labor Day Hurricane","Hurricane Donna","Hurricane Betsy","The Great Miami Hurricane"],a:0},
+    {id:'fk021',q:"What is the name of the butterfly attraction popular with visitors in Key West?",o:["Key West Butterfly and Nature Conservatory","Tropical Wings Garden","Conch Butterfly House","Paradise Butterfly Sanctuary"],a:0},
+    {id:'fk022',q:"What term describes longtime native residents of Key West?",o:["Conchs","Keysters","Islanders","Reefers"],a:0},
+    {id:'fk023',q:"What former president had a vacation retreat in Key West known as the Little White House?",o:["Harry Truman","Franklin Roosevelt","John F. Kennedy","Dwight Eisenhower"],a:0},
+    {id:'fk024',q:"Which Keys town is named after a tropical fruit?",o:["Islamorada","Marathon","Tavernier","Big Pine Key"],a:0},
+    {id:'fk025',q:"What is the approximate distance by road from Miami to Key West?",o:["About 160 miles","About 60 miles","About 300 miles","About 90 miles"],a:0}
+  ],
+  bb: [
+    {id:'bb001',q:"By law, bourbon must be made up of at least what percentage of corn?",o:["51%","40%","75%","25%"],a:0},
+    {id:'bb002',q:"What type of barrel must bourbon be aged in by law?",o:["New charred oak","Used oak","Stainless steel","Any wood barrel"],a:0},
+    {id:'bb003',q:"What percentage of the world's bourbon is produced in Kentucky?",o:["About 95%","About 50%","About 75%","About 25%"],a:0},
+    {id:'bb004',q:"What is the name of the official driving route connecting Kentucky's major bourbon distilleries?",o:["Kentucky Bourbon Trail","Whiskey Row Route","Distillery Highway","Spirits Trail"],a:0},
+    {id:'bb005',q:"What Kentucky city is widely considered the unofficial capital of bourbon?",o:["Bardstown","Lexington","Louisville","Frankfort"],a:0},
+    {id:'bb006',q:"What must bourbon NOT contain by law?",o:["Added coloring or flavoring","Corn","Rye","Water"],a:0},
+    {id:'bb007',q:"What is the term for the percentage of alcohol lost to evaporation during barrel aging?",o:["The Angel's Share","The Devil's Cut","The Spirit Tax","The Barrel Loss"],a:0},
+    {id:'bb008',q:"Can bourbon legally be made outside of Kentucky?",o:["Yes, anywhere in the United States","No, only in Kentucky","Only in the South","Only in Bourbon County"],a:0},
+    {id:'bb009',q:"What is the minimum proof bourbon must be distilled at according to federal regulations?",o:["160 proof or less","80 proof or less","200 proof or less","120 proof or less"],a:0},
+    {id:'bb010',q:"What grain, besides corn, is commonly used in bourbon's mash bill for spice?",o:["Rye","Barley","Oats","Quinoa"],a:0},
+    {id:'bb011',q:"What is a 'mash bill' in bourbon production?",o:["The grain recipe used to make the whiskey","The barrel storage fee","The proof at bottling","The aging timeline"],a:0},
+    {id:'bb012',q:"What famous Kentucky horse race weekend is closely associated with a signature bourbon cocktail?",o:["Kentucky Derby","Preakness Stakes","Belmont Stakes","Breeders' Cup"],a:0},
+    {id:'bb013',q:"What is the name of the classic bourbon cocktail served at the Kentucky Derby?",o:["Mint Julep","Old Fashioned","Manhattan","Whiskey Sour"],a:0},
+    {id:'bb014',q:"What does 'bottled in bond' mean for a bourbon?",o:["Produced at one distillery in one season, aged at least 4 years, bottled at 100 proof","Aged in a foreign country","Bottled by hand only","Made with organic corn only"],a:0},
+    {id:'bb015',q:"What is the term for bourbon that has been aged for at least two years with no other qualifiers added?",o:["Straight Bourbon","Single Barrel","Small Batch","Cask Strength"],a:0},
+    {id:'bb016',q:"Roughly how many barrels of bourbon are currently aging in Kentucky warehouses?",o:["Over 10 million","About 1 million","About 500,000","About 50 million"],a:0},
+    {id:'bb017',q:"What does 'cask strength' or 'barrel proof' mean on a bourbon label?",o:["Bottled at the proof it came out of the barrel, undiluted","Bottled at exactly 80 proof","Aged in multiple barrels","Bottled cold"],a:0},
+    {id:'bb018',q:"What is the char level called when barrel staves are burned on the inside before aging?",o:["Toast and char level","Proof level","Mash level","Barrel grade"],a:0},
+    {id:'bb019',q:"Which Kentucky county lent its name to the spirit category despite few distilleries operating there today?",o:["Bourbon County","Fayette County","Nelson County","Franklin County"],a:0},
+    {id:'bb020',q:"What is a 'single barrel' bourbon?",o:["Bottled from one individual barrel rather than a blend of many","Aged for only one year","Made from a single grain","Bottled by hand only"],a:0},
+    {id:'bb021',q:"What temperature swings in Kentucky help bourbon age and develop flavor in the barrel?",o:["Hot summers and cold winters causing expansion and contraction","Constant cold temperatures","Constant heat with no variation","Underground cave aging only"],a:0},
+    {id:'bb022',q:"What is the term for bourbon made using a small, hand-selected batch of barrels?",o:["Small Batch","Single Barrel","Bottled in Bond","High Proof"],a:0},
+    {id:'bb023',q:"Which is NOT a common grain used in a bourbon mash bill?",o:["Hops","Corn","Rye","Wheat"],a:0},
+    {id:'bb024',q:"What does a 'wheated bourbon' use in place of rye in its mash bill?",o:["Wheat","Barley","Oats","Quinoa"],a:0},
+    {id:'bb025',q:"Roughly how many bourbon barrels are there in Kentucky compared to the human population?",o:["More barrels than people","Fewer barrels than people","Roughly equal","No comparison exists"],a:0}
+  ],
+  m80: [
+    {id:'m80001',q:"Which Michael Jackson album became the best-selling album of all time, released in 1982?",o:["Thriller","Bad","Off the Wall","Dangerous"],a:0},
+    {id:'m80002',q:"What British band released 'Sweet Dreams (Are Made of This)' in 1983?",o:["Eurythmics","Duran Duran","The Police","Tears for Fears"],a:0},
+    {id:'m80003',q:"Madonna's breakout hit 'Like a Virgin' was released in what year?",o:["1984","1981","1987","1989"],a:0},
+    {id:'m80004',q:"What 1980s rock band was fronted by Axl Rose?",o:["Guns N' Roses","Motley Crue","Def Leppard","Poison"],a:0},
+    {id:'m80005',q:"Which artist released 'Born in the U.S.A.' in 1984?",o:["Bruce Springsteen","Bob Seger","John Mellencamp","Tom Petty"],a:0},
+    {id:'m80006',q:"What was the name of Prince's 1984 album and film?",o:["Purple Rain","Sign o' the Times","1999","Around the World in a Day"],a:0},
+    {id:'m80007',q:"Which British duo released 'Take On Me' in 1985?",o:["a-ha","Tears for Fears","Wham!","Duran Duran"],a:0},
+    {id:'m80008',q:"What group sang 'Don't Stop Believin'' which became a defining rock anthem of the era?",o:["Journey","Foreigner","Styx","Boston"],a:0},
+    {id:'m80009',q:"Which female artist had hits with 'Material Girl' and 'Papa Don't Preach'?",o:["Madonna","Cyndi Lauper","Pat Benatar","Tina Turner"],a:0},
+    {id:'m80010',q:"What 1980s charity single raised money for famine relief in Africa, featuring numerous superstar artists?",o:["We Are the World","Do They Know It's Christmas","Heal the World","Hands Across America"],a:0},
+    {id:'m80011',q:"What was the name of Whitney Houston's chart-topping 1985 debut single?",o:["How Will I Know","I Wanna Dance with Somebody","Greatest Love of All","Saving All My Love for You"],a:0},
+    {id:'m80012',q:"Which rock band released the album 'Hysteria' in 1987?",o:["Def Leppard","Bon Jovi","Whitesnake","Poison"],a:0},
+    {id:'m80013',q:"What New Jersey rock band had a massive hit with 'Livin' on a Prayer'?",o:["Bon Jovi","Journey","Foreigner","Night Ranger"],a:0},
+    {id:'m80014',q:"Which artist released the hit 'Billie Jean' as part of the Thriller album?",o:["Michael Jackson","Prince","Lionel Richie","George Michael"],a:0},
+    {id:'m80015',q:"What duo had a massive 1984 hit with 'Wake Me Up Before You Go-Go'?",o:["Wham!","Tears for Fears","Duran Duran","Spandau Ballet"],a:0},
+    {id:'m80016',q:"What was the name of the supergroup formed by members of Genesis, Yes, and King Crimson in 1986?",o:["Asia","GTR","UK","Bad Company"],a:0},
+    {id:'m80017',q:"Which artist released 'Beat It' featuring a guitar solo from Eddie Van Halen?",o:["Michael Jackson","Prince","Lionel Richie","Rick James"],a:0},
+    {id:'m80018',q:"What 1980 song by Blondie topped the charts and blended new wave with reggae influences?",o:["The Tide Is High","Call Me","Heart of Glass","Rapture"],a:0},
+    {id:'m80019',q:"Which British band released 'Every Breath You Take' in 1983?",o:["The Police","The Cure","Depeche Mode","New Order"],a:0},
+    {id:'m80020',q:"What female rocker had a hit with 'Love Is a Battlefield' in 1983?",o:["Pat Benatar","Joan Jett","Tina Turner","Stevie Nicks"],a:0},
+    {id:'m80021',q:"Which artist's 1986 album 'Graceland' blended pop with South African musical influences?",o:["Paul Simon","Peter Gabriel","Sting","David Byrne"],a:0},
+    {id:'m80022',q:"What hair metal band sang 'Pour Some Sugar on Me'?",o:["Def Leppard","Motley Crue","Ratt","Cinderella"],a:0},
+    {id:'m80023',q:"Which artist released 'When Doves Cry' from the Purple Rain soundtrack?",o:["Prince","Michael Jackson","George Michael","Lionel Richie"],a:0},
+    {id:'m80024',q:"What 1987 song by U2 became one of their signature anthems?",o:["With or Without You","One","Where the Streets Have No Name","Sunday Bloody Sunday"],a:0},
+    {id:'m80025',q:"Which British singer released the hit 'Faith' in 1987?",o:["George Michael","Sting","Phil Collins","Peter Gabriel"],a:0}
+  ]
+};
+
+
+/* ================================================================
+   TRIVIA — STATE & FIREBASE SYNC
+================================================================ */
+var trivState = {}; // { questionId: {attempts: n, correct: bool, locked: bool} }
+var trivCurrentCat = null;
+var trivCurrentQuestion = null;
+var trivScores = {}; // { name: totalCorrectCount }
+
+function listenForTrivia() {
+  if (!db) return;
+  db.ref('trivia').on('value', function(snapshot) {
+    var data = snapshot.val() || {};
+    trivState = data[CURRENT_USER] || {};
+    // Build cumulative scores for leaderboard
+    trivScores = {};
+    Object.keys(data).forEach(function(person) {
+      var correctCount = 0;
+      Object.keys(data[person]).forEach(function(qid) {
+        if (data[person][qid].correct) correctCount++;
+      });
+      trivScores[person] = correctCount;
+    });
+    renderTriviaLeaderboard();
+    if (document.getElementById('screen-trivia').classList.contains('active')) {
+      renderTriviaCategories();
+    }
+  });
+}
+
+function renderTriviaLeaderboard() {
+  var el = document.getElementById('trivia-leaderboard');
+  if (!el) return;
+  var people = CHECKINS.map(function(c) { return c.name; });
+  var rows = people.map(function(name) {
+    return { name: name, score: trivScores[name] || 0 };
+  }).sort(function(a, b) { return b.score - a.score; });
+
+  var html = '';
+  rows.forEach(function(r, i) {
+    var medal = i === 0 ? '\uD83E\uDD47' : i === 1 ? '\uD83E\uDD48' : i === 2 ? '\uD83E\uDD49' : (i+1) + '.';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;border-bottom:1px solid var(--card-border);">';
+    html += '<span style="font-size:14px;color:var(--off-white);">' + medal + ' ' + r.name + '</span>';
+    html += '<span style="font-size:14px;font-weight:700;color:var(--teal-light);">' + r.score + '</span>';
+    html += '</div>';
+  });
+  el.innerHTML = html || '<div style="color:var(--text-muted);font-size:13px;padding:8px 4px;">No scores yet.</div>';
+}
+
+function renderTriviaCategories() {
+  var el = document.getElementById('trivia-categories');
+  if (!el) return;
+  var html = '';
+  TRIVIA_CATS.forEach(function(cat) {
+    var questions = TRIVIA_QUESTIONS[cat.id] || [];
+    var remaining = questions.filter(function(q) {
+      var s = trivState[q.id];
+      return !s || !s.locked;
+    }).length;
+    html += '<div class="card" style="margin-bottom:10px;padding:14px;cursor:pointer;display:flex;align-items:center;gap:12px;" onclick="trivStartCategory(\'' + cat.id + '\')">';
+    html += '<div style="font-size:26px;">' + cat.emoji + '</div>';
+    html += '<div style="flex:1;">';
+    html += '<div style="font-size:15px;font-weight:600;color:var(--off-white);">' + cat.label + '</div>';
+    html += '<div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' + remaining + ' of ' + questions.length + ' remaining</div>';
+    html += '</div>';
+    html += '<div style="font-size:18px;color:var(--teal-light);">\u2192</div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function trivStartCategory(catId) {
+  trivCurrentCat = catId;
+  document.getElementById('trivia-picker').style.display = 'none';
+  document.getElementById('trivia-question-view').style.display = 'block';
+  trivLoadNextQuestion();
+}
+
+function trivExitToCategories() {
+  document.getElementById('trivia-question-view').style.display = 'none';
+  document.getElementById('trivia-picker').style.display = 'block';
+  renderTriviaCategories();
+}
+
+function trivLoadNextQuestion() {
+  var questions = TRIVIA_QUESTIONS[trivCurrentCat] || [];
+  var next = questions.find(function(q) {
+    var s = trivState[q.id];
+    return !s || !s.locked;
+  });
+
+  if (!next) {
+    document.getElementById('trivia-question-text').textContent = 'All done with this category!';
+    document.getElementById('trivia-options').innerHTML = '';
+    document.getElementById('trivia-progress').textContent = '';
+    document.getElementById('trivia-feedback').textContent = '';
+    document.getElementById('trivia-next-btn').style.display = 'none';
+    return;
+  }
+
+  trivCurrentQuestion = next;
+  var answeredCount = questions.filter(function(q) {
+    var s = trivState[q.id];
+    return s && s.locked;
+  }).length;
+
+  document.getElementById('trivia-progress').textContent = (answeredCount + 1) + ' of ' + questions.length;
+  document.getElementById('trivia-question-text').textContent = next.q;
+  document.getElementById('trivia-feedback').textContent = '';
+  document.getElementById('trivia-next-btn').style.display = 'none';
+
+  var html = '';
+  next.o.forEach(function(opt, i) {
+    html += '<button onclick="trivAnswer(' + i + ')" class="trivia-opt-btn" style="display:block;width:100%;text-align:left;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--off-white);font-family:\'DM Sans\',sans-serif;font-size:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;">' + opt + '</button>';
+  });
+  document.getElementById('trivia-options').innerHTML = html;
+}
+
+function trivAnswer(choiceIndex) {
+  var q = trivCurrentQuestion;
+  if (!q) return;
+  var existing = trivState[q.id] || { attempts: 0, correct: false, locked: false };
+  if (existing.locked) return;
+
+  existing.attempts = (existing.attempts || 0) + 1;
+  var isCorrect = (choiceIndex === q.a);
+  var feedback = document.getElementById('trivia-feedback');
+  var buttons = document.querySelectorAll('.trivia-opt-btn');
+
+  if (isCorrect) {
+    existing.correct = true;
+    existing.locked = true;
+    feedback.textContent = '\u2705 Correct!';
+    feedback.style.color = '#34D399';
+    buttons[choiceIndex].style.borderColor = '#34D399';
+    buttons[choiceIndex].style.background = 'rgba(52,211,153,0.15)';
+    document.getElementById('trivia-next-btn').style.display = 'block';
+  } else if (existing.attempts >= 2) {
+    existing.locked = true;
+    feedback.textContent = '\u274C Out of attempts. The answer was: ' + q.o[q.a];
+    feedback.style.color = '#FF6B6B';
+    buttons[choiceIndex].style.borderColor = '#FF6B6B';
+    buttons[choiceIndex].style.background = 'rgba(255,107,107,0.15)';
+    buttons[q.a].style.borderColor = '#34D399';
+    document.getElementById('trivia-next-btn').style.display = 'block';
+  } else {
+    feedback.textContent = '\u274C Not quite. One more try!';
+    feedback.style.color = '#FF6B6B';
+    buttons[choiceIndex].style.borderColor = '#FF6B6B';
+    buttons[choiceIndex].style.background = 'rgba(255,107,107,0.15)';
+    buttons[choiceIndex].disabled = true;
+  }
+
+  trivState[q.id] = existing;
+
+  if (db && CURRENT_USER) {
+    db.ref('trivia/' + CURRENT_USER + '/' + q.id).set(existing);
+  }
+
+  if (existing.locked) {
+    buttons.forEach(function(b) { b.disabled = true; b.style.cursor = 'default'; });
+  }
+}
+
+function trivNextQuestion() {
+  trivLoadNextQuestion();
 }
 
 function deletePhoto(index) {
