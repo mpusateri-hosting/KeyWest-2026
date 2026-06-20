@@ -3672,7 +3672,14 @@ function renderNotes() {
 var TRIVIA_CATS = [
   { id:'fk', label:'Florida Keys', emoji:'🌴' },
   { id:'bb', label:'Kentucky Bourbon Trivia', emoji:'🥃' },
-  { id:'m80', label:"1980's Music", emoji:'🎵' }
+  { id:'m70', label:"1970's Music", emoji:'🎸' },
+  { id:'m80', label:"1980's Music", emoji:'🎵' },
+  { id:'m90', label:"1990's Music", emoji:'📻' },
+  { id:'mv', label:'Movies 1980-2010', emoji:'🎬' },
+  { id:'mtv', label:'MTV Before Reality Shows', emoji:'📺' },
+  { id:'mq', label:'Famous Movie Quotes', emoji:'💬' },
+  { id:'kyc', label:'Is It a KY County?', emoji:'🐎' },
+  { id:'p93', label:'What Did It Cost in 1993?', emoji:'💵' }
 ];
 
 var TRIVIA_QUESTIONS = {
@@ -3756,6 +3763,195 @@ var TRIVIA_QUESTIONS = {
     {id:'m80023',q:"Which artist released 'When Doves Cry' from the Purple Rain soundtrack?",o:["Prince","Michael Jackson","George Michael","Lionel Richie"],a:0},
     {id:'m80024',q:"What 1987 song by U2 became one of their signature anthems?",o:["With or Without You","One","Where the Streets Have No Name","Sunday Bloody Sunday"],a:0},
     {id:'m80025',q:"Which British singer released the hit 'Faith' in 1987?",o:["George Michael","Sting","Phil Collins","Peter Gabriel"],a:0}
+  ],
+  m70: [
+    {id:'m70001',q:"What disco group sang 'Stayin' Alive' from the Saturday Night Fever soundtrack?",o:["Bee Gees","ABBA","KC and the Sunshine Band","Earth, Wind & Fire"],a:0},
+    {id:'m70002',q:"Which British rock band released 'Bohemian Rhapsody' in 1975?",o:["Queen","Led Zeppelin","The Who","Pink Floyd"],a:0},
+    {id:'m70003',q:"What was the name of the iconic 1971 album by Carole King?",o:["Tapestry","Music","Fantasy","Writer"],a:0},
+    {id:'m70004',q:"Which artist released 'Imagine' in 1971?",o:["John Lennon","Paul McCartney","George Harrison","Ringo Starr"],a:0},
+    {id:'m70005',q:"What disco-era group was known for hits like 'I Will Survive'?",o:["Gloria Gaynor","Donna Summer","Diana Ross","The Pointer Sisters"],a:0},
+    {id:'m70006',q:"Which rock band released 'Stairway to Heaven' in 1971?",o:["Led Zeppelin","Black Sabbath","Deep Purple","The Rolling Stones"],a:0},
+    {id:'m70007',q:"What was Elton John's breakthrough 1972 hit about a fictional astronaut?",o:["Rocket Man","Bennie and the Jets","Daniel","Crocodile Rock"],a:0},
+    {id:'m70008',q:"Which female singer released 'I Am Woman' as a feminist anthem in 1972?",o:["Helen Reddy","Carly Simon","Joni Mitchell","Carole King"],a:0},
+    {id:'m70009',q:"What funk band was known for the hit 'Le Freak' in 1978?",o:["Chic","Earth, Wind & Fire","Kool & the Gang","The Commodores"],a:0},
+    {id:'m70010',q:"Which artist had a 1971 hit with 'What's Going On'?",o:["Marvin Gaye","Stevie Wonder","Al Green","Curtis Mayfield"],a:0},
+    {id:'m70011',q:"What was the name of Fleetwood Mac's massively successful 1977 album?",o:["Rumours","Tusk","Mirage","Tango in the Night"],a:0},
+    {id:'m70012',q:"Which rock band released 'Hotel California' in 1976?",o:["Eagles","Fleetwood Mac","Boston","Steely Dan"],a:0},
+    {id:'m70013',q:"What disco artist was known as the 'Queen of Disco' with hits like 'Hot Stuff'?",o:["Donna Summer","Gloria Gaynor","Diana Ross","Cher"],a:0},
+    {id:'m70014',q:"Which band's debut album in 1976 included 'More Than a Feeling'?",o:["Boston","Foreigner","Kansas","Journey"],a:0},
+    {id:'m70015',q:"What artist had a 1973 hit with 'You're So Vain'?",o:["Carly Simon","Carole King","Joni Mitchell","Linda Ronstadt"],a:0},
+    {id:'m70016',q:"Which group released the disco hit 'YMCA' in 1978?",o:["Village People","Bee Gees","KC and the Sunshine Band","Chic"],a:0},
+    {id:'m70017',q:"What was Stevie Wonder's critically acclaimed 1976 double album?",o:["Songs in the Key of Life","Talking Book","Innervisions","Fulfillingness' First Finale"],a:0},
+    {id:'m70018',q:"Which rock band was fronted by Freddie Mercury throughout the 1970s?",o:["Queen","The Who","Yes","Genesis"],a:0},
+    {id:'m70019',q:"What punk rock band released 'Anarchy in the U.K.' in 1976?",o:["Sex Pistols","The Clash","Ramones","The Damned"],a:0},
+    {id:'m70020',q:"Which artist had a hit with 'Dancing Queen' as part of a Swedish pop group?",o:["ABBA","Boney M","Eurovision","Bjorn and Benny"],a:0},
+    {id:'m70021',q:"What was the name of the soundtrack album that became one of the best-selling of all time in 1977?",o:["Saturday Night Fever","Grease","Xanadu","Fame"],a:0},
+    {id:'m70022',q:"Which singer-songwriter released 'American Pie' in 1971?",o:["Don McLean","James Taylor","Cat Stevens","Harry Chapin"],a:0},
+    {id:'m70023',q:"What rock band released the album 'Dark Side of the Moon' in 1973?",o:["Pink Floyd","Led Zeppelin","Yes","King Crimson"],a:0},
+    {id:'m70024',q:"Which Motown group had a string of hits including 'I'll Be There' in the early 1970s?",o:["The Jackson 5","The Temptations","The Four Tops","The Spinners"],a:0},
+    {id:'m70025',q:"What was the name of David Bowie's glam rock alter ego introduced in 1972?",o:["Ziggy Stardust","Aladdin Sane","The Thin White Duke","Major Tom"],a:0}
+  ],
+  m90: [
+    {id:'m90001',q:"What grunge band released 'Smells Like Teen Spirit' in 1991?",o:["Nirvana","Pearl Jam","Soundgarden","Alice in Chains"],a:0},
+    {id:'m90002',q:"Which artist's 1992 album 'The Bodyguard' soundtrack featured 'I Will Always Love You'?",o:["Whitney Houston","Mariah Carey","Celine Dion","Toni Braxton"],a:0},
+    {id:'m90003',q:"What boy band had hits with 'I Want It That Way' in the late 1990s?",o:["Backstreet Boys","NSYNC","98 Degrees","Boyz II Men"],a:0},
+    {id:'m90004',q:"Which rapper released 'Gangsta's Paradise' in 1995?",o:["Coolio","Snoop Dogg","Dr. Dre","Tupac Shakur"],a:0},
+    {id:'m90005',q:"What female artist released 'No Scrubs' as part of a popular R&B group?",o:["TLC","Destiny's Child","En Vogue","SWV"],a:0},
+    {id:'m90006',q:"Which rock band released the album 'OK Computer' in 1997?",o:["Radiohead","Oasis","Blur","Pulp"],a:0},
+    {id:'m90007',q:"What artist had a massive hit with 'Wonderwall' in 1995?",o:["Oasis","Blur","Radiohead","The Verve"],a:0},
+    {id:'m90008',q:"Which female pop star released 'Baby One More Time' in 1998?",o:["Britney Spears","Christina Aguilera","Jessica Simpson","Mandy Moore"],a:0},
+    {id:'m90009',q:"What grunge band was fronted by Eddie Vedder?",o:["Pearl Jam","Nirvana","Soundgarden","Stone Temple Pilots"],a:0},
+    {id:'m90010',q:"Which rapper's debut album was 'Doggystyle' in 1993?",o:["Snoop Dogg","Dr. Dre","Tupac Shakur","The Notorious B.I.G."],a:0},
+    {id:'m90011',q:"What artist released the song 'Vogue' in 1990?",o:["Madonna","Janet Jackson","Paula Abdul","Whitney Houston"],a:0},
+    {id:'m90012',q:"Which band had a hit with 'Wannabe' in 1996?",o:["Spice Girls","All Saints","B*Witched","TLC"],a:0},
+    {id:'m90013',q:"What is the name of Alanis Morissette's breakthrough 1995 album?",o:["Jagged Little Pill","Supposed Former Infatuation Junkie","Under Rug Swept","So-Called Chaos"],a:0},
+    {id:'m90014',q:"Which artist's debut single was 'Genie in a Bottle' in 1999?",o:["Christina Aguilera","Britney Spears","Jessica Simpson","Mandy Moore"],a:0},
+    {id:'m90015',q:"What grunge band released the album 'Ten' in 1991?",o:["Pearl Jam","Nirvana","Soundgarden","Stone Temple Pilots"],a:0},
+    {id:'m90016',q:"Which hip-hop artist released 'Juicy' in 1994?",o:["The Notorious B.I.G.","Tupac Shakur","Nas","Jay-Z"],a:0},
+    {id:'m90017',q:"What R&B group had hits including 'End of the Road' in the early 1990s?",o:["Boyz II Men","TLC","Jodeci","All-4-One"],a:0},
+    {id:'m90018',q:"Which artist's 1997 hit 'MMMBop' made them teen pop stars?",o:["Hanson","NSYNC","Backstreet Boys","98 Degrees"],a:0},
+    {id:'m90019',q:"What was the name of the Spice Girls' breakthrough debut album?",o:["Spice","Spiceworld","Forever","Greatest Hits"],a:0},
+    {id:'m90020',q:"Which artist released the album 'Jagged Little Pill' featuring 'You Oughta Know'?",o:["Alanis Morissette","Sheryl Crow","Sarah McLachlan","Fiona Apple"],a:0},
+    {id:'m90021',q:"What grunge-era band released 'Black Hole Sun' in 1994?",o:["Soundgarden","Nirvana","Pearl Jam","Alice in Chains"],a:0},
+    {id:'m90022',q:"Which artist's 1999 hit was 'Smooth' featuring Rob Thomas?",o:["Santana","Carlos Vives","Ricky Martin","Marc Anthony"],a:0},
+    {id:'m90023',q:"What boy band released 'Bye Bye Bye' in 2000?",o:["NSYNC","Backstreet Boys","98 Degrees","O-Town"],a:0},
+    {id:'m90024',q:"Which artist had a 1998 hit with the song 'Believe' featuring heavy use of Auto-Tune?",o:["Cher","Madonna","Janet Jackson","Tina Turner"],a:0},
+    {id:'m90025',q:"What hip-hop group released 'It Was a Good Day' as a solo hit for one of its members?",o:["Ice Cube (formerly N.W.A)","Cypress Hill","Public Enemy","A Tribe Called Quest"],a:0}
+  ],
+  mv: [
+    {id:'mv001',q:"Which 1994 film starring Tom Hanks won Best Picture and follows a man through major historical events?",o:["Forrest Gump","The Shawshank Redemption","Pulp Fiction","Apollo 13"],a:0},
+    {id:'mv002',q:"What 1999 film twist reveals the main character has been dead the entire movie?",o:["The Sixth Sense","Fight Club","The Matrix","American Beauty"],a:0},
+    {id:'mv003',q:"Which 1997 film became the highest grossing movie of all time at the point of release, directed by James Cameron?",o:["Titanic","Jurassic Park","Independence Day","The Lost World"],a:0},
+    {id:'mv004',q:"What 1980 horror film was directed by Stanley Kubrick and starred Jack Nicholson?",o:["The Shining","Halloween","The Exorcist","Poltergeist"],a:0},
+    {id:'mv005',q:"Which 1994 film features John Travolta and Samuel L. Jackson as hitmen in a Quentin Tarantino film?",o:["Pulp Fiction","Reservoir Dogs","Jackie Brown","Kill Bill"],a:0},
+    {id:'mv006',q:"What 2000 film starring Russell Crowe is set in ancient Rome and won Best Picture?",o:["Gladiator","Troy","300","Alexander"],a:0},
+    {id:'mv007',q:"Which trilogy of films based on J.R.R. Tolkien's novels was released from 2001 to 2003?",o:["The Lord of the Rings","The Hobbit","Chronicles of Narnia","Harry Potter"],a:0},
+    {id:'mv008',q:"What 1985 film features Michael J. Fox traveling through time in a DeLorean?",o:["Back to the Future","The Terminator","War Games","Weird Science"],a:0},
+    {id:'mv009',q:"Which 1993 Steven Spielberg film features genetically recreated dinosaurs?",o:["Jurassic Park","The Lost World","Twister","Independence Day"],a:0},
+    {id:'mv010',q:"What 2008 superhero film featured Heath Ledger's award-winning performance as the Joker?",o:["The Dark Knight","Iron Man","Batman Begins","Watchmen"],a:0},
+    {id:'mv011',q:"Which 1988 film featuring a precocious child genius involves a piano duel at FAO Schwarz?",o:["Big","Vice Versa","18 Again!","Like Father Like Son"],a:0},
+    {id:'mv012',q:"What 1991 film features Anthony Hopkins as Hannibal Lecter?",o:["The Silence of the Lambs","Se7en","Manhunter","Red Dragon"],a:0},
+    {id:'mv013',q:"Which 2003 film won Best Picture as the final installment of a fantasy trilogy?",o:["The Lord of the Rings: The Return of the King","Pirates of the Caribbean","The Matrix Revolutions","X2"],a:0},
+    {id:'mv014',q:"What 1996 disaster film features tornado chasers in the American Midwest?",o:["Twister","Volcano","Dante's Peak","Daylight"],a:0},
+    {id:'mv015',q:"Which 1986 film stars Tom Cruise as a Navy fighter pilot?",o:["Top Gun","An Officer and a Gentleman","The Right Stuff","Iron Eagle"],a:0},
+    {id:'mv016',q:"What 2009 film became the highest grossing film of all time, directed by James Cameron?",o:["Avatar","Titanic","The Dark Knight","Transformers"],a:0},
+    {id:'mv017',q:"Which 1990 film stars Macaulay Culkin as a boy left behind by his family at Christmas?",o:["Home Alone","The Santa Clause","Jingle All the Way","A Christmas Story"],a:0},
+    {id:'mv018',q:"What 1994 film follows the friendship of two inmates at Shawshank prison?",o:["The Shawshank Redemption","Forrest Gump","Pulp Fiction","Dead Man Walking"],a:0},
+    {id:'mv019',q:"Which 1997 film stars Will Smith and Tommy Lee Jones as agents who police alien activity on Earth?",o:["Men in Black","Independence Day","Starship Troopers","Contact"],a:0},
+    {id:'mv020',q:"What 1982 film features an alien stranded on Earth befriending a young boy?",o:["E.T. the Extra-Terrestrial","Close Encounters of the Third Kind","Cocoon","Flight of the Navigator"],a:0},
+    {id:'mv021',q:"Which 2004 animated film features ogres and is based on a fairy tale parody?",o:["Shrek 2","Madagascar","The Incredibles","Finding Nemo"],a:0},
+    {id:'mv022',q:"What 1999 film features a computer programmer who discovers reality is a simulation?",o:["The Matrix","eXistenZ","Dark City","The Thirteenth Floor"],a:0},
+    {id:'mv023',q:"Which 1989 film stars Michael Keaton in the title role of a DC superhero?",o:["Batman","Superman","The Crow","Darkman"],a:0},
+    {id:'mv024',q:"What 2006 film follows a corrupt cop and undercover agents in Boston, directed by Martin Scorsese?",o:["The Departed","Gangs of New York","Casino","Goodfellas"],a:0},
+    {id:'mv025',q:"Which 1984 film stars Eddie Murphy as a Detroit cop in Beverly Hills?",o:["Beverly Hills Cop","48 Hrs.","Trading Places","Coming to America"],a:0}
+  ],
+  mtv: [
+    {id:'mtv001',q:"What was the very first music video ever played on MTV in 1981?",o:["Video Killed the Radio Star","Money for Nothing","Thriller","Take On Me"],a:0},
+    {id:'mtv002',q:"What MTV show launched in 1992 and followed a group of strangers living together?",o:["The Real World","Road Rules","Jersey Shore","Big Brother"],a:0},
+    {id:'mtv003',q:"What was the name of MTV's animated show featuring two troublemaking teens, Beavis and the other character?",o:["Beavis and Butt-Head","Daria","The Maxx","Aeon Flux"],a:0},
+    {id:'mtv004',q:"Which MTV award show first aired in 1984 to honor music videos?",o:["MTV Video Music Awards","MTV Movie Awards","Grammy Awards","American Music Awards"],a:0},
+    {id:'mtv005',q:"What MTV show featured Carson Daly counting down popular music videos in the late 1990s?",o:["Total Request Live (TRL)","120 Minutes","Yo! MTV Raps","Headbangers Ball"],a:0},
+    {id:'mtv006',q:"Which spinoff series followed Beavis and Butt-Head's depressed classmate?",o:["Daria","Clone High","The Maxx","Celebrity Deathmatch"],a:0},
+    {id:'mtv007',q:"What MTV game show featured contestants completing wild physical challenges?",o:["Singled Out","Remote Control","Rock the House","Idiot Box"],a:0},
+    {id:'mtv008',q:"Which MTV show focused on hip-hop and rap music videos starting in 1988?",o:["Yo! MTV Raps","Headbangers Ball","120 Minutes","Total Request Live"],a:0},
+    {id:'mtv009',q:"What MTV claymation show featured wrestling-style battles between celebrity figures?",o:["Celebrity Deathmatch","MTV Sports","Cribs","Jackass"],a:0},
+    {id:'mtv010',q:"Which dating game show on MTV had hosts that buzzed contestants out for bad answers?",o:["Singled Out","Room Raiders","Next","Date My Mom"],a:0},
+    {id:'mtv011',q:"What MTV show showcased celebrity homes starting in the early 2000s?",o:["Cribs","Diary","The Osbournes","Pimp My Ride"],a:0},
+    {id:'mtv012',q:"Which late-night MTV show was dedicated specifically to heavy metal music videos?",o:["Headbangers Ball","120 Minutes","Yo! MTV Raps","Subterranean"],a:0},
+    {id:'mtv013',q:"What MTV reality show followed the daily life of a famous rock musician's family starting in 2002?",o:["The Osbournes","Newlyweds","Run's House","Meet the Barkers"],a:0},
+    {id:'mtv014',q:"Which MTV show featured outrageous and dangerous stunts performed by a group of friends?",o:["Jackass","Wildboyz","Viva La Bam","Punk'd"],a:0},
+    {id:'mtv015',q:"What was the name of MTV's alternative and indie music video show that aired late at night starting in the 1980s?",o:["120 Minutes","Headbangers Ball","Yo! MTV Raps","Alternative Nation"],a:0},
+    {id:'mtv016',q:"Which MTV show transformed beat-up cars into custom rides?",o:["Pimp My Ride","Cribs","Wildboyz","Punk'd"],a:0},
+    {id:'mtv017',q:"What MTV prank show was hosted by Ashton Kutcher starting in 2003?",o:["Punk'd","Jackass","Viva La Bam","Wildboyz"],a:0},
+    {id:'mtv018',q:"Which animated MTV duo were known for the catchphrase 'This sucks'?",o:["Beavis and Butt-Head","Ren and Stimpy","Aeon Flux","The Maxx"],a:0},
+    {id:'mtv019',q:"What MTV competition show challenged roommates to perform tasks for cash and prizes, starting in the late 1990s?",o:["The Real World/Road Rules Challenge","Singled Out","Road Rules","Fear"],a:0},
+    {id:'mtv020',q:"Which reality show followed a young Bam Margera and his friends and family doing pranks and stunts?",o:["Viva La Bam","Jackass","Wildboyz","CKY"],a:0},
+    {id:'mtv021',q:"What MTV travel show featured hosts interacting with dangerous wildlife around the world?",o:["Wildboyz","Jackass","Cribs","Viva La Bam"],a:0},
+    {id:'mtv022',q:"Which MTV show documented the personal lives of musicians through home video diary footage?",o:["Diary","Cribs","Unplugged","Behind the Music"],a:0},
+    {id:'mtv023',q:"What MTV acoustic performance series invited artists to perform stripped-down versions of their songs?",o:["MTV Unplugged","120 Minutes","Total Request Live","Storytellers"],a:0},
+    {id:'mtv024',q:"Which MTV show followed the early career of a famous rap mogul's record label in the 2000s?",o:["Run's House","The Cisco Kid","Making the Band","From G's to Gents"],a:0},
+    {id:'mtv025',q:"What was the name of MTV's show that searched for the next pop group through televised auditions starting in 2000?",o:["Making the Band","American Idol","Star Search","Pop Stars"],a:0}
+  ],
+  mq: [
+    {id:'mq001',q:"\"May the Force be with you\" comes from which film franchise?",o:["Star Wars","Star Trek","Guardians of the Galaxy","Dune"],a:0},
+    {id:'mq002',q:"\"I'll be back\" is a famous line from which Arnold Schwarzenegger film?",o:["The Terminator","Predator","Commando","True Lies"],a:0},
+    {id:'mq003',q:"\"You can't handle the truth!\" is shouted in which courtroom drama?",o:["A Few Good Men","The Verdict","12 Angry Men","Philadelphia"],a:0},
+    {id:'mq004',q:"\"Here's looking at you, kid\" is a famous line from which classic film?",o:["Casablanca","Gone with the Wind","Citizen Kane","An American in Paris"],a:0},
+    {id:'mq005',q:"\"Life is like a box of chocolates\" is spoken by the title character of which film?",o:["Forrest Gump","Rain Man","Big","The Curious Case of Benjamin Button"],a:0},
+    {id:'mq006',q:"\"I see dead people\" is the chilling line from which 1999 thriller?",o:["The Sixth Sense","The Others","What Lies Beneath","Stir of Echoes"],a:0},
+    {id:'mq007',q:"\"You talkin' to me?\" is a famous line delivered by Robert De Niro in which film?",o:["Taxi Driver","Raging Bull","Goodfellas","Casino"],a:0},
+    {id:'mq008',q:"\"Houston, we have a problem\" comes from which space drama based on a true story?",o:["Apollo 13","Gravity","The Martian","First Man"],a:0},
+    {id:'mq009',q:"\"My precious\" is repeated obsessively by which character in The Lord of the Rings?",o:["Gollum","Gimli","Bilbo","Sauron"],a:0},
+    {id:'mq010',q:"\"Why so serious?\" is a chilling line spoken by which iconic villain?",o:["The Joker (The Dark Knight)","Hannibal Lecter","Freddy Krueger","The Riddler"],a:0},
+    {id:'mq011',q:"\"There's no place like home\" is the closing sentiment of which classic film?",o:["The Wizard of Oz","E.T. the Extra-Terrestrial","Home Alone","It's a Wonderful Life"],a:0},
+    {id:'mq012',q:"\"Show me the money!\" is a memorable line from which sports drama starring Tom Cruise?",o:["Jerry Maguire","Any Given Sunday","The Blind Side","Moneyball"],a:0},
+    {id:'mq013',q:"\"I'm king of the world!\" was shouted by Leonardo DiCaprio's character in which 1997 blockbuster?",o:["Titanic","The Aviator","Catch Me If You Can","Inception"],a:0},
+    {id:'mq014',q:"\"Say hello to my little friend!\" is shouted in which gangster film starring Al Pacino?",o:["Scarface","The Godfather","Carlito's Way","Heat"],a:0},
+    {id:'mq015',q:"\"You had me at hello\" is a romantic line from which sports drama?",o:["Jerry Maguire","Notting Hill","Sleepless in Seattle","Jerry McGuire"],a:0},
+    {id:'mq016',q:"\"To infinity and beyond!\" is the catchphrase of which animated character?",o:["Buzz Lightyear (Toy Story)","Woody (Toy Story)","Sully (Monsters Inc)","Nemo"],a:0},
+    {id:'mq017',q:"\"I am your father\" is revealed in which iconic Star Wars scene?",o:["The Empire Strikes Back","A New Hope","Return of the Jedi","Revenge of the Sith"],a:0},
+    {id:'mq018',q:"\"Just keep swimming\" is the motto of which animated character?",o:["Dory (Finding Nemo)","Nemo","Marlin","Bruce the shark"],a:0},
+    {id:'mq019',q:"\"Hasta la vista, baby\" became a catchphrase from which Schwarzenegger sequel?",o:["Terminator 2: Judgment Day","The Terminator","Terminator 3","True Lies"],a:0},
+    {id:'mq020',q:"\"Frankly, my dear, I don't give a damn\" is a famous line from which classic epic?",o:["Gone with the Wind","Casablanca","Citizen Kane","Doctor Zhivago"],a:0},
+    {id:'mq021',q:"\"You're gonna need a bigger boat\" is spoken in which Spielberg thriller?",o:["Jaws","Jurassic Park","The Abyss","Deep Blue Sea"],a:0},
+    {id:'mq022',q:"\"Nobody puts Baby in a corner\" is a famous line from which 1987 romance?",o:["Dirty Dancing","Footloose","Flashdance","Footloose"],a:0},
+    {id:'mq023',q:"\"E.T. phone home\" is spoken by the title alien in which Spielberg classic?",o:["E.T. the Extra-Terrestrial","Close Encounters of the Third Kind","Cocoon","Explorers"],a:0},
+    {id:'mq024',q:"\"I feel the need... the need for speed!\" is from which 1986 aviation film?",o:["Top Gun","Iron Eagle","The Right Stuff","Always"],a:0},
+    {id:'mq025',q:"\"Snap out of it!\" is shouted while slapping in which 1987 romantic comedy?",o:["Moonstruck","When Harry Met Sally","Sleepless in Seattle","Big"],a:0}
+  ],
+  kyc: [
+    {id:'kyc001',q:"Which of these is an actual Kentucky county?",o:["Fayette","Sevier","Lauderdale","Cherokee"],a:0},
+    {id:'kyc002',q:"Which of these is an actual Kentucky county?",o:["Boone","Maricopa","Travis","Cobb"],a:0},
+    {id:'kyc003',q:"Which of these is an actual Kentucky county?",o:["Pike","Pinellas","Mecklenburg","Sangamon"],a:0},
+    {id:'kyc004',q:"Which of these is an actual Kentucky county?",o:["Jessamine","Caddo","Tuscaloosa","Lafourche"],a:0},
+    {id:'kyc005',q:"Which of these is an actual Kentucky county?",o:["Bourbon","Sonoma","Napa","Yamhill"],a:0},
+    {id:'kyc006',q:"Which of these is an actual Kentucky county?",o:["Daviess","Calcasieu","Tangipahoa","Catawba"],a:0},
+    {id:'kyc007',q:"Which of these is an actual Kentucky county?",o:["Letcher","Beaufort","Currituck","Onslow"],a:0},
+    {id:'kyc008',q:"Which of these is an actual Kentucky county?",o:["Christian","Comanche","Apache","Navajo"],a:0},
+    {id:'kyc009',q:"Which of these is an actual Kentucky county?",o:["Hardin","Hidalgo","Maverick","Zapata"],a:0},
+    {id:'kyc010',q:"Which of these is an actual Kentucky county?",o:["Boyd","Lowndes","Coffee","Houston"],a:0},
+    {id:'kyc011',q:"Which of these is an actual Kentucky county?",o:["Mercer","Sumter","Marion (SC)","Darlington"],a:0},
+    {id:'kyc012',q:"Which of these is an actual Kentucky county?",o:["Harlan","Pulaski (AR)","Garland","Saline (AR)"],a:0},
+    {id:'kyc013',q:"Which of these is an actual Kentucky county?",o:["Owsley","Tishomingo","Itawamba","Lafayette (MS)"],a:0},
+    {id:'kyc014',q:"Which of these is an actual Kentucky county?",o:["Trimble","Carbon","Sublette","Teton"],a:0},
+    {id:'kyc015',q:"Which of these is an actual Kentucky county?",o:["Whitley","Cocke","Sevier (TN)","Greene (TN)"],a:0},
+    {id:'kyc016',q:"Which of these is an actual Kentucky county?",o:["Estill","Pickaway","Fairfield (OH)","Licking"],a:0},
+    {id:'kyc017',q:"Which of these is an actual Kentucky county?",o:["Magoffin","Buchanan","Tazewell","Dickenson"],a:0},
+    {id:'kyc018',q:"Which of these is an actual Kentucky county?",o:["Spencer","Shelby (TN)","Tipton","Fayette (TN)"],a:0},
+    {id:'kyc019',q:"Which of these is an actual Kentucky county?",o:["Woodford","Loudoun","Fauquier","Rappahannock"],a:0},
+    {id:'kyc020',q:"Which of these is an actual Kentucky county?",o:["Breathitt","Wise","Russell (VA)","Scott (VA)"],a:0},
+    {id:'kyc021',q:"Which of these is an actual Kentucky county?",o:["Lyon","Pope","Massac","Saline (IL)"],a:0},
+    {id:'kyc022',q:"Which of these is an actual Kentucky county?",o:["Metcalfe","Coffee (TN)","Franklin (TN)","Bedford (TN)"],a:0},
+    {id:'kyc023',q:"Which of these is an actual Kentucky county?",o:["Rockcastle","Jackson (NC)","Macon (NC)","Swain"],a:0},
+    {id:'kyc024',q:"Which of these is an actual Kentucky county?",o:["Caldwell","Dyer","Lauderdale (TN)","Crockett"],a:0},
+    {id:'kyc025',q:"Which of these is an actual Kentucky county?",o:["Nelson","Spencer (IN)","Harrison (IN)","Floyd (IN)"],a:0}
+  ],
+  p93: [
+    {id:'p93001',q:"What did a gallon of regular gasoline cost on average in 1993?",o:["$1.16","$0.89","$1.45","$2.05"],a:0},
+    {id:'p93002',q:"What did a movie ticket cost on average in 1993?",o:["$4.14","$2.50","$6.50","$8.00"],a:0},
+    {id:'p93003',q:"What did a new car cost on average in 1993?",o:["About $16,000","About $9,000","About $22,000","About $28,000"],a:0},
+    {id:'p93004',q:"What did a first-class postage stamp cost in 1993?",o:["29 cents","19 cents","32 cents","42 cents"],a:0},
+    {id:'p93005',q:"What was the average ticket price for Super Bowl XXVII in January 1993?",o:["$175","$75","$350","$500"],a:0},
+    {id:'p93006',q:"What did a gallon of milk cost on average in 1993?",o:["$2.09","$1.25","$2.89","$3.49"],a:0},
+    {id:'p93007',q:"What did a new Honda Accord sedan cost in 1993?",o:["$17,630","$12,000","$22,500","$9,800"],a:0},
+    {id:'p93008',q:"What did a window-unit air conditioner typically cost in 1993?",o:["About $200","About $80","About $350","About $500"],a:0},
+    {id:'p93009',q:"What did a 27-inch television cost in 1993?",o:["$500 to $700","$150 to $250","$900 to $1,200","$50 to $100"],a:0},
+    {id:'p93010',q:"What was the federal gas tax per gallon in 1993, a rate that has remained unchanged for decades?",o:["18.4 cents","10 cents","25 cents","5 cents"],a:0},
+    {id:'p93011',q:"Roughly what did a loaf of bread cost in the early 1990s?",o:["About 75 cents","About 25 cents","About $1.50","About $3.00"],a:0},
+    {id:'p93012',q:"What was a dozen eggs roughly priced at in the early 1990s?",o:["Around $1.00","Around 40 cents","Around $2.50","Around $4.00"],a:0},
+    {id:'p93013',q:"What would a gallon of gas in 1993 cost today if adjusted strictly for inflation?",o:["Around $2.50-$3.00","Around $1.50","Around $5.00","Around $0.80"],a:0},
+    {id:'p93014',q:"What was a typical fast food value meal priced around in the early-to-mid 1990s?",o:["Around $2.50-$3.00","Around $1.00","Around $5.50","Around $7.00"],a:0},
+    {id:'p93015',q:"Roughly what was the average monthly rent in the United States in the early 1990s?",o:["Around $450-$550","Around $250","Around $900","Around $1,200"],a:0},
+    {id:'p93016',q:"What was the median price of a new home in the United States around 1993?",o:["Around $115,000","Around $60,000","Around $180,000","Around $250,000"],a:0},
+    {id:'p93017',q:"What did a CharBroil gas grill cost around 1993?",o:["About $135","About $60","About $250","About $400"],a:0},
+    {id:'p93018',q:"What was the average price for a gallon of gas just one year before, in 1992?",o:["Very close to $1.13-$1.15","Around $0.75","Around $1.80","Around $2.20"],a:0},
+    {id:'p93019',q:"What would a $16,000 new car from 1993 cost roughly today, adjusted for inflation?",o:["Around $30,000-$35,000","Around $20,000","Around $50,000+","Around $18,000"],a:0},
+    {id:'p93020',q:"Which decade saw gas prices in the US first cross the one dollar per gallon mark?",o:["The 1980s","The 1970s","The 1990s","The 1960s"],a:0},
+    {id:'p93021',q:"What would a movie ticket from 1993 cost roughly today adjusted for inflation?",o:["Around $8-$9","Around $4","Around $15","Around $20"],a:0},
+    {id:'p93022',q:"In 1993, what was roughly the cost difference between a new car then versus a new car bought ten years earlier in 1983?",o:["New cars were notably cheaper in 1983","New cars were more expensive in 1983","Prices were identical","Cars actually got cheaper from 1983 to 1993"],a:0},
+    {id:'p93023',q:"Approximately what percentage higher is the average new car price today compared to 1993?",o:["Roughly 2 to 3 times higher","About 10% higher","About the same","Roughly 10 times higher"],a:0},
+    {id:'p93024',q:"What was notable about gas prices throughout most of the 1990s decade?",o:["They stayed relatively low, averaging under $1.20 most years","They were higher than today","They fluctuated wildly month to month","They were government-fixed at a flat rate"],a:0},
+    {id:'p93025',q:"Which of these items saw the smallest price increase from 1993 to today, percentage-wise?",o:["Postage stamps","New cars","New houses","Movie tickets"],a:0}
   ]
 };
 
@@ -3835,6 +4031,33 @@ function trivStartCategory(catId) {
   document.getElementById('trivia-picker').style.display = 'none';
   document.getElementById('trivia-question-view').style.display = 'block';
   trivLoadNextQuestion();
+}
+
+function devPopulateTriviaUserDropdown() {
+  var sel = document.getElementById('dev-trivia-user');
+  if (!sel) return;
+  var html = '';
+  CHECKINS.forEach(function(c) {
+    html += '<option value="' + c.name + '">' + c.name + '</option>';
+  });
+  sel.innerHTML = html;
+}
+
+function devClearTriviaScore() {
+  var sel = document.getElementById('dev-trivia-user');
+  if (!sel || !sel.value) return;
+  var name = sel.value;
+  if (!confirm('Clear ALL trivia answers and score for ' + name + '? This cannot be undone.')) return;
+
+  if (db) {
+    db.ref('trivia/' + name).remove();
+  }
+  delete trivScores[name];
+  if (CURRENT_USER === name) {
+    trivState = {};
+  }
+  renderTriviaLeaderboard();
+  alert(name + "'s trivia score has been cleared.");
 }
 
 function trivExitToCategories() {
@@ -4070,6 +4293,7 @@ function handleDevTap() {
   if (pin === '5411') {
     document.getElementById('dev-panel').style.display = 'block';
     document.getElementById('dev-panel').scrollIntoView({ behavior: 'smooth' });
+    devPopulateTriviaUserDropdown();
   } else if (pin !== null) {
     alert('Incorrect PIN.');
   }
@@ -4129,6 +4353,14 @@ document.addEventListener('DOMContentLoaded', function(){
           <button onclick="simulateDate('2026-07-15')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px 4px;cursor:pointer;">Jul 15<br><span style="color:var(--text-muted);font-size:10px;">Post-trip</span></button>
         </div>
         <button onclick="simulateDate(null)" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:11px;padding:8px;cursor:pointer;">Reset to Today</button>
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Trivia Score Management</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Clear an individual user's trivia score and answer history:</div>
+        <select id="dev-trivia-user" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px;margin-bottom:8px;">
+        </select>
+        <button onclick="devClearTriviaScore()" style="width:100%;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:8px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;">Clear This User's Trivia Score</button>
       </div>
 
       <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">App Status</div>
