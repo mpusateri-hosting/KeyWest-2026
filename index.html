@@ -2122,6 +2122,9 @@
 
   <!-- Incident wizard overlay -->
   <div id="incident-wizard-overlay" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:250;flex-direction:column;padding:20px;">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:14px;">
+      <button onclick="incidentCancelWizard()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;cursor:pointer;">&#x2715; Cancel</button>
+    </div>
     <div id="incident-wizard-progress" style="display:flex;gap:6px;margin-bottom:24px;"></div>
     <div id="incident-wizard-body" style="flex:1;"></div>
   </div>
@@ -2789,6 +2792,12 @@ function renderDNP(animate) {
 }
 
 function showScreen(name) {
+  // Defensive cleanup: always close any open incident overlay and restore the nav
+  var wizardOverlay = document.getElementById('incident-wizard-overlay');
+  if (wizardOverlay) wizardOverlay.style.display = 'none';
+  var nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'flex';
+
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
   document.querySelectorAll('.nav-btn').forEach(function(b){ b.classList.remove('active'); });
   var s = document.getElementById('screen-' + name);
@@ -4343,7 +4352,16 @@ function startIncidentWizard() {
   incidentStepIndex = 0;
   incidentBuildSteps();
   document.getElementById('incident-wizard-overlay').style.display = 'flex';
+  var nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'none';
   incidentRenderStep();
+}
+
+function incidentCancelWizard() {
+  if (!confirm('Cancel this incident report? Nothing will be saved.')) return;
+  document.getElementById('incident-wizard-overlay').style.display = 'none';
+  var nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'flex';
 }
 
 function incidentRenderProgress() {
@@ -4429,6 +4447,8 @@ function incidentPrevStep() {
 
 function incidentSubmitReport() {
   document.getElementById('incident-wizard-overlay').style.display = 'none';
+  var navEl = document.querySelector('.bottom-nav');
+  if (navEl) navEl.style.display = 'flex';
 
   var hrs = Math.floor((Date.now() - incidentStartTime) / (1000 * 60 * 60));
   if (hrs < 0) hrs = 0;
