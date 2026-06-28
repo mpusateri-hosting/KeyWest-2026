@@ -1966,6 +1966,33 @@
     </div>
 
     <div class="card">
+      <div class="card-header"><span class="card-icon">📝</span><span class="card-title">Group Notes</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        A shared bulletin board for the whole group. Tap <strong style="color:var(--teal-light);">Group Notes</strong> on the home screen, type something (280 characters max), and tap <strong style="color:var(--teal-light);">Post Note</strong>. It shows up for everyone instantly.<br><br>
+        Use it for the stuff that doesn't fit anywhere else — "left my sunglasses at the bar," "dinner reservation moved to 8," "does anyone have Dramamine." Your own notes get a small <strong style="color:var(--teal-light);">✕</strong> so you can delete them later. Everyone else's are safe from you.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🎯</span><span class="card-title">Trivia</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Ten categories, 25 questions each, multiple choice. Pick a category from the home screen, answer away. You get <strong style="color:var(--teal-light);">two attempts</strong> per question — get it right and it's locked in as correct, miss twice and it's locked in as a loss. Either way that question is done; no replaying it to farm points.<br><br>
+        Categories include Florida Keys, Kentucky Bourbon, decade-by-decade music from the 70s through 90s, Movies 1980-2010, MTV Before Reality Shows, Famous Movie Quotes, Is It a KY County, and What Did It Cost in 1993.<br><br>
+        There's a shared leaderboard at the top showing everyone's cumulative correct answers across every category. Top three get medals. Bragging rights are permanent and will be referenced for years.
+      </div>
+    </div>
+
+    <div class="card" style="border-color:rgba(255,212,0,0.4);">
+      <div class="card-header"><span class="card-icon">🚨</span><span class="card-title">Incident Reports</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        The yellow button on the home screen tracks hours since the last middle-aged or alcohol-related incident, factory-safety-sign style. It starts at zero the moment the trip begins and counts up from there — until someone needs to file a report.<br><br>
+        Tap <strong style="color:var(--teal-light);">Report an Injury</strong> to open the intake form: who was injured, what happened, whether it was self-inflicted or someone else's fault, witnesses, and whether you require legal representation. Every report resets the counter for the whole group, no exceptions, no judgment calls about what counts.<br><br>
+        Say yes to legal representation and our in-house counsel will be formally notified. Frivolous claims are not just tolerated, they're encouraged — every case filed is one billable hour closer to funding next year's trip for certain people we won't name here.<br><br>
+        Changed your mind mid-report? Tap the <strong style="color:var(--teal-light);">✕ Cancel</strong> button in the top corner at any point and nothing gets saved.
+      </div>
+    </div>
+
+    <div class="card">
       <div class="card-header"><span class="card-icon">💡</span><span class="card-title">Local Recs</span></div>
       <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
         Over 50 curated spots across bars, breakfast, dinner, beaches, attractions and landmarks. Ratings pulled live from Google.<br><br>
@@ -4157,6 +4184,50 @@ function devClearTriviaScore() {
   alert(name + "'s trivia score has been cleared.");
 }
 
+function devPopulateIncidentDropdown() {
+  var sel = document.getElementById('dev-incident-select');
+  if (!sel) return;
+  if (!incidentLog.length) {
+    sel.innerHTML = '<option value="">No reports to show</option>';
+    return;
+  }
+  var html = '';
+  incidentLog.forEach(function(entry) {
+    var label = entry.names + ' \u2014 ' + entry.desc;
+    if (label.length > 50) label = label.substring(0, 50) + '...';
+    html += '<option value="' + entry.ts + '">' + label + '</option>';
+  });
+  sel.innerHTML = html;
+}
+
+function devDeleteOneIncident() {
+  var sel = document.getElementById('dev-incident-select');
+  if (!sel || !sel.value) return;
+  var ts = sel.value;
+  if (!confirm('Delete this incident report? This cannot be undone.')) return;
+
+  if (db) {
+    db.ref('incidents/log/' + ts).remove();
+  } else {
+    incidentLog = incidentLog.filter(function(e) { return String(e.ts) !== String(ts); });
+    renderIncidentLog();
+  }
+  alert('Incident report deleted.');
+}
+
+function devClearAllIncidents() {
+  if (!confirm('Delete ALL incident reports and reset the counter to the July 7th trip start? This cannot be undone.')) return;
+
+  if (db) {
+    db.ref('incidents').remove();
+  }
+  incidentLog = [];
+  incidentStartTime = INCIDENT_TRIP_START;
+  updateIncidentCounter();
+  renderIncidentLog();
+  alert('All incident data cleared. Counter reset to the trip start.');
+}
+
 function trivExitToCategories() {
   document.getElementById('trivia-question-view').style.display = 'none';
   document.getElementById('trivia-picker').style.display = 'block';
@@ -4463,17 +4534,25 @@ function incidentSubmitReport() {
 
   if (incidentReport.legal === 'Yes') {
     document.getElementById('incident-legal-overlay').style.display = 'flex';
+    var navL = document.querySelector('.bottom-nav');
+    if (navL) navL.style.display = 'none';
   } else {
     document.getElementById('incident-confirm-overlay').style.display = 'flex';
+    var navC = document.querySelector('.bottom-nav');
+    if (navC) navC.style.display = 'none';
   }
 }
 
 function closeIncidentLegal() {
   document.getElementById('incident-legal-overlay').style.display = 'none';
+  var nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'flex';
 }
 
 function closeIncidentConfirm() {
   document.getElementById('incident-confirm-overlay').style.display = 'none';
+  var nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'flex';
 }
 
 
@@ -4621,6 +4700,7 @@ function handleDevTap() {
     document.getElementById('dev-panel').style.display = 'block';
     document.getElementById('dev-panel').scrollIntoView({ behavior: 'smooth' });
     devPopulateTriviaUserDropdown();
+    devPopulateIncidentDropdown();
   } else if (pin !== null) {
     alert('Incorrect PIN.');
   }
@@ -4688,6 +4768,16 @@ document.addEventListener('DOMContentLoaded', function(){
         <select id="dev-trivia-user" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px;margin-bottom:8px;">
         </select>
         <button onclick="devClearTriviaScore()" style="width:100%;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:8px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;">Clear This User's Trivia Score</button>
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Incident Report Management</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Delete an individual incident report:</div>
+        <select id="dev-incident-select" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px;margin-bottom:8px;">
+        </select>
+        <button onclick="devDeleteOneIncident()" style="width:100%;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:8px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;margin-bottom:10px;">Delete Selected Report</button>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">Or wipe everything and reset the counter to the July 7th trip start:</div>
+        <button onclick="devClearAllIncidents()" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--coral);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;">Clear All Incident Data</button>
       </div>
 
       <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">App Status</div>
