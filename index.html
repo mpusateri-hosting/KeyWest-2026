@@ -1275,6 +1275,28 @@
     box-shadow: 0 2px 10px rgba(255,68,68,0.3);
   }
 
+  .incident-btn {
+    width: calc(100% - 32px);
+    margin: 0 16px 14px;
+    background: linear-gradient(135deg, #FFD400, #e6b800);
+    border: none;
+    border-radius: var(--radius);
+    color: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 18px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 20px rgba(255,212,0,0.35);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .incident-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 10px rgba(255,212,0,0.25);
+  }
+
   .dnp-row {
     display: flex;
     align-items: center;
@@ -1453,6 +1475,11 @@
         <div class="qb-label">Trivia</div>
       </div>
     </div>
+
+    <!-- Incident Report -->
+    <button class="incident-btn" onclick="showScreen('incident')">
+      🚨 Incident Reports
+    </button>
 
     <!-- Do Not Push -->
     <button class="dnp-btn" onclick="showScreen('donotpush')">
@@ -2064,6 +2091,67 @@
   </div>
 
     <!-- ========================================================
+       INCIDENT REPORTS SCREEN
+  ======================================================== -->
+  <div id="screen-incident" class="screen">
+    <div class="app-header">
+      <h1>Incident Reports</h1>
+      <div class="subtitle">Safety first. Allegedly.</div>
+    </div>
+
+    <div style="margin:0 16px 16px;background:#FFD400;border:4px solid #1a1a1a;border-radius:4px;padding:14px;text-align:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:14px;background:repeating-linear-gradient(45deg,#1a1a1a,#1a1a1a 10px,#FFD400 10px,#FFD400 20px);"></div>
+      <div style="color:#1a1a1a;font-weight:900;font-size:13px;letter-spacing:0.5px;text-transform:uppercase;font-family:Arial,sans-serif;margin:14px 0 8px;line-height:1.3;">
+        Hours Since Last Middle-Aged<br>or Alcohol-Related Incident
+      </div>
+      <div style="background:#1a1a1a;border-radius:6px;padding:16px 10px;">
+        <div id="incident-counter" style="font-family:'Courier New',monospace;font-size:48px;font-weight:900;color:#FFD400;line-height:1;letter-spacing:2px;">0</div>
+        <div style="color:#FFD400;font-size:11px;font-weight:700;letter-spacing:1px;margin-top:4px;font-family:Arial,sans-serif;">CONSECUTIVE HOURS</div>
+      </div>
+    </div>
+
+    <button onclick="startIncidentWizard()" style="width:calc(100% - 32px);margin:0 16px 18px;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:var(--radius);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;padding:14px;cursor:pointer;">
+      🚨 Report an Injury
+    </button>
+
+    <div class="rec-category">Incident Log</div>
+    <div id="incident-log" style="margin:0 16px;"></div>
+
+    <div style="height:20px;"></div>
+  </div>
+
+  <!-- Incident wizard overlay -->
+  <div id="incident-wizard-overlay" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:250;flex-direction:column;padding:20px;">
+    <div id="incident-wizard-progress" style="display:flex;gap:6px;margin-bottom:24px;"></div>
+    <div id="incident-wizard-body" style="flex:1;"></div>
+  </div>
+
+  <!-- Legal notice modal -->
+  <div id="incident-legal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:260;align-items:center;justify-content:center;padding:24px;">
+    <div style="background:#f4f1ea;color:#1a1a1a;border-radius:4px;padding:28px 24px;max-width:360px;border-top:6px solid #8b0000;box-shadow:0 12px 40px rgba(0,0,0,0.6);">
+      <div style="text-align:center;font-size:28px;margin-bottom:8px;">⚖️</div>
+      <div style="text-align:center;font-family:Georgia,serif;font-weight:700;font-size:14px;letter-spacing:2px;color:#8b0000;margin-bottom:16px;text-transform:uppercase;">Legal Notice</div>
+      <div style="font-family:Georgia,serif;font-size:15px;line-height:1.6;margin-bottom:18px;">
+        Pursuant to the incident described herein, this matter has been formally referred to our in-house counsel, <strong>Mr. John Doyle, Esq.</strong>, who will be contacting you regarding potential damages, settlement options, and his availability for next year's trip.
+        <br><br>
+        Please note that frivolous claims are not only accepted but actively encouraged, as they directly fund the Doyles' vacation fund.
+      </div>
+      <div style="font-family:Georgia,serif;font-size:15px;color:#1a1a1a;margin-bottom:2px;">With all due diligence,</div>
+      <div style="font-family:Georgia,serif;font-size:14px;color:#444;text-align:center;line-height:1.5;margin-bottom:18px;font-weight:700;">The App Development Team<br>Rogue Wave Laboratories</div>
+      <button onclick="closeIncidentLegal()" style="width:100%;background:#8b0000;color:white;border:none;border-radius:4px;padding:13px;font-family:-apple-system,sans-serif;font-weight:700;font-size:14px;cursor:pointer;">Acknowledge</button>
+    </div>
+  </div>
+
+  <!-- Simple confirmation modal -->
+  <div id="incident-confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:260;align-items:center;justify-content:center;padding:24px;">
+    <div style="background:var(--navy-mid);border:1px solid var(--teal);border-radius:16px;padding:28px 22px;text-align:center;max-width:320px;">
+      <div style="font-size:40px;margin-bottom:10px;">✅</div>
+      <div style="font-size:16px;line-height:1.5;margin-bottom:20px;">Incident logged. The counter has been reset.</div>
+      <button onclick="closeIncidentConfirm()" style="width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:10px;color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;padding:13px;cursor:pointer;">Done</button>
+    </div>
+  </div>
+
+  <!-- ========================================================
        DO NOT PUSH SCREEN
   ======================================================== -->
   <div id="screen-donotpush" class="screen">
@@ -2418,6 +2506,7 @@ function initFirebase() {
         listenForNotes();
         listenForTrivia();
         listenForTripLog();
+        listenForIncidents();
       } catch(e) {
         console.log("Firebase init error:", e);
       }
@@ -2722,6 +2811,10 @@ function showScreen(name) {
     document.getElementById('trivia-question-view').style.display = 'none';
     renderTriviaCategories();
     renderTriviaLeaderboard();
+  }
+  if (name === 'incident') {
+    updateIncidentCounter();
+    renderIncidentLog();
   }
 }
 
@@ -4163,6 +4256,217 @@ function trivAnswer(displayIndex) {
 function trivNextQuestion() {
   trivLoadNextQuestion();
 }
+
+/* ================================================================
+   INCIDENT REPORTS — STATE, FIREBASE SYNC, AND WIZARD ENGINE
+================================================================ */
+var INCIDENT_TRIP_START = new Date('2026-07-07T00:00:00').getTime(); // midnight July 6 into July 7
+var incidentStartTime = INCIDENT_TRIP_START;
+var incidentLog = [];
+var incidentReport = {};
+var incidentStepIndex = 0;
+var incidentSteps = [];
+
+function listenForIncidents() {
+  if (!db) return;
+  db.ref('incidents').on('value', function(snapshot) {
+    var data = snapshot.val();
+    incidentLog = [];
+    if (data) {
+      if (data.lastResetTs) incidentStartTime = data.lastResetTs;
+      if (data.log) {
+        Object.keys(data.log).forEach(function(key) {
+          incidentLog.push(data.log[key]);
+        });
+        incidentLog.sort(function(a, b) { return b.ts - a.ts; });
+      }
+    }
+    updateIncidentCounter();
+    renderIncidentLog();
+  });
+  if (!window.incidentTickerStarted) {
+    window.incidentTickerStarted = true;
+    setInterval(updateIncidentCounter, 60000);
+  }
+}
+
+function updateIncidentCounter() {
+  var el = document.getElementById('incident-counter');
+  if (!el) return;
+  var hrs = Math.floor((Date.now() - incidentStartTime) / (1000 * 60 * 60));
+  if (hrs < 0) hrs = 0;
+  el.textContent = hrs;
+}
+
+function renderIncidentLog() {
+  var el = document.getElementById('incident-log');
+  if (!el) return;
+  if (!incidentLog.length) {
+    el.innerHTML = "<div style='text-align:center;color:var(--text-muted);font-size:13px;padding:20px 10px;'>No incidents yet. Let's keep it that way.</div>";
+    return;
+  }
+  var html = '';
+  incidentLog.forEach(function(entry) {
+    html += '<div class="card" style="margin-bottom:8px;padding:12px 14px;">';
+    html += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;">';
+    html += '<span style="font-weight:700;color:var(--teal-light);font-size:13px;">' + entry.names + '</span>';
+    html += '<span style="color:var(--text-muted);font-size:11px;">Streak: ' + entry.streakHours + ' hrs</span>';
+    html += '</div>';
+    html += '<div style="font-size:13px;color:var(--off-white);line-height:1.4;">' + entry.desc + '</div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function incidentBaseSteps() {
+  return [
+    { key: 'injured', q: 'Who was injured?', type: 'multiselect' },
+    { key: 'nature', q: 'What is the nature of the injury?', type: 'text', placeholder: "e.g. Pulled a muscle putting on flip flops" },
+    { key: 'cause', q: 'Was the injury self-inflicted or inflicted by others?', type: 'choice', options: ['Self-inflicted','Inflicted by others'] }
+  ];
+}
+
+function incidentBuildSteps() {
+  incidentSteps = incidentBaseSteps();
+  if (incidentReport.cause === 'Inflicted by others') {
+    incidentSteps.push({ key: 'accused', q: 'Can you name the accused? (select all that apply)', type: 'multiselect' });
+  }
+  incidentSteps.push({ key: 'witness', q: 'Do you have a witness?', type: 'choice', options: ['Yes','No'] });
+  if (incidentReport.witness === 'Yes') {
+    incidentSteps.push({ key: 'witnessNames', q: 'Who witnessed this? (select all that apply)', type: 'multiselect' });
+  }
+  incidentSteps.push({ key: 'legal', q: 'Do you require legal representation?', type: 'choice', options: ['Yes','No'] });
+}
+
+function startIncidentWizard() {
+  incidentReport = {};
+  incidentStepIndex = 0;
+  incidentBuildSteps();
+  document.getElementById('incident-wizard-overlay').style.display = 'flex';
+  incidentRenderStep();
+}
+
+function incidentRenderProgress() {
+  var el = document.getElementById('incident-wizard-progress');
+  var html = '';
+  incidentSteps.forEach(function(s, i) {
+    html += '<div style="flex:1;height:4px;border-radius:2px;background:' + (i < incidentStepIndex ? 'var(--teal)' : 'rgba(255,255,255,0.12)') + ';"></div>';
+  });
+  el.innerHTML = html;
+}
+
+function incidentRenderStep() {
+  incidentBuildSteps();
+  if (incidentStepIndex >= incidentSteps.length) {
+    incidentSubmitReport();
+    return;
+  }
+  incidentRenderProgress();
+  var step = incidentSteps[incidentStepIndex];
+  var body = document.getElementById('incident-wizard-body');
+  var html = '<div style="color:var(--text-muted);font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Step ' + (incidentStepIndex+1) + ' of ' + incidentSteps.length + '</div>';
+  html += '<div style="font-size:19px;font-weight:700;color:var(--off-white);margin-bottom:22px;line-height:1.35;">' + step.q + '</div>';
+
+  if (step.type === 'text') {
+    html += '<textarea id="incident-step-input" style="width:100%;min-height:80px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;color:var(--off-white);font-family:inherit;font-size:15px;padding:14px 16px;margin-bottom:10px;resize:none;" placeholder="' + step.placeholder + '">' + (incidentReport[step.key] || '') + '</textarea>';
+  } else if (step.type === 'choice') {
+    step.options.forEach(function(opt) {
+      var sel = incidentReport[step.key] === opt;
+      html += '<button class="incident-opt-btn" data-mode="choice" data-key="' + step.key + '" data-val="' + opt + '" style="display:block;width:100%;text-align:left;background:' + (sel ? 'rgba(10,191,188,0.15)' : 'var(--card-bg)') + ';border:1px solid ' + (sel ? 'var(--teal)' : 'var(--card-border)') + ';border-radius:10px;color:var(--off-white);font-family:inherit;font-size:15px;padding:14px 16px;margin-bottom:10px;cursor:pointer;">' + opt + '</button>';
+    });
+  } else if (step.type === 'multiselect') {
+    var selected = incidentReport[step.key] || [];
+    CHECKINS.forEach(function(c) {
+      var sel = selected.indexOf(c.name) > -1;
+      html += '<button class="incident-opt-btn" data-mode="multi" data-key="' + step.key + '" data-val="' + c.name + '" style="display:block;width:100%;text-align:left;background:' + (sel ? 'rgba(10,191,188,0.15)' : 'var(--card-bg)') + ';border:1px solid ' + (sel ? 'var(--teal)' : 'var(--card-border)') + ';border-radius:10px;color:var(--off-white);font-family:inherit;font-size:15px;padding:14px 16px;margin-bottom:10px;cursor:pointer;">' + c.name + '</button>';
+    });
+  }
+
+  html += '<div style="display:flex;gap:10px;margin-top:16px;">';
+  if (incidentStepIndex > 0) html += '<button onclick="incidentPrevStep()" style="flex:0 0 90px;padding:14px;border-radius:10px;border:none;background:rgba(255,255,255,0.08);color:var(--text-muted);font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;">Back</button>';
+  html += '<button onclick="incidentNextStep()" style="flex:1;padding:14px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:white;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer;">' + (incidentStepIndex === incidentSteps.length - 1 ? 'Submit Report' : 'Next') + '</button>';
+  html += '</div>';
+
+  body.innerHTML = html;
+
+  var optBtns = body.querySelectorAll('.incident-opt-btn');
+  optBtns.forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var mode = btn.getAttribute('data-mode');
+      var key = btn.getAttribute('data-key');
+      var val = btn.getAttribute('data-val');
+      if (mode === 'choice') {
+        incidentReport[key] = val;
+        incidentRenderStep();
+      } else {
+        if (!incidentReport[key]) incidentReport[key] = [];
+        var idx = incidentReport[key].indexOf(val);
+        if (idx > -1) incidentReport[key].splice(idx, 1);
+        else incidentReport[key].push(val);
+        btn.style.borderColor = incidentReport[key].indexOf(val) > -1 ? 'var(--teal)' : 'var(--card-border)';
+        btn.style.background = incidentReport[key].indexOf(val) > -1 ? 'rgba(10,191,188,0.15)' : 'var(--card-bg)';
+      }
+    });
+  });
+}
+
+function incidentNextStep() {
+  var step = incidentSteps[incidentStepIndex];
+  if (step.type === 'text') {
+    var input = document.getElementById('incident-step-input');
+    incidentReport[step.key] = input ? input.value.trim() : '';
+  }
+  incidentStepIndex++;
+  incidentRenderStep();
+}
+
+function incidentPrevStep() {
+  incidentStepIndex--;
+  incidentRenderStep();
+}
+
+function incidentSubmitReport() {
+  document.getElementById('incident-wizard-overlay').style.display = 'none';
+
+  var hrs = Math.floor((Date.now() - incidentStartTime) / (1000 * 60 * 60));
+  if (hrs < 0) hrs = 0;
+  var names = (incidentReport.injured || []).join(' & ') || 'Unknown';
+  var nowTs = Date.now();
+
+  var entry = {
+    names: names,
+    desc: incidentReport.nature || 'No details provided',
+    streakHours: hrs,
+    ts: nowTs
+  };
+
+  if (db) {
+    db.ref('incidents/log/' + nowTs).set(entry);
+    db.ref('incidents/lastResetTs').set(nowTs);
+  } else {
+    incidentLog.unshift(entry);
+    incidentStartTime = nowTs;
+    renderIncidentLog();
+  }
+  updateIncidentCounter();
+
+  if (incidentReport.legal === 'Yes') {
+    document.getElementById('incident-legal-overlay').style.display = 'flex';
+  } else {
+    document.getElementById('incident-confirm-overlay').style.display = 'flex';
+  }
+}
+
+function closeIncidentLegal() {
+  document.getElementById('incident-legal-overlay').style.display = 'none';
+}
+
+function closeIncidentConfirm() {
+  document.getElementById('incident-confirm-overlay').style.display = 'none';
+}
+
 
 function deletePhoto(index) {
   if (!confirm('Delete this photo?')) return;
