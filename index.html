@@ -4333,6 +4333,77 @@ function devClearAllIncidents() {
   alert('All incident data cleared. Counter reset to the trip start.');
 }
 
+function devPopulateScavCategoryDropdown() {
+  var sel = document.getElementById('dev-scav-category');
+  if (!sel) return;
+  var html = '';
+  SCAVENGER_CATEGORIES.forEach(function(cat) {
+    html += '<option value="' + cat.id + '">' + cat.emoji + ' ' + cat.title + '</option>';
+  });
+  sel.innerHTML = html;
+  devPopulateScavPhotoDropdown();
+}
+
+function devPopulateScavPhotoDropdown() {
+  var catSel = document.getElementById('dev-scav-category');
+  var photoSel = document.getElementById('dev-scav-photo');
+  if (!catSel || !photoSel) return;
+  var catId = catSel.value;
+  var subs = scavSubmissions[catId] || [];
+
+  if (!subs.length) {
+    photoSel.innerHTML = '<option value="">No photos in this category</option>';
+    return;
+  }
+  var html = '';
+  subs.forEach(function(s) {
+    var label = (s.submittedBy || 'Someone') + ' \u2014 ' + new Date(s.ts).toLocaleString();
+    html += '<option value="' + s.id + '">' + label + '</option>';
+  });
+  photoSel.innerHTML = html;
+}
+
+function devDeleteOneScavPhoto() {
+  var catSel = document.getElementById('dev-scav-category');
+  var photoSel = document.getElementById('dev-scav-photo');
+  if (!catSel || !photoSel || !photoSel.value) return;
+  var catId = catSel.value;
+  var photoId = photoSel.value;
+  if (!confirm('Delete this photo? Any vote cast for it will also be removed. This cannot be undone.')) return;
+
+  if (db) {
+    db.ref('scavengerHunt/submissions/' + catId + '/' + photoId).remove();
+    // Also remove any vote that points at this now-deleted photo, to avoid orphaned votes
+    db.ref('scavengerHunt/votes/' + catId).once('value').then(function(snapshot) {
+      var votes = snapshot.val() || {};
+      Object.keys(votes).forEach(function(voter) {
+        if (votes[voter] === photoId) {
+          db.ref('scavengerHunt/votes/' + catId + '/' + voter).remove();
+        }
+      });
+    });
+  } else {
+    scavSubmissions[catId] = (scavSubmissions[catId] || []).filter(function(s) { return s.id !== photoId; });
+    scavRenderCategories();
+  }
+  devPopulateScavPhotoDropdown();
+  alert('Photo deleted.');
+}
+
+function devClearAllScavenger() {
+  if (!confirm('Delete ALL scavenger hunt photos and votes across every category? This cannot be undone.')) return;
+
+  if (db) {
+    db.ref('scavengerHunt/submissions').remove();
+    db.ref('scavengerHunt/votes').remove();
+  }
+  scavSubmissions = {};
+  scavVotes = {};
+  scavRenderCategories();
+  devPopulateScavPhotoDropdown();
+  alert('All scavenger hunt data cleared.');
+}
+
 function trivExitToCategories() {
   document.getElementById('trivia-question-view').style.display = 'none';
   document.getElementById('trivia-picker').style.display = 'block';
@@ -5104,6 +5175,7 @@ function handleDevTap() {
     document.getElementById('dev-panel').scrollIntoView({ behavior: 'smooth' });
     devPopulateTriviaUserDropdown();
     devPopulateIncidentDropdown();
+    devPopulateScavCategoryDropdown();
   } else if (pin !== null) {
     alert('Incorrect PIN.');
   }
@@ -5181,6 +5253,19 @@ document.addEventListener('DOMContentLoaded', function(){
         <button onclick="devDeleteOneIncident()" style="width:100%;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:8px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;margin-bottom:10px;">Delete Selected Report</button>
         <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">Or wipe everything and reset the counter to the July 7th trip start:</div>
         <button onclick="devClearAllIncidents()" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--coral);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;">Clear All Incident Data</button>
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Scavenger Hunt Photo Management</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Step 1 — choose a category:</div>
+        <select id="dev-scav-category" onchange="devPopulateScavPhotoDropdown()" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px;margin-bottom:10px;">
+        </select>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Step 2 — choose a photo to delete:</div>
+        <select id="dev-scav-photo" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px;margin-bottom:8px;">
+        </select>
+        <button onclick="devDeleteOneScavPhoto()" style="width:100%;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:8px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;margin-bottom:10px;">Delete Selected Photo</button>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">Or wipe everything — all photos and all votes across every category:</div>
+        <button onclick="devClearAllScavenger()" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--coral);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;">Clear All Scavenger Hunt Data</button>
       </div>
 
       <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">App Status</div>
