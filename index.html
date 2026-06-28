@@ -2158,7 +2158,7 @@
   </div>
 
   <!-- Legal notice modal -->
-  <div id="incident-legal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:260;align-items:center;justify-content:center;padding:24px;">
+  <div id="incident-legal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;align-items:center;justify-content:center;padding:24px;">
     <div style="background:#f4f1ea;color:#1a1a1a;border-radius:4px;padding:28px 24px;max-width:360px;border-top:6px solid #8b0000;box-shadow:0 12px 40px rgba(0,0,0,0.6);">
       <div style="text-align:center;font-size:28px;margin-bottom:8px;">⚖️</div>
       <div style="text-align:center;font-family:Georgia,serif;font-weight:700;font-size:14px;letter-spacing:2px;color:#8b0000;margin-bottom:16px;text-transform:uppercase;">Legal Notice</div>
@@ -2174,7 +2174,7 @@
   </div>
 
   <!-- Simple confirmation modal -->
-  <div id="incident-confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:260;align-items:center;justify-content:center;padding:24px;">
+  <div id="incident-confirm-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;align-items:center;justify-content:center;padding:24px;">
     <div style="background:var(--navy-mid);border:1px solid var(--teal);border-radius:16px;padding:28px 22px;text-align:center;max-width:320px;">
       <div style="font-size:40px;margin-bottom:10px;">✅</div>
       <div style="font-size:16px;line-height:1.5;margin-bottom:20px;">Incident logged. The counter has been reset.</div>
@@ -4381,16 +4381,31 @@ function renderIncidentLog() {
     return;
   }
   var html = '';
-  incidentLog.forEach(function(entry) {
-    html += '<div class="card" style="margin-bottom:8px;padding:12px 14px;">';
+  incidentLog.forEach(function(entry, i) {
+    html += '<div class="card" style="margin-bottom:8px;padding:12px 14px;cursor:pointer;" onclick="incidentToggleDetail(' + i + ')">';
     html += '<div style="display:flex;justify-content:space-between;margin-bottom:4px;">';
     html += '<span style="font-weight:700;color:var(--teal-light);font-size:13px;">' + entry.names + '</span>';
     html += '<span style="color:var(--text-muted);font-size:11px;">Streak: ' + entry.streakHours + ' hrs</span>';
     html += '</div>';
     html += '<div style="font-size:13px;color:var(--off-white);line-height:1.4;">' + entry.desc + '</div>';
+    html += '<div id="incident-detail-' + i + '" style="display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--card-border);font-size:12px;color:var(--text-muted);line-height:1.6;">';
+    html += '<div><strong style="color:var(--off-white);">Filed by:</strong> ' + (entry.filedBy || 'Unknown') + '</div>';
+    html += '<div><strong style="color:var(--off-white);">Cause:</strong> ' + (entry.cause || 'Not specified') + '</div>';
+    if (entry.accused) html += '<div><strong style="color:var(--off-white);">Accused:</strong> ' + entry.accused + '</div>';
+    if (entry.witnesses) html += '<div><strong style="color:var(--off-white);">Witnesses:</strong> ' + entry.witnesses + '</div>';
+    html += '<div><strong style="color:var(--off-white);">Legal representation requested:</strong> ' + (entry.legal || 'No') + '</div>';
+    html += '<div style="margin-top:4px;font-style:italic;">' + new Date(entry.ts).toLocaleString() + '</div>';
+    html += '</div>';
+    html += '<div style="font-size:11px;color:var(--teal-light);margin-top:6px;">Tap for details &#8594;</div>';
     html += '</div>';
   });
   el.innerHTML = html;
+}
+
+function incidentToggleDetail(i) {
+  var el = document.getElementById('incident-detail-' + i);
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
 function incidentBaseSteps() {
@@ -4508,8 +4523,6 @@ function incidentPrevStep() {
 }
 
 function incidentSubmitReport() {
-  showScreen('incident');
-
   var hrs = Math.floor((Date.now() - incidentStartTime) / (1000 * 60 * 60));
   if (hrs < 0) hrs = 0;
   var names = (incidentReport.injured || []).join(' & ') || 'Unknown';
@@ -4518,6 +4531,11 @@ function incidentSubmitReport() {
   var entry = {
     names: names,
     desc: incidentReport.nature || 'No details provided',
+    cause: incidentReport.cause || '',
+    accused: (incidentReport.accused || []).join(' & '),
+    witnesses: (incidentReport.witnessNames || []).join(' & '),
+    legal: incidentReport.legal || 'No',
+    filedBy: CURRENT_USER || 'Someone',
     streakHours: hrs,
     ts: nowTs
   };
@@ -4534,25 +4552,19 @@ function incidentSubmitReport() {
 
   if (incidentReport.legal === 'Yes') {
     document.getElementById('incident-legal-overlay').style.display = 'flex';
-    var navL = document.querySelector('.bottom-nav');
-    if (navL) navL.style.display = 'none';
   } else {
     document.getElementById('incident-confirm-overlay').style.display = 'flex';
-    var navC = document.querySelector('.bottom-nav');
-    if (navC) navC.style.display = 'none';
   }
 }
 
 function closeIncidentLegal() {
   document.getElementById('incident-legal-overlay').style.display = 'none';
-  var nav = document.querySelector('.bottom-nav');
-  if (nav) nav.style.display = 'flex';
+  showScreen('incident');
 }
 
 function closeIncidentConfirm() {
   document.getElementById('incident-confirm-overlay').style.display = 'none';
-  var nav = document.querySelector('.bottom-nav');
-  if (nav) nav.style.display = 'flex';
+  showScreen('incident');
 }
 
 
