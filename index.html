@@ -2440,6 +2440,7 @@ function initFirebase() {
         loadFirebasePhotos();
         listenForNotes();
         listenForTrivia();
+        listenForTripLog();
       } catch(e) {
         console.log("Firebase init error:", e);
       }
@@ -2460,6 +2461,7 @@ function listenForCheckins() {
         if (CHECKINS[i].name === name) {
           CHECKINS[i].location = data[name].location || 'Not checked in yet';
           CHECKINS[i].time = data[name].time || '';
+          CHECKINS[i].ts = data[name].ts || null;
           break;
         }
       }
@@ -2509,27 +2511,29 @@ function listenForNotes() {
   });
 }
 
+function listenForTripLog() {
+  if (!db) return;
+  db.ref('tripLog').orderByChild('ts').on('value', function(snapshot) {
+    var data = snapshot.val();
+    TRIP_LOG = [];
+    if (data) {
+      Object.keys(data).forEach(function(key) {
+        TRIP_LOG.push(data[key]);
+      });
+    }
+    // If the trip map modal is currently open, refresh it live
+    var modal = document.getElementById('tripmap-modal');
+    if (modal && modal.classList.contains('open')) {
+      renderTripMap();
+    }
+  });
+}
+
 /* ================================================================
    TRIP CHECK-IN LOG — persists all check-ins with GPS for end-of-trip map
-   NOTE: Wire to Firebase for persistence across sessions
+   Populated from Firebase via listenForTripLog(), not hardcoded.
 ================================================================ */
-var TRIP_LOG = [
-  // Seeded with a few sample entries so the map renders during development
-  { name:"Mike",     location:"Sloppy Joe's Bar",          date:"Jul 7",  time:"9:14 PM",  lat:24.5585, lng:-81.8060 },
-  { name:"Christy",  location:"Mallory Square Sunset",     date:"Jul 7",  time:"7:32 PM",  lat:24.5594, lng:-81.8075 },
-  { name:"Andrew",   location:"Fort Zachary Taylor Beach", date:"Jul 8",  time:"2:15 PM",  lat:24.5445, lng:-81.8090 },
-  { name:"Lisa",     location:"Hemingway Home",            date:"Jul 8",  time:"11:00 AM", lat:24.5492, lng:-81.8020 },
-  { name:"Bill",     location:"Rum Bar",                   date:"Jul 8",  time:"8:45 PM",  lat:24.5528, lng:-81.8005 },
-  { name:"Rachel",   location:"Kermit's Key Lime Shoppe",  date:"Jul 9",  time:"10:30 AM", lat:24.5571, lng:-81.8055 },
-  { name:"Chris",    location:"Sloppy Joe's Bar",          date:"Jul 9",  time:"4:00 PM",  lat:24.5585, lng:-81.8060 },
-  { name:"Leighann", location:"Smathers Beach",            date:"Jul 9",  time:"1:00 PM",  lat:24.5450, lng:-81.7740 },
-  { name:"Chris",    location:"The Roost",                 date:"Jul 9",  time:"10:22 PM", lat:24.5560, lng:-81.8035 },
-  { name:"Mike",     location:"Green Parrot Bar",          date:"Jul 10", time:"7:00 PM",  lat:24.5527, lng:-81.8010 },
-  { name:"Chris",    location:"Sloppy Joe's Bar",          date:"Jul 10", time:"3:30 PM",  lat:24.5585, lng:-81.8060 },
-  { name:"Andrew",   location:"Southernmost Point",        date:"Jul 10", time:"9:00 AM",  lat:24.5461, lng:-81.8001 },
-  { name:"Bill",     location:"Charter Boat Row",          date:"Jul 9",  time:"6:00 AM",  lat:24.5530, lng:-81.8050 },
-  { name:"Christy",  location:"The Saint",                 date:"Jul 10", time:"9:45 PM",  lat:24.5565, lng:-81.8040 },
-];
+var TRIP_LOG = [];
 
 // Person colors for map pins
 var PERSON_COLORS = {
@@ -2957,7 +2961,13 @@ function initCheckins() {
     html += '<div class="checkin-info"><div class="checkin-name" style="font-size:16px">' + c.name + '</div>';
     if (isIn) {
       html += '<div class="checkin-location" style="font-size:13px">📍 ' + c.location + '</div>';
-      html += '<div class="checkin-time" style="font-size:12px;color:var(--text-muted);margin-top:2px">Last update: ' + c.time + '</div>';
+      var whenStr = c.time;
+      if (c.ts) {
+        var d = new Date(c.ts);
+        var dayLabel = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        whenStr = dayLabel + ' \u00b7 ' + c.time;
+      }
+      html += '<div class="checkin-time" style="font-size:12px;color:var(--text-muted);margin-top:2px">Last update: ' + whenStr + '</div>';
     } else {
       html += '<div class="checkin-location" style="color:var(--text-muted);opacity:0.5;font-size:13px">Not checked in yet</div>';
     }
@@ -3020,12 +3030,24 @@ function recordCheckin(name, where, timeStr, dateStr, lat, lng) {
 
   // Write to Firebase
   if (db) {
+    var nowTs = Date.now();
     db.ref('checkins/' + name).set({
       location: where,
       time: timeStr,
       lat: lat,
       lng: lng,
-      ts: Date.now()
+      ts: nowTs
+    });
+    // Also append to permanent history log for the dev panel trip map
+    // (checkins/ above gets overwritten each time; this path does not)
+    db.ref('tripLog/' + nowTs).set({
+      name: name,
+      location: where,
+      date: dateStr,
+      time: timeStr,
+      lat: lat,
+      lng: lng,
+      ts: nowTs
     });
   }
 
