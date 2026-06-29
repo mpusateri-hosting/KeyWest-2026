@@ -2262,9 +2262,15 @@
   </div>
 
   <!-- Add Expense sheet -->
-  <div class="modal-overlay" id="ledger-add-modal" onclick="closeModal('ledger-add-modal')">
-    <div class="modal-sheet" onclick="event.stopPropagation()">
-      <div class="modal-handle"></div>
+  <!-- ========================================================
+       ADD EXPENSE — full screen, same pattern as the incident wizard
+  ======================================================== -->
+  <div id="screen-ledgeradd" class="screen">
+    <div style="margin:0 16px;display:flex;justify-content:flex-end;margin-bottom:14px;">
+      <button onclick="ledgerCancelAdd()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:20px;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;cursor:pointer;">&#x2715; Cancel</button>
+    </div>
+
+    <div style="margin:0 16px;">
       <div class="modal-title">🧾 Log an Expense</div>
 
       <input class="input-field" id="ledger-desc-input" placeholder="What was it? (e.g. Dinner at Half Shell)" />
@@ -2285,8 +2291,10 @@
       <div id="ledger-custom-remaining" style="display:none;font-size:13px;color:var(--gold);font-weight:700;text-align:center;margin-top:10px;"></div>
 
       <button class="primary-btn" onclick="ledgerSaveExpense()" style="margin-top:16px;">Save Expense</button>
-      <button class="modal-close" onclick="closeModal('ledger-add-modal')">Cancel</button>
+      <button class="modal-close" onclick="ledgerCancelAdd()">Cancel</button>
     </div>
+
+    <div style="height:30px;"></div>
   </div>
 
   <!-- ========================================================
@@ -5556,9 +5564,11 @@ function ledgerOpenAddSheet() {
   ledgerCustomAmounts = {};
   ledgerRenderPayerPills();
   ledgerSetSplitMode('even');
-  document.getElementById('ledger-add-modal').classList.add('open');
-  var nav = document.querySelector('.bottom-nav');
-  if (nav) nav.style.display = 'none';
+  showScreen('ledgeradd');
+}
+
+function ledgerCancelAdd() {
+  showScreen('ledger');
 }
 
 function ledgerRenderPayerPills() {
@@ -5722,7 +5732,7 @@ function ledgerSaveExpense() {
     ledgerRenderAll();
   }
 
-  closeModal('ledger-add-modal');
+  showScreen('ledger');
 }
 
 
