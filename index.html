@@ -1495,6 +1495,10 @@
         <div class="qb-icon">🧾</div>
         <div class="qb-label">The Tab</div>
       </div>
+      <div class="quick-btn" onclick="showScreen('duvalmap')">
+        <div class="qb-icon">🗺️</div>
+        <div class="qb-label">Duval Street Map</div>
+      </div>
     </div>
 
     <!-- Incident Report -->
@@ -2003,6 +2007,15 @@
       </div>
     </div>
 
+    <div class="card">
+      <div class="card-header"><span class="card-icon">📸</span><span class="card-title">Scavenger Hunt</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        14 categories, photo-based, running the whole trip. Pick a category — rooster sightings, the Christy nap watch, key lime pie selfies, all 14 — and submit a photo using the camera or your camera roll. Up to <strong style="color:var(--teal-light);">2 photos per person per category</strong>, so make them count.<br><br>
+        Voting stays locked until <strong style="color:var(--gold);">Saturday at 4:00 PM</strong> — by then everyone's done submitting and nobody can vote on an incomplete field. Once it opens, tap into any category to see every submission and vote for your favorite. Vote counts are visible to everyone in real time. Once you vote, that's it — no changing your mind.<br><br>
+        Tap <strong style="color:var(--teal-light);">🏆 View All Results</strong> from the category list to see the current winner in every category at a glance, updating live as votes come in. Everyone gets a text the moment voting opens — good timing for the trip home.
+      </div>
+    </div>
+
     <div class="card" style="border-color:rgba(255,212,0,0.4);">
       <div class="card-header"><span class="card-icon">🚨</span><span class="card-title">Incident Reports</span></div>
       <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
@@ -2010,6 +2023,19 @@
         Tap <strong style="color:var(--teal-light);">Report an Injury</strong> to open the intake form: who was injured, what happened, whether it was self-inflicted or someone else's fault, witnesses, and whether you require legal representation. Every report resets the counter for the whole group, no exceptions, no judgment calls about what counts.<br><br>
         Say yes to legal representation and our in-house counsel will be formally notified. Frivolous claims are not just tolerated, they're encouraged — every case filed is one billable hour closer to funding next year's trip for certain people we won't name here.<br><br>
         Changed your mind mid-report? Tap the <strong style="color:var(--teal-light);">✕ Cancel</strong> button in the top corner at any point and nothing gets saved.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-icon">🧾</span><span class="card-title">The Tab</span></div>
+      <div class="card-body" style="font-size:15px;line-height:1.7;color:var(--off-white);">
+        Group expense tracking. Whoever fronts the money for dinner, the boat, the rum tour, whatever — log it here and the app figures out who owes who.<br><br>
+        Tap <strong style="color:var(--teal-light);">+ Log an Expense</strong>, enter what it was and the whole-dollar amount, pick who paid, then choose how to split it:<br><br>
+        <strong style="color:var(--gold);">Split Evenly</strong> — divides the total across all 8 people, including the payer if they were part of it<br>
+        <strong style="color:var(--gold);">Exclude Someone</strong> — same even split, just leave out whoever didn't take part<br>
+        <strong style="color:var(--gold);">Custom $</strong> — type an exact whole-dollar amount per person. The app won't let you save until the amounts add up to exactly the total — there's a live "remaining" indicator to help you get there.<br><br>
+        The balance strip at the top shows everyone's overall position at a glance. The <strong style="color:var(--teal-light);">Settle Up</strong> tab is where the real detail lives — it's organized by who's owed money, and under each person's name is exactly who owes them and how much, traced straight back to real expenses. No clever math collapsing things into "whoever owes the most pays whoever's owed the most." If Christy owes Bill $125 for dinner, that's the line you'll see. Tap <strong style="color:var(--teal-light);">Mark Paid</strong> once that specific debt is actually settled, and it zeroes out for good — the original expense stays in the list as the receipt, but the balance reflects reality.<br><br>
+        You can only delete an expense you personally logged. Everyone else's is locked.
       </div>
     </div>
 
@@ -2295,6 +2321,28 @@
     </div>
 
     <div style="height:30px;"></div>
+  </div>
+
+  <!-- ========================================================
+       DUVAL STREET MAP SCREEN
+  ======================================================== -->
+  <div id="screen-duvalmap" class="screen">
+    <div class="app-header">
+      <h1>Duval Street</h1>
+      <div class="subtitle">The Reach to Mallory Square, south to north</div>
+    </div>
+
+    <div class="card" style="margin:0 16px 16px;padding:14px;">
+      <div style="font-size:13px;line-height:1.6;color:var(--off-white);">
+        A quick visual cheat sheet of what's where along Duval Street. Tap any stop for walking directions. Roughly south to north, top to bottom — everything here is close enough to hit several in one walk.
+      </div>
+    </div>
+
+    <div id="duval-map-strip" style="margin:0 16px;position:relative;padding-left:28px;">
+      <div style="position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--teal) 0%,var(--gold) 100%);"></div>
+    </div>
+
+    <div style="height:20px;"></div>
   </div>
 
   <!-- ========================================================
@@ -2622,6 +2670,7 @@ var RECS = [
   ]},
   { category:"🍹 Bars & Nightlife", items:[
     { emoji:"🎵", name:"Sloppy Joe's Bar",               stars:"4.5", reviews:"8,241",  price:"$$",   lat:24.5585, lng:-81.8060, address:"201 Duval St, Key West" },
+    { emoji:"🍹", name:"Margaritaville",                 stars:"4.3", reviews:"5,610",  price:"$$",   lat:24.5556, lng:-81.8028, address:"500 Duval St, Key West", note:"Jimmy Buffett's namesake spot, right in the middle of the Duval strip. Live music daily, frozen concoctions, the famous lost shaker of salt." },
     { emoji:"🎸", name:"Hog's Breath Saloon",            stars:"4.4", reviews:"5,103",  price:"$$",   lat:24.5565, lng:-81.8066, address:"400 Front St, Key West" },
     { emoji:"🍸", name:"Green Parrot Bar",               stars:"4.6", reviews:"3,892",  price:"$",    lat:24.5527, lng:-81.8010, address:"601 Whitehead St, Key West", note:"Multiple locals call this their favorite bar in America. Live music calendar at greenparrot.com. Order a Root Beer Barrel." },
     { emoji:"🌊", name:"Schooner Wharf Bar",             stars:"4.5", reviews:"4,210",  price:"$$",   lat:24.5545, lng:-81.8045, address:"202 William St, Key West" },
@@ -3047,6 +3096,9 @@ function showScreen(name) {
   if (name === 'ledger') {
     ledgerShowTab('expenses');
     ledgerRenderAll();
+  }
+  if (name === 'duvalmap') {
+    renderDuvalMap();
   }
 }
 
@@ -3960,12 +4012,110 @@ function deleteNote(id) {
   }
 }
 
+function editNote(id) {
+  var textEl = document.getElementById('note-display-' + id);
+  var editEl = document.getElementById('note-edit-' + id);
+  if (!textEl || !editEl) return;
+  textEl.style.display = 'none';
+  editEl.style.display = 'block';
+  var textarea = document.getElementById('note-edit-input-' + id);
+  if (textarea) textarea.focus();
+}
+
+function cancelNoteEdit(id) {
+  var textEl = document.getElementById('note-display-' + id);
+  var editEl = document.getElementById('note-edit-' + id);
+  if (!textEl || !editEl) return;
+  textEl.style.display = 'block';
+  editEl.style.display = 'none';
+}
+
+function saveNoteEdit(id) {
+  var textarea = document.getElementById('note-edit-input-' + id);
+  if (!textarea) return;
+  var newText = textarea.value.trim();
+  if (!newText) { alert('Note can\'t be empty.'); return; }
+  if (newText.length > 280) newText = newText.substring(0, 280);
+
+  if (db && id.indexOf('local-') !== 0) {
+    db.ref('groupNotes/' + id + '/text').set(newText);
+  } else {
+    var note = groupNotes.find(function(n) { return n.id === id; });
+    if (note) note.text = newText;
+    renderNotes();
+  }
+}
+
+function devPopulateNotesDropdown() {
+  var sel = document.getElementById('dev-pin-note');
+  if (!sel) return;
+  if (!groupNotes.length) {
+    sel.innerHTML = '<option value="">No notes to show</option>';
+    return;
+  }
+  var html = '';
+  groupNotes.forEach(function(n) {
+    var label = (n.pinned ? '\uD83D\uDCCC ' : '') + (n.author || 'Someone') + ' \u2014 ' + n.text;
+    if (label.length > 50) label = label.substring(0, 50) + '...';
+    html += '<option value="' + n.id + '">' + label + '</option>';
+  });
+  sel.innerHTML = html;
+}
+
+function devTogglePinNote() {
+  var sel = document.getElementById('dev-pin-note');
+  if (!sel || !sel.value) return;
+  var id = sel.value;
+  var note = groupNotes.find(function(n) { return n.id === id; });
+  var newPinState = !(note && note.pinned);
+
+  if (db && id.indexOf('local-') !== 0) {
+    db.ref('groupNotes/' + id + '/pinned').set(newPinState);
+  } else if (note) {
+    note.pinned = newPinState;
+    renderNotes();
+  }
+  alert(newPinState ? 'Note pinned.' : 'Note unpinned.');
+}
+
 function updateNoteCharCount() {
   var input = document.getElementById('note-input');
   var counter = document.getElementById('note-char-count');
   if (!input || !counter) return;
   var remaining = 280 - input.value.length;
   counter.textContent = remaining + ' characters left';
+}
+
+function renderNoteCard(n) {
+  var isOwner = CURRENT_USER && n.author === CURRENT_USER;
+  var html = '<div class="card" style="margin-bottom:10px;padding:14px;position:relative;' + (n.pinned ? 'border-color:rgba(255,209,102,0.5);background:rgba(255,209,102,0.06);' : '') + '">';
+
+  html += '<div id="note-display-' + n.id + '">';
+  if (n.pinned) html += '<div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:4px;">\uD83D\uDCCC PINNED</div>';
+  html += '<div style="font-size:14px;color:var(--off-white);line-height:1.5;margin-bottom:8px;">' + n.text + '</div>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+  html += '<span style="font-size:12px;color:var(--teal-light);font-weight:600;">' + (n.author || 'Someone') + '</span>';
+  html += '<span style="font-size:11px;color:var(--text-muted);">' + (n.date || '') + ' \u00b7 ' + (n.time || '') + '</span>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '<div id="note-edit-' + n.id + '" style="display:none;">';
+  html += '<textarea id="note-edit-input-' + n.id + '" maxlength="280" style="width:100%;min-height:60px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;color:var(--off-white);font-family:\'DM Sans\',sans-serif;font-size:14px;padding:10px;resize:none;box-sizing:border-box;margin-bottom:8px;">' + n.text + '</textarea>';
+  html += '<div style="display:flex;gap:8px;">';
+  html += '<button onclick="saveNoteEdit(\'' + n.id + '\')" style="flex:1;background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:8px;color:white;font-family:\'DM Sans\',sans-serif;font-weight:600;font-size:12px;padding:8px;cursor:pointer;">Save</button>';
+  html += '<button onclick="cancelNoteEdit(\'' + n.id + '\')" style="flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--text-muted);font-family:\'DM Sans\',sans-serif;font-weight:600;font-size:12px;padding:8px;cursor:pointer;">Cancel</button>';
+  html += '</div>';
+  html += '</div>';
+
+  if (isOwner) {
+    html += '<div style="position:absolute;top:8px;right:8px;display:flex;gap:6px;">';
+    html += '<button onclick="editNote(\'' + n.id + '\')" style="width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;color:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&#x270F;</button>';
+    html += '<button onclick="deleteNote(\'' + n.id + '\')" style="width:22px;height:22px;border-radius:50%;background:rgba(255,0,0,0.5);border:none;color:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&#x2715;</button>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
 }
 
 function renderNotes() {
@@ -3975,20 +4125,17 @@ function renderNotes() {
     list.innerHTML = '<div style="text-align:center;padding:30px 10px;color:var(--text-muted);font-size:14px;">No notes yet. Be the first to leave one!</div>';
     return;
   }
+
+  var pinned = groupNotes.filter(function(n) { return n.pinned; });
+  var regular = groupNotes.filter(function(n) { return !n.pinned; });
+
   var html = '';
-  groupNotes.forEach(function(n) {
-    var isOwner = CURRENT_USER && n.author === CURRENT_USER;
-    html += '<div class="card" style="margin-bottom:10px;padding:14px;position:relative;">';
-    html += '<div style="font-size:14px;color:var(--off-white);line-height:1.5;margin-bottom:8px;">' + n.text + '</div>';
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
-    html += '<span style="font-size:12px;color:var(--teal-light);font-weight:600;">' + (n.author || 'Someone') + '</span>';
-    html += '<span style="font-size:11px;color:var(--text-muted);">' + (n.date || '') + ' · ' + (n.time || '') + '</span>';
-    html += '</div>';
-    if (isOwner) {
-      html += '<button onclick="deleteNote(\'' + n.id + '\')" style="position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:rgba(255,0,0,0.5);border:none;color:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&#x2715;</button>';
-    }
-    html += '</div>';
-  });
+  pinned.forEach(function(n) { html += renderNoteCard(n); });
+  if (pinned.length && regular.length) {
+    html += '<div style="height:6px;"></div>';
+  }
+  regular.forEach(function(n) { html += renderNoteCard(n); });
+
   list.innerHTML = html;
 }
 
@@ -5381,6 +5528,31 @@ function listenForLedger() {
   });
 }
 
+function ledgerComputePairwiseDebts() {
+  // pairs[debtor][creditor] = amount debtor still owes creditor, after settlements
+  var pairs = {};
+  CHECKINS.forEach(function(c) { pairs[c.name] = {}; });
+
+  ledgerExpenses.forEach(function(e) {
+    var payer = e.paidBy;
+    var people = Object.keys(e.shares || {});
+    people.forEach(function(name) {
+      if (name === payer) return; // the payer doesn't owe themselves their own share
+      if (pairs[name] === undefined) return;
+      var share = e.shares[name] || 0;
+      if (!share) return;
+      pairs[name][payer] = (pairs[name][payer] || 0) + share;
+    });
+  });
+
+  ledgerSettlements.forEach(function(s) {
+    if (pairs[s.from] === undefined) return;
+    pairs[s.from][s.to] = (pairs[s.from][s.to] || 0) - s.amount;
+  });
+
+  return pairs;
+}
+
 function ledgerComputeBalances() {
   var net = {};
   CHECKINS.forEach(function(c) { net[c.name] = 0; });
@@ -5495,47 +5667,45 @@ function ledgerDeleteExpense(id) {
 function ledgerRenderSettleList() {
   var el = document.getElementById('ledger-settle-list');
   if (!el) return;
-  var net = ledgerComputeBalances();
+  var pairs = ledgerComputePairwiseDebts();
 
-  var creditors = [];
-  var debtors = [];
+  // Build: creditor -> [ {debtor, amt}, ... ] for every real, non-zero, unsettled debt
+  var byCreditor = {};
   CHECKINS.forEach(function(c) {
-    var v = Math.round(net[c.name] || 0);
-    if (v > 0) creditors.push({ name: c.name, amt: v });
-    else if (v < 0) debtors.push({ name: c.name, amt: -v });
+    byCreditor[c.name] = [];
   });
-  creditors.sort(function(a, b) { return b.amt - a.amt; });
-  debtors.sort(function(a, b) { return b.amt - a.amt; });
 
-  var settlementsNeeded = [];
-  var ci = 0, di = 0;
-  var credCopy = creditors.map(function(c) { return { name: c.name, amt: c.amt }; });
-  var debtCopy = debtors.map(function(d) { return { name: d.name, amt: d.amt }; });
+  Object.keys(pairs).forEach(function(debtor) {
+    Object.keys(pairs[debtor]).forEach(function(creditor) {
+      var amt = Math.round(pairs[debtor][creditor]);
+      if (amt > 0) {
+        byCreditor[creditor].push({ debtor: debtor, amt: amt });
+      }
+    });
+  });
 
-  while (ci < credCopy.length && di < debtCopy.length) {
-    var pay = Math.min(credCopy[ci].amt, debtCopy[di].amt);
-    if (pay > 0) {
-      settlementsNeeded.push({ from: debtCopy[di].name, to: credCopy[ci].name, amt: pay });
-    }
-    credCopy[ci].amt -= pay;
-    debtCopy[di].amt -= pay;
-    if (credCopy[ci].amt <= 0) ci++;
-    if (debtCopy[di].amt <= 0) di++;
-  }
-
-  if (!settlementsNeeded.length) {
+  var anyDebts = Object.keys(byCreditor).some(function(c) { return byCreditor[c].length > 0; });
+  if (!anyDebts) {
     el.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:14px;padding:30px 10px;">Everyone is square. Nice trip.</div>';
     return;
   }
 
   var html = '';
-  settlementsNeeded.forEach(function(s) {
-    html += '<div class="card" style="margin-bottom:10px;padding:14px;">';
-    html += '<div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--off-white);margin-bottom:10px;">';
-    html += '<strong>' + s.from + '</strong><span style="color:var(--gold);">&#8594;</span><strong>' + s.to + '</strong>';
-    html += '<span style="margin-left:auto;font-family:monospace;font-weight:700;font-size:16px;color:var(--gold);">$' + s.amt + '</span>';
-    html += '</div>';
-    html += '<button onclick="ledgerMarkSettled(\'' + s.from + '\',\'' + s.to + '\',' + s.amt + ')" style="width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:8px;color:white;font-family:\'DM Sans\',sans-serif;font-weight:600;font-size:13px;padding:10px;cursor:pointer;">Mark as Paid in Full</button>';
+  CHECKINS.forEach(function(c) {
+    var debts = byCreditor[c.name];
+    if (!debts.length) return;
+    debts.sort(function(a, b) { return b.amt - a.amt; });
+    var totalOwed = debts.reduce(function(sum, d) { return sum + d.amt; }, 0);
+
+    html += '<div class="rec-category">' + c.initials + ' Owed to ' + c.name + ' \u2014 $' + totalOwed + ' total</div>';
+    html += '<div class="card" style="margin-bottom:14px;padding:6px 14px;">';
+    debts.forEach(function(d, i) {
+      html += '<div style="display:flex;align-items:center;gap:8px;padding:10px 0;' + (i < debts.length - 1 ? 'border-bottom:1px solid var(--card-border);' : '') + '">';
+      html += '<span style="flex:1;font-size:14px;color:var(--off-white);">' + d.debtor + '</span>';
+      html += '<span style="font-family:monospace;font-weight:700;font-size:15px;color:var(--gold);margin-right:10px;">$' + d.amt + '</span>';
+      html += '<button onclick="ledgerMarkSettled(\'' + d.debtor + '\',\'' + c.name + '\',' + d.amt + ')" style="background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:8px;color:white;font-family:\'DM Sans\',sans-serif;font-weight:600;font-size:11px;padding:8px 12px;cursor:pointer;white-space:nowrap;">Mark Paid</button>';
+      html += '</div>';
+    });
     html += '</div>';
   });
   el.innerHTML = html;
@@ -5736,6 +5906,47 @@ function ledgerSaveExpense() {
 }
 
 
+/* ================================================================
+   DUVAL STREET MAP — simple south-to-north strip of key stops
+================================================================ */
+var DUVAL_MAP_STOPS = [
+  { emoji:'\uD83C\uDFE8', name:'The Reach Key West', address:'1435 Simonton Street, Key West, FL 33040', note:'Home base. South end of the strip.' },
+  { emoji:'\uD83D\uDDFF', name:'Southernmost Point Buoy', address:'Southernmost Point, Key West, FL 33040', note:'The famous photo spot, a short walk from the hotel.' },
+  { emoji:'\uD83C\uDFE0', name:'Hemingway Home & Museum', address:'907 Whitehead St, Key West', note:'Six-toed cats included.' },
+  { emoji:'\uD83D\uDCA1', name:'Key West Lighthouse', address:'938 Whitehead St, Key West', note:'Right next to Hemingway House — do both in one walk.' },
+  { emoji:'\uD83E\uDD43', name:'Pilar Rum Distillery', address:'201 Simonton St, Key West', note:'Tours and tastings.' },
+  { emoji:'\uD83C\uDFB5', name:"Sloppy Joe's Bar", address:'201 Duval St, Key West', note:'The Duval Street anchor bar.' },
+  { emoji:'\uD83C\uDF79', name:'Margaritaville', address:'500 Duval St, Key West', note:"Right in the middle of the strip. Live music daily." },
+  { emoji:'\uD83D\uDEA2', name:'Key West Shipwreck Museum', address:'1 Whitehead St, Key West', note:'Near Mallory Square.' },
+  { emoji:'\uD83C\uDF05', name:'Mallory Square', address:'Mallory Square, Key West', note:'North end. Sunset celebration every night.' }
+];
+
+function renderDuvalMap() {
+  var el = document.getElementById('duval-map-strip');
+  if (!el) return;
+  var html = '<div style="position:absolute;left:9px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,var(--teal) 0%,var(--gold) 100%);"></div>';
+
+  DUVAL_MAP_STOPS.forEach(function(stop, i) {
+    var safeAddr = stop.address.replace(/"/g, '&quot;');
+    html += '<div style="position:relative;margin-bottom:' + (i < DUVAL_MAP_STOPS.length - 1 ? '14px' : '0') + ';">';
+    html += '<div style="position:absolute;left:-28px;top:14px;width:18px;height:18px;border-radius:50%;background:var(--navy-mid);border:2px solid var(--teal);"></div>';
+    html += '<div class="card" style="padding:14px;cursor:pointer;" onclick="getDirections(&quot;' + safeAddr + '&quot;)">';
+    html += '<div style="display:flex;align-items:flex-start;gap:10px;">';
+    html += '<div style="font-size:22px;flex-shrink:0;">' + stop.emoji + '</div>';
+    html += '<div style="flex:1;">';
+    html += '<div style="font-size:14px;font-weight:600;color:var(--off-white);">' + stop.name + '</div>';
+    html += '<div style="font-size:12px;color:var(--text-muted);margin-top:2px;line-height:1.4;">' + stop.note + '</div>';
+    html += '</div>';
+    html += '<div style="font-size:16px;color:var(--teal-light);flex-shrink:0;">&#x1F5FA;</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+
+  el.innerHTML = html;
+}
+
+
 function deletePhoto(index) {
   if (!confirm('Delete this photo?')) return;
   var p = photos[index];
@@ -5882,6 +6093,7 @@ function handleDevTap() {
     devPopulateTriviaUserDropdown();
     devPopulateIncidentDropdown();
     devPopulateScavCategoryDropdown();
+    devPopulateNotesDropdown();
   } else if (pin !== null) {
     alert('Incorrect PIN.');
   }
@@ -5972,6 +6184,14 @@ document.addEventListener('DOMContentLoaded', function(){
         <button onclick="devDeleteOneScavPhoto()" style="width:100%;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:8px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;margin-bottom:10px;">Delete Selected Photo</button>
         <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">Or wipe everything — all photos and all votes across every category:</div>
         <button onclick="devClearAllScavenger()" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--coral);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;">Clear All Scavenger Hunt Data</button>
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Pin a Group Note</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Pinned notes stay at the top of Group Notes for everyone — good for room numbers, that kind of thing.</div>
+        <select id="dev-pin-note" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px;margin-bottom:8px;">
+        </select>
+        <button onclick="devTogglePinNote()" style="width:100%;background:linear-gradient(135deg,var(--gold),#e6b800);border:none;border-radius:8px;color:#1a1a1a;font-family:'DM Sans',sans-serif;font-weight:700;font-size:12px;padding:10px;cursor:pointer;">📌 Toggle Pin on Selected Note</button>
       </div>
 
       <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Trip Recap</div>
