@@ -3055,6 +3055,21 @@ function closeModal(id) {
   if (nav) nav.style.display = 'flex';
 }
 
+/* Keep open modal sheets correctly sized when the on-screen keyboard opens or closes.
+   vh units don't account for the keyboard on mobile Safari, so we measure the
+   actual visible area directly and cap every open sheet to fit inside it. */
+function fixModalHeightForKeyboard() {
+  var vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
+  document.querySelectorAll('.modal-overlay.open .modal-sheet').forEach(function(sheet) {
+    sheet.style.maxHeight = Math.round(vh * 0.92) + 'px';
+  });
+}
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', fixModalHeightForKeyboard);
+} else {
+  window.addEventListener('resize', fixModalHeightForKeyboard);
+}
+
 function openCheckinModal() {
   document.getElementById('checkin-modal').classList.add('open');
 }
@@ -5563,6 +5578,7 @@ function ledgerOpenAddSheet() {
   document.getElementById('ledger-add-modal').classList.add('open');
   var nav = document.querySelector('.bottom-nav');
   if (nav) nav.style.display = 'none';
+  fixModalHeightForKeyboard();
 }
 
 function ledgerRenderPayerPills() {
@@ -5622,6 +5638,12 @@ function ledgerToggleExclude(name) {
   ledgerRenderSplitPills();
 }
 
+function ledgerScrollInputIntoView(el) {
+  setTimeout(function() {
+    el.scrollIntoView({ block: 'center' });
+  }, 300);
+}
+
 function ledgerRenderCustomAmounts() {
   var el = document.getElementById('ledger-custom-amounts');
   if (!el) return;
@@ -5630,7 +5652,7 @@ function ledgerRenderCustomAmounts() {
     var val = ledgerCustomAmounts[c.name] || '';
     html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">';
     html += '<span style="flex:1;font-size:14px;color:var(--off-white);">' + c.initials + ' ' + c.name + '</span>';
-    html += '<input type="number" inputmode="numeric" step="1" min="0" value="' + val + '" oninput="ledgerUpdateCustomAmount(\'' + c.name + '\', this.value)" placeholder="0" style="width:90px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;color:var(--off-white);font-family:monospace;font-size:14px;padding:8px 10px;text-align:right;">';
+    html += '<input type="number" inputmode="numeric" step="1" min="0" value="' + val + '" oninput="ledgerUpdateCustomAmount(\'' + c.name + '\', this.value)" onfocus="ledgerScrollInputIntoView(this)" placeholder="0" style="width:90px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;color:var(--off-white);font-family:monospace;font-size:14px;padding:8px 10px;text-align:right;">';
     html += '</div>';
   });
   el.innerHTML = html;
