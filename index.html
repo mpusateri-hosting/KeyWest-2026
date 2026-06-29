@@ -2263,33 +2263,29 @@
 
   <!-- Add Expense sheet -->
   <div class="modal-overlay" id="ledger-add-modal" onclick="closeModal('ledger-add-modal')">
-    <div class="modal-sheet" onclick="event.stopPropagation()" style="max-height:85vh;overflow-y:auto;display:flex;flex-direction:column;padding-bottom:0;">
-      <div style="flex:1;overflow-y:auto;">
-        <div class="modal-handle"></div>
-        <div class="modal-title">🧾 Log an Expense</div>
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🧾 Log an Expense</div>
 
-        <input class="input-field" id="ledger-desc-input" placeholder="What was it? (e.g. Dinner at Half Shell)" />
-        <input class="input-field" id="ledger-amount-input" type="number" inputmode="decimal" placeholder="Amount ($)" />
+      <input class="input-field" id="ledger-desc-input" placeholder="What was it? (e.g. Dinner at Half Shell)" />
+      <input class="input-field" id="ledger-amount-input" type="number" inputmode="decimal" placeholder="Amount ($)" />
 
-        <div style="font-size:12px;color:var(--text-muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Who paid?</div>
-        <div id="ledger-payer-pills" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      <div style="font-size:12px;color:var(--text-muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Who paid?</div>
+      <div id="ledger-payer-pills" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
 
-        <div style="font-size:12px;color:var(--text-muted);margin:18px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Split how?</div>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <button id="ledger-split-even-btn" onclick="ledgerSetSplitMode('even')" class="ledger-split-mode-btn active" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--teal);background:rgba(10,191,188,0.15);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Split Evenly</button>
-          <button id="ledger-split-exclude-btn" onclick="ledgerSetSplitMode('exclude')" class="ledger-split-mode-btn" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Exclude Someone</button>
-          <button id="ledger-split-custom-btn" onclick="ledgerSetSplitMode('custom')" class="ledger-split-mode-btn" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Custom $</button>
-        </div>
-
-        <div id="ledger-split-pills" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-        <div id="ledger-custom-amounts" style="display:none;"></div>
-        <div id="ledger-custom-remaining" style="display:none;font-size:13px;color:var(--gold);font-weight:700;text-align:center;margin-top:10px;"></div>
+      <div style="font-size:12px;color:var(--text-muted);margin:18px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Split how?</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <button id="ledger-split-even-btn" onclick="ledgerSetSplitMode('even')" class="ledger-split-mode-btn active" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--teal);background:rgba(10,191,188,0.15);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Split Evenly</button>
+        <button id="ledger-split-exclude-btn" onclick="ledgerSetSplitMode('exclude')" class="ledger-split-mode-btn" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Exclude Someone</button>
+        <button id="ledger-split-custom-btn" onclick="ledgerSetSplitMode('custom')" class="ledger-split-mode-btn" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Custom $</button>
       </div>
 
-      <div style="flex-shrink:0;padding:14px 0 0;background:var(--navy-mid);position:sticky;bottom:0;">
-        <button class="primary-btn" onclick="ledgerSaveExpense()" style="position:relative;z-index:5;">Save Expense</button>
-        <button class="modal-close" onclick="closeModal('ledger-add-modal')" style="position:relative;z-index:5;">Cancel</button>
-      </div>
+      <div id="ledger-split-pills" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      <div id="ledger-custom-amounts" style="display:none;"></div>
+      <div id="ledger-custom-remaining" style="display:none;font-size:13px;color:var(--gold);font-weight:700;text-align:center;margin-top:10px;"></div>
+
+      <button class="primary-btn" onclick="ledgerSaveExpense()" style="margin-top:16px;">Save Expense</button>
+      <button class="modal-close" onclick="closeModal('ledger-add-modal')">Cancel</button>
     </div>
   </div>
 
@@ -3053,21 +3049,6 @@ function closeModal(id) {
   document.getElementById(id).classList.remove('open');
   var nav = document.querySelector('.bottom-nav');
   if (nav) nav.style.display = 'flex';
-}
-
-/* Keep open modal sheets correctly sized when the on-screen keyboard opens or closes.
-   vh units don't account for the keyboard on mobile Safari, so we measure the
-   actual visible area directly and cap every open sheet to fit inside it. */
-function fixModalHeightForKeyboard() {
-  var vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
-  document.querySelectorAll('.modal-overlay.open .modal-sheet').forEach(function(sheet) {
-    sheet.style.maxHeight = Math.round(vh * 0.92) + 'px';
-  });
-}
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', fixModalHeightForKeyboard);
-} else {
-  window.addEventListener('resize', fixModalHeightForKeyboard);
 }
 
 function openCheckinModal() {
@@ -5578,7 +5559,6 @@ function ledgerOpenAddSheet() {
   document.getElementById('ledger-add-modal').classList.add('open');
   var nav = document.querySelector('.bottom-nav');
   if (nav) nav.style.display = 'none';
-  fixModalHeightForKeyboard();
 }
 
 function ledgerRenderPayerPills() {
