@@ -1491,6 +1491,10 @@
         <div class="qb-icon">📸</div>
         <div class="qb-label">Scavenger Hunt</div>
       </div>
+      <div class="quick-btn" onclick="showScreen('ledger')">
+        <div class="qb-icon">🧾</div>
+        <div class="qb-label">The Tab</div>
+      </div>
     </div>
 
     <!-- Incident Report -->
@@ -2201,6 +2205,91 @@
   </div>
 
   <!-- ========================================================
+       TRIP RECAP SCREEN
+  ======================================================== -->
+  <div id="screen-triprecap" class="screen">
+    <div class="app-header">
+      <button onclick="showScreen('home')" style="background:none;border:none;color:var(--teal-light);font-family:'DM Sans',sans-serif;font-size:14px;margin-bottom:10px;cursor:pointer;padding:0;float:left;">&#8592; Back</button>
+      <div style="clear:both;"></div>
+      <h1>The Recap 🌴</h1>
+      <div class="subtitle">Keys Trip 2026 — July 7 to July 11</div>
+    </div>
+
+    <div id="recap-hero" style="margin:0 16px 16px;"></div>
+    <div id="recap-stats" style="margin:0 16px 16px;"></div>
+    <div id="recap-trivia" style="margin:0 16px 16px;"></div>
+    <div id="recap-scavenger" style="margin:0 16px 16px;"></div>
+    <div id="recap-dnp" style="margin:0 16px 16px;"></div>
+    <div id="recap-incidents" style="margin:0 16px 16px;"></div>
+    <div id="recap-notes" style="margin:0 16px 16px;"></div>
+
+    <div style="height:30px;"></div>
+  </div>
+
+  <!-- ========================================================
+       THE TAB — EXPENSE LEDGER SCREEN
+  ======================================================== -->
+  <div id="screen-ledger" class="screen">
+    <div class="app-header">
+      <h1>The Tab</h1>
+      <div class="subtitle" id="ledger-total-line">$0 logged · everyone's even</div>
+    </div>
+
+    <div class="card" style="margin:0 16px 16px;padding:14px;">
+      <div style="font-size:13px;line-height:1.6;color:var(--off-white);">
+        Log group expenses here and the app figures out who owes who. Split evenly, leave someone out, or set exact dollar amounts per person. Settle up when it's time to pay people back.
+      </div>
+    </div>
+
+    <div id="ledger-balance-strip" style="display:flex;gap:8px;overflow-x:auto;margin:0 16px 16px;padding-bottom:4px;"></div>
+
+    <div style="display:flex;gap:8px;margin:0 16px 16px;">
+      <button id="ledger-tab-expenses" onclick="ledgerShowTab('expenses')" class="ledger-tab-btn active" style="flex:1;background:var(--card-bg);border:1px solid var(--teal);border-radius:var(--radius-sm);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;padding:10px;cursor:pointer;">🧾 Expenses</button>
+      <button id="ledger-tab-settle" onclick="ledgerShowTab('settle')" class="ledger-tab-btn" style="flex:1;background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius-sm);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;padding:10px;cursor:pointer;">⚖️ Settle Up</button>
+    </div>
+
+    <button onclick="ledgerOpenAddSheet()" style="width:calc(100% - 32px);margin:0 16px 16px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:var(--radius);color:white;font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;padding:14px;cursor:pointer;">+ Log an Expense</button>
+
+    <div id="ledger-view-expenses" style="margin:0 16px;">
+      <div id="ledger-expense-list"></div>
+    </div>
+
+    <div id="ledger-view-settle" style="margin:0 16px;display:none;">
+      <div id="ledger-settle-list"></div>
+    </div>
+
+    <div style="height:20px;"></div>
+  </div>
+
+  <!-- Add Expense sheet -->
+  <div class="modal-overlay" id="ledger-add-modal">
+    <div class="modal-sheet" onclick="event.stopPropagation()" style="max-height:85vh;overflow-y:auto;">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🧾 Log an Expense</div>
+
+      <input class="input-field" id="ledger-desc-input" placeholder="What was it? (e.g. Dinner at Half Shell)" />
+      <input class="input-field" id="ledger-amount-input" type="number" inputmode="decimal" placeholder="Amount ($)" />
+
+      <div style="font-size:12px;color:var(--text-muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Who paid?</div>
+      <div id="ledger-payer-pills" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+
+      <div style="font-size:12px;color:var(--text-muted);margin:18px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Split how?</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <button id="ledger-split-even-btn" onclick="ledgerSetSplitMode('even')" class="ledger-split-mode-btn active" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--teal);background:rgba(10,191,188,0.15);color:var(--teal-light);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Split Evenly</button>
+        <button id="ledger-split-exclude-btn" onclick="ledgerSetSplitMode('exclude')" class="ledger-split-mode-btn" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Exclude Someone</button>
+        <button id="ledger-split-custom-btn" onclick="ledgerSetSplitMode('custom')" class="ledger-split-mode-btn" style="flex:1;padding:9px;border-radius:8px;border:1px solid var(--card-border);background:var(--card-bg);color:var(--text-muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;cursor:pointer;">Custom $</button>
+      </div>
+
+      <div id="ledger-split-pills" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      <div id="ledger-custom-amounts" style="display:none;"></div>
+      <div id="ledger-custom-remaining" style="display:none;font-size:13px;color:var(--gold);font-weight:700;text-align:center;margin-top:10px;"></div>
+
+      <button class="primary-btn" onclick="ledgerSaveExpense()">Save Expense</button>
+      <button class="modal-close" onclick="closeModal('ledger-add-modal')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ========================================================
        INCIDENT REPORTS SCREEN
   ======================================================== -->
   <div id="screen-incident" class="screen">
@@ -2629,6 +2718,7 @@ function initFirebase() {
         listenForTripLog();
         listenForIncidents();
         listenForScavenger();
+        listenForLedger();
       } catch(e) {
         console.log("Firebase init error:", e);
       }
@@ -2945,6 +3035,10 @@ function showScreen(name) {
     document.getElementById('scavenger-results-view').style.display = 'none';
     scavCurrentCategory = null;
     scavRenderCategories();
+  }
+  if (name === 'ledger') {
+    ledgerShowTab('expenses');
+    ledgerRenderAll();
   }
 }
 
@@ -5044,6 +5138,584 @@ function scavShowResults() {
 }
 
 
+/* ================================================================
+   TRIP RECAP GENERATOR
+================================================================ */
+function generateTripRecap() {
+  showScreen('triprecap');
+  recapRenderHero();
+  recapRenderStats();
+  recapRenderTrivia();
+  recapRenderScavenger();
+  recapRenderDNP();
+  recapRenderIncidents();
+  recapRenderNotes();
+}
+
+function recapFindBestOverallPhoto() {
+  var subs = scavSubmissions['bestphoto'] || [];
+  if (!subs.length) return null;
+  var votes = scavVotes['bestphoto'] || {};
+  var tally = {};
+  Object.keys(votes).forEach(function(voter) {
+    var subId = votes[voter];
+    tally[subId] = (tally[subId] || 0) + 1;
+  });
+  var winner = subs[0], winnerCount = -1;
+  subs.forEach(function(s) {
+    var c = tally[s.id] || 0;
+    if (c > winnerCount) { winner = s; winnerCount = c; }
+  });
+  return winner;
+}
+
+function recapRenderHero() {
+  var el = document.getElementById('recap-hero');
+  if (!el) return;
+  var hero = recapFindBestOverallPhoto();
+  if (hero) {
+    el.innerHTML = '<div style="border-radius:14px;overflow:hidden;"><img src="' + hero.src + '" style="width:100%;display:block;max-height:320px;object-fit:cover;"></div>' +
+      '<div style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:6px;">Best Overall Photo \u2014 ' + (hero.submittedBy || 'Someone') + '</div>';
+  } else {
+    el.innerHTML = '<div class="card" style="padding:30px;text-align:center;color:var(--text-muted);font-size:13px;">No "Best Overall Photo" winner yet \u2014 submit and vote in the Scavenger Hunt to fill this in.</div>';
+  }
+}
+
+function recapRenderStats() {
+  var el = document.getElementById('recap-stats');
+  if (!el) return;
+
+  var photoCount = photos.length;
+  var checkinCount = TRIP_LOG ? TRIP_LOG.length : 0;
+  var trivCorrect = 0;
+  Object.keys(trivScores).forEach(function(n) { trivCorrect += (trivScores[n] || 0); });
+  var scavTotal = 0;
+  Object.keys(scavSubmissions).forEach(function(c) { scavTotal += (scavSubmissions[c] || []).length; });
+  var incidentCount = incidentLog.length;
+  var noteCount = groupNotes.length;
+
+  var stats = [
+    { label: 'Photos Shared', value: photoCount, emoji: '📸' },
+    { label: 'Check-Ins Logged', value: checkinCount, emoji: '📍' },
+    { label: 'Trivia Correct Answers', value: trivCorrect, emoji: '🎯' },
+    { label: 'Scavenger Photos', value: scavTotal, emoji: '🎲' },
+    { label: 'Incident Reports', value: incidentCount, emoji: '🚨' },
+    { label: 'Group Notes Posted', value: noteCount, emoji: '📝' }
+  ];
+
+  var html = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;">';
+  stats.forEach(function(s) {
+    html += '<div class="card" style="padding:16px;text-align:center;">';
+    html += '<div style="font-size:24px;margin-bottom:4px;">' + s.emoji + '</div>';
+    html += '<div style="font-size:22px;font-weight:800;color:var(--gold);">' + s.value + '</div>';
+    html += '<div style="font-size:11px;color:var(--text-muted);margin-top:2px;">' + s.label + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function recapRenderTrivia() {
+  var el = document.getElementById('recap-trivia');
+  if (!el) return;
+  var people = CHECKINS.map(function(c) { return c.name; });
+  var rows = people.map(function(name) {
+    return { name: name, score: trivScores[name] || 0 };
+  }).sort(function(a, b) { return b.score - a.score; });
+
+  var html = '<div class="rec-category">🎯 Trivia Final Standings</div><div class="card" style="padding:14px;">';
+  rows.forEach(function(r, i) {
+    var medal = i === 0 ? '\uD83E\uDD47' : i === 1 ? '\uD83E\uDD48' : i === 2 ? '\uD83E\uDD49' : (i+1) + '.';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;' + (i < rows.length - 1 ? 'border-bottom:1px solid var(--card-border);' : '') + '">';
+    html += '<span style="font-size:14px;color:var(--off-white);">' + medal + ' ' + r.name + '</span>';
+    html += '<span style="font-size:14px;font-weight:700;color:var(--teal-light);">' + r.score + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function recapRenderScavenger() {
+  var el = document.getElementById('recap-scavenger');
+  if (!el) return;
+  var html = '<div class="rec-category">🎲 Scavenger Hunt Winners</div><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">';
+
+  SCAVENGER_CATEGORIES.forEach(function(cat) {
+    var subs = scavSubmissions[cat.id] || [];
+    var votes = scavVotes[cat.id] || {};
+    var tally = {};
+    Object.keys(votes).forEach(function(voter) {
+      var subId = votes[voter];
+      tally[subId] = (tally[subId] || 0) + 1;
+    });
+    var winner = null, winnerCount = -1;
+    subs.forEach(function(s) {
+      var c = tally[s.id] || 0;
+      if (c > winnerCount) { winner = s; winnerCount = c; }
+    });
+
+    html += '<div class="card" style="padding:8px;">';
+    if (winner) {
+      html += '<img src="' + winner.src + '" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px;">';
+      html += '<div style="font-size:10px;color:var(--teal-light);font-weight:600;line-height:1.3;">' + cat.emoji + ' ' + cat.title + '</div>';
+      html += '<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">' + (winner.submittedBy || 'Someone') + '</div>';
+    } else {
+      html += '<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:24px;opacity:0.3;">' + cat.emoji + '</div>';
+      html += '<div style="font-size:10px;color:var(--text-muted);line-height:1.3;">' + cat.title + '</div>';
+      html += '<div style="font-size:10px;color:var(--text-muted);margin-top:2px;font-style:italic;">No entries</div>';
+    }
+    html += '</div>';
+  });
+
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function recapRenderDNP() {
+  var el = document.getElementById('recap-dnp');
+  if (!el) return;
+  var people = Object.keys(DNP_COUNTS);
+  var rows = people.map(function(name) {
+    return { name: name, count: DNP_COUNTS[name] || 0 };
+  }).sort(function(a, b) { return b.count - a.count; });
+
+  var html = '<div class="rec-category">\uD83D\uDEA8 Do Not Push Leaderboard</div><div class="card" style="padding:14px;">';
+  rows.forEach(function(r, i) {
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 4px;' + (i < rows.length - 1 ? 'border-bottom:1px solid var(--card-border);' : '') + '">';
+    html += '<span style="font-size:14px;color:var(--off-white);">' + (i+1) + '. ' + r.name + '</span>';
+    html += '<span style="font-size:14px;font-weight:700;color:#FF6B6B;">' + r.count + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function recapRenderIncidents() {
+  var el = document.getElementById('recap-incidents');
+  if (!el) return;
+  var html = '<div class="rec-category">\uD83D\uDEA8 The Incident Log</div>';
+  if (!incidentLog.length) {
+    html += '<div class="card" style="padding:16px;text-align:center;color:var(--text-muted);font-size:13px;">A clean trip. Allegedly.</div>';
+  } else {
+    html += '<div class="card" style="padding:14px;">';
+    var sorted = incidentLog.slice().sort(function(a, b) { return a.ts - b.ts; });
+    sorted.forEach(function(entry, i) {
+      html += '<div style="padding:8px 4px;' + (i < sorted.length - 1 ? 'border-bottom:1px solid var(--card-border);' : '') + '">';
+      html += '<div style="font-size:13px;font-weight:700;color:var(--teal-light);">' + entry.names + '</div>';
+      html += '<div style="font-size:12px;color:var(--off-white);margin-top:2px;">' + entry.desc + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function recapRenderNotes() {
+  var el = document.getElementById('recap-notes');
+  if (!el) return;
+  var html = '<div class="rec-category">\uD83D\uDCDD Group Notes</div>';
+  if (!groupNotes.length) {
+    html += '<div class="card" style="padding:16px;text-align:center;color:var(--text-muted);font-size:13px;">No notes were posted this trip.</div>';
+  } else {
+    var sorted = groupNotes.slice().sort(function(a, b) { return (a.ts || 0) - (b.ts || 0); });
+    html += '<div class="card" style="padding:14px;">';
+    sorted.forEach(function(n, i) {
+      html += '<div style="padding:8px 4px;' + (i < sorted.length - 1 ? 'border-bottom:1px solid var(--card-border);' : '') + '">';
+      html += '<div style="font-size:13px;color:var(--off-white);line-height:1.4;">' + n.text + '</div>';
+      html += '<div style="font-size:11px;color:var(--text-muted);margin-top:3px;">' + (n.author || 'Someone') + ' \u00b7 ' + (n.date || '') + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+
+/* ================================================================
+   THE TAB — EXPENSE LEDGER ENGINE
+================================================================ */
+var ledgerExpenses = [];
+var ledgerSettlements = [];
+var ledgerSplitMode = 'even';
+var ledgerSelectedPayer = null;
+var ledgerExcluded = {};
+var ledgerCustomAmounts = {};
+
+function listenForLedger() {
+  if (!db) return;
+  db.ref('ledger/expenses').orderByChild('ts').on('value', function(snapshot) {
+    var data = snapshot.val();
+    ledgerExpenses = [];
+    if (data) {
+      Object.keys(data).forEach(function(key) {
+        var e = data[key];
+        e.id = key;
+        ledgerExpenses.push(e);
+      });
+      ledgerExpenses.sort(function(a, b) { return b.ts - a.ts; });
+    }
+    ledgerRenderAll();
+  });
+
+  db.ref('ledger/settlements').orderByChild('ts').on('value', function(snapshot) {
+    var data = snapshot.val();
+    ledgerSettlements = [];
+    if (data) {
+      Object.keys(data).forEach(function(key) {
+        var s = data[key];
+        s.id = key;
+        ledgerSettlements.push(s);
+      });
+    }
+    ledgerRenderAll();
+  });
+}
+
+function ledgerComputeBalances() {
+  var net = {};
+  CHECKINS.forEach(function(c) { net[c.name] = 0; });
+
+  ledgerExpenses.forEach(function(e) {
+    var people = Object.keys(e.shares || {});
+    people.forEach(function(name) {
+      if (net[name] === undefined) return;
+      net[name] -= (e.shares[name] || 0);
+    });
+    if (net[e.paidBy] !== undefined) net[e.paidBy] += e.amount;
+  });
+
+  ledgerSettlements.forEach(function(s) {
+    // s.from paid s.to the full amount owed; from's debt decreases, to's credit decreases
+    if (net[s.from] !== undefined) net[s.from] += s.amount;
+    if (net[s.to] !== undefined) net[s.to] -= s.amount;
+  });
+
+  return net;
+}
+
+function ledgerFmt(n) {
+  var sign = n < 0 ? '-' : '';
+  return sign + '$' + Math.abs(Math.round(n));
+}
+
+function ledgerRenderAll() {
+  ledgerRenderHeader();
+  ledgerRenderBalanceStrip();
+  ledgerRenderExpenseList();
+  ledgerRenderSettleList();
+}
+
+function ledgerRenderHeader() {
+  var totalEl = document.getElementById('ledger-total-line');
+  if (!totalEl) return;
+  var total = ledgerExpenses.reduce(function(sum, e) { return sum + e.amount; }, 0);
+  totalEl.textContent = '$' + total + ' logged across ' + ledgerExpenses.length + ' expense' + (ledgerExpenses.length === 1 ? '' : 's');
+}
+
+function ledgerRenderBalanceStrip() {
+  var el = document.getElementById('ledger-balance-strip');
+  if (!el) return;
+  var net = ledgerComputeBalances();
+  var html = '';
+  CHECKINS.forEach(function(c) {
+    var v = net[c.name] || 0;
+    var rounded = Math.round(v);
+    var color = rounded > 0 ? '#34D399' : (rounded < 0 ? '#FF6B6B' : 'var(--text-muted)');
+    var sign = rounded > 0 ? '+' : '';
+    html += '<div style="flex:0 0 auto;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:10px 14px;min-width:80px;">';
+    html += '<div style="font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;white-space:nowrap;">' + c.name + '</div>';
+    html += '<div style="font-family:monospace;font-weight:700;font-size:14px;color:' + color + ';">' + sign + ledgerFmt(rounded) + '</div>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function ledgerShowTab(tab) {
+  document.getElementById('ledger-view-expenses').style.display = tab === 'expenses' ? 'block' : 'none';
+  document.getElementById('ledger-view-settle').style.display = tab === 'settle' ? 'block' : 'none';
+
+  var expBtn = document.getElementById('ledger-tab-expenses');
+  var setBtn = document.getElementById('ledger-tab-settle');
+  if (tab === 'expenses') {
+    expBtn.style.borderColor = 'var(--teal)'; expBtn.style.background = 'rgba(10,191,188,0.15)'; expBtn.style.color = 'var(--teal-light)';
+    setBtn.style.borderColor = 'var(--card-border)'; setBtn.style.background = 'var(--card-bg)'; setBtn.style.color = 'var(--text-muted)';
+  } else {
+    setBtn.style.borderColor = 'var(--teal)'; setBtn.style.background = 'rgba(10,191,188,0.15)'; setBtn.style.color = 'var(--teal-light)';
+    expBtn.style.borderColor = 'var(--card-border)'; expBtn.style.background = 'var(--card-bg)'; expBtn.style.color = 'var(--text-muted)';
+  }
+}
+
+function ledgerRenderExpenseList() {
+  var el = document.getElementById('ledger-expense-list');
+  if (!el) return;
+  if (!ledgerExpenses.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:13px;padding:30px 10px;">No expenses logged yet. Tap the button above to add the first one.</div>';
+    return;
+  }
+  var html = '';
+  ledgerExpenses.forEach(function(e) {
+    var isOwner = CURRENT_USER && e.createdBy === CURRENT_USER;
+    var peopleCount = Object.keys(e.shares || {}).length;
+    html += '<div class="card" style="margin-bottom:8px;padding:12px 14px;position:relative;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;">';
+    html += '<div style="flex:1;">';
+    html += '<div style="font-size:14px;font-weight:600;color:var(--off-white);">' + e.desc + '</div>';
+    html += '<div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' + e.paidBy + ' paid \u00b7 split ' + peopleCount + ' way' + (peopleCount === 1 ? '' : 's') + '</div>';
+    html += '</div>';
+    html += '<div style="font-family:monospace;font-weight:700;font-size:15px;color:var(--gold);">$' + e.amount + '</div>';
+    html += '</div>';
+    if (isOwner) {
+      html += '<button onclick="ledgerDeleteExpense(\'' + e.id + '\')" style="position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:rgba(255,0,0,0.5);border:none;color:white;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&#x2715;</button>';
+    }
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function ledgerDeleteExpense(id) {
+  if (!confirm('Delete this expense? This cannot be undone.')) return;
+  if (db) {
+    db.ref('ledger/expenses/' + id).remove();
+  } else {
+    ledgerExpenses = ledgerExpenses.filter(function(e) { return e.id !== id; });
+    ledgerRenderAll();
+  }
+}
+
+function ledgerRenderSettleList() {
+  var el = document.getElementById('ledger-settle-list');
+  if (!el) return;
+  var net = ledgerComputeBalances();
+
+  var creditors = [];
+  var debtors = [];
+  CHECKINS.forEach(function(c) {
+    var v = Math.round(net[c.name] || 0);
+    if (v > 0) creditors.push({ name: c.name, amt: v });
+    else if (v < 0) debtors.push({ name: c.name, amt: -v });
+  });
+  creditors.sort(function(a, b) { return b.amt - a.amt; });
+  debtors.sort(function(a, b) { return b.amt - a.amt; });
+
+  var settlementsNeeded = [];
+  var ci = 0, di = 0;
+  var credCopy = creditors.map(function(c) { return { name: c.name, amt: c.amt }; });
+  var debtCopy = debtors.map(function(d) { return { name: d.name, amt: d.amt }; });
+
+  while (ci < credCopy.length && di < debtCopy.length) {
+    var pay = Math.min(credCopy[ci].amt, debtCopy[di].amt);
+    if (pay > 0) {
+      settlementsNeeded.push({ from: debtCopy[di].name, to: credCopy[ci].name, amt: pay });
+    }
+    credCopy[ci].amt -= pay;
+    debtCopy[di].amt -= pay;
+    if (credCopy[ci].amt <= 0) ci++;
+    if (debtCopy[di].amt <= 0) di++;
+  }
+
+  if (!settlementsNeeded.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text-muted);font-size:14px;padding:30px 10px;">Everyone is square. Nice trip.</div>';
+    return;
+  }
+
+  var html = '';
+  settlementsNeeded.forEach(function(s) {
+    html += '<div class="card" style="margin-bottom:10px;padding:14px;">';
+    html += '<div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--off-white);margin-bottom:10px;">';
+    html += '<strong>' + s.from + '</strong><span style="color:var(--gold);">&#8594;</span><strong>' + s.to + '</strong>';
+    html += '<span style="margin-left:auto;font-family:monospace;font-weight:700;font-size:16px;color:var(--gold);">$' + s.amt + '</span>';
+    html += '</div>';
+    html += '<button onclick="ledgerMarkSettled(\'' + s.from + '\',\'' + s.to + '\',' + s.amt + ')" style="width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));border:none;border-radius:8px;color:white;font-family:\'DM Sans\',sans-serif;font-weight:600;font-size:13px;padding:10px;cursor:pointer;">Mark as Paid in Full</button>';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function ledgerMarkSettled(from, to, amt) {
+  if (!confirm(from + ' paid ' + to + ' $' + amt + ' in full? This will zero out that balance.')) return;
+  var nowTs = Date.now();
+  var record = { from: from, to: to, amount: amt, ts: nowTs };
+  if (db) {
+    db.ref('ledger/settlements/' + nowTs).set(record);
+  } else {
+    record.id = 'local-' + nowTs;
+    ledgerSettlements.push(record);
+    ledgerRenderAll();
+  }
+}
+
+/* ---------------- Add Expense Sheet ---------------- */
+function ledgerOpenAddSheet() {
+  document.getElementById('ledger-desc-input').value = '';
+  document.getElementById('ledger-amount-input').value = '';
+  ledgerSelectedPayer = CURRENT_USER || (CHECKINS[0] && CHECKINS[0].name);
+  ledgerSplitMode = 'even';
+  ledgerExcluded = {};
+  ledgerCustomAmounts = {};
+  ledgerRenderPayerPills();
+  ledgerSetSplitMode('even');
+  document.getElementById('ledger-add-modal').classList.add('open');
+}
+
+function ledgerRenderPayerPills() {
+  var el = document.getElementById('ledger-payer-pills');
+  if (!el) return;
+  var html = '';
+  CHECKINS.forEach(function(c) {
+    var sel = c.name === ledgerSelectedPayer;
+    html += '<button onclick="ledgerSelectPayer(\'' + c.name + '\')" style="padding:8px 14px;border-radius:20px;border:1.5px solid ' + (sel ? 'var(--teal)' : 'var(--card-border)') + ';background:' + (sel ? 'rgba(10,191,188,0.15)' : 'var(--card-bg)') + ';color:' + (sel ? 'var(--teal-light)' : 'var(--off-white)') + ';font-family:\'DM Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">' + c.initials + ' ' + c.name + '</button>';
+  });
+  el.innerHTML = html;
+}
+
+function ledgerSelectPayer(name) {
+  ledgerSelectedPayer = name;
+  ledgerRenderPayerPills();
+}
+
+function ledgerSetSplitMode(mode) {
+  ledgerSplitMode = mode;
+  ['even', 'exclude', 'custom'].forEach(function(m) {
+    var btn = document.getElementById('ledger-split-' + m + '-btn');
+    if (!btn) return;
+    if (m === mode) {
+      btn.style.borderColor = 'var(--teal)'; btn.style.background = 'rgba(10,191,188,0.15)'; btn.style.color = 'var(--teal-light)';
+    } else {
+      btn.style.borderColor = 'var(--card-border)'; btn.style.background = 'var(--card-bg)'; btn.style.color = 'var(--text-muted)';
+    }
+  });
+
+  document.getElementById('ledger-split-pills').style.display = mode === 'custom' ? 'none' : 'flex';
+  document.getElementById('ledger-custom-amounts').style.display = mode === 'custom' ? 'block' : 'none';
+  document.getElementById('ledger-custom-remaining').style.display = mode === 'custom' ? 'block' : 'none';
+
+  if (mode === 'custom') {
+    ledgerRenderCustomAmounts();
+  } else {
+    ledgerRenderSplitPills();
+  }
+}
+
+function ledgerRenderSplitPills() {
+  var el = document.getElementById('ledger-split-pills');
+  if (!el) return;
+  var html = '';
+  CHECKINS.forEach(function(c) {
+    var isIncluded = !ledgerExcluded[c.name];
+    var clickable = ledgerSplitMode === 'exclude';
+    html += '<button ' + (clickable ? 'onclick="ledgerToggleExclude(\'' + c.name + '\')"' : 'disabled') + ' style="padding:8px 14px;border-radius:20px;border:1.5px solid ' + (isIncluded ? 'var(--teal)' : 'var(--card-border)') + ';background:' + (isIncluded ? 'rgba(10,191,188,0.15)' : 'var(--card-bg)') + ';color:' + (isIncluded ? 'var(--teal-light)' : 'var(--text-muted)') + ';font-family:\'DM Sans\',sans-serif;font-size:13px;font-weight:600;cursor:' + (clickable ? 'pointer' : 'default') + ';opacity:' + (isIncluded ? '1' : '0.5') + ';">' + c.initials + ' ' + c.name + '</button>';
+  });
+  el.innerHTML = html;
+}
+
+function ledgerToggleExclude(name) {
+  if (ledgerExcluded[name]) delete ledgerExcluded[name];
+  else ledgerExcluded[name] = true;
+  ledgerRenderSplitPills();
+}
+
+function ledgerRenderCustomAmounts() {
+  var el = document.getElementById('ledger-custom-amounts');
+  if (!el) return;
+  var html = '';
+  CHECKINS.forEach(function(c) {
+    var val = ledgerCustomAmounts[c.name] || '';
+    html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">';
+    html += '<span style="flex:1;font-size:14px;color:var(--off-white);">' + c.initials + ' ' + c.name + '</span>';
+    html += '<input type="number" inputmode="numeric" step="1" min="0" value="' + val + '" oninput="ledgerUpdateCustomAmount(\'' + c.name + '\', this.value)" placeholder="0" style="width:90px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;color:var(--off-white);font-family:monospace;font-size:14px;padding:8px 10px;text-align:right;">';
+    html += '</div>';
+  });
+  el.innerHTML = html;
+  ledgerUpdateCustomRemaining();
+}
+
+function ledgerUpdateCustomAmount(name, value) {
+  var n = parseInt(value, 10);
+  if (isNaN(n) || n < 0) {
+    delete ledgerCustomAmounts[name];
+  } else {
+    ledgerCustomAmounts[name] = n;
+  }
+  ledgerUpdateCustomRemaining();
+}
+
+function ledgerUpdateCustomRemaining() {
+  var totalInput = parseFloat(document.getElementById('ledger-amount-input').value) || 0;
+  var totalAssigned = 0;
+  Object.keys(ledgerCustomAmounts).forEach(function(name) {
+    totalAssigned += ledgerCustomAmounts[name];
+  });
+  var remaining = Math.round(totalInput) - totalAssigned;
+  var el = document.getElementById('ledger-custom-remaining');
+  if (!el) return;
+  if (remaining === 0 && totalInput > 0) {
+    el.textContent = 'Balanced \u2014 ready to save';
+    el.style.color = '#34D399';
+  } else {
+    el.textContent = '$' + remaining + ' remaining to assign';
+    el.style.color = 'var(--gold)';
+  }
+}
+
+function ledgerSaveExpense() {
+  var desc = document.getElementById('ledger-desc-input').value.trim();
+  var amountRaw = document.getElementById('ledger-amount-input').value;
+  var amount = Math.round(parseFloat(amountRaw));
+
+  if (!desc) { alert('Add a description for this expense.'); return; }
+  if (!amount || amount <= 0) { alert('Enter a whole-dollar amount greater than zero.'); return; }
+  if (!ledgerSelectedPayer) { alert('Choose who paid.'); return; }
+
+  var shares = {};
+
+  if (ledgerSplitMode === 'custom') {
+    var totalAssigned = 0;
+    Object.keys(ledgerCustomAmounts).forEach(function(name) {
+      totalAssigned += ledgerCustomAmounts[name];
+    });
+    if (totalAssigned !== amount) {
+      alert('Custom amounts must add up to exactly $' + amount + '. Currently $' + (amount - totalAssigned) + ' remaining.');
+      return;
+    }
+    Object.keys(ledgerCustomAmounts).forEach(function(name) {
+      if (ledgerCustomAmounts[name] > 0) shares[name] = ledgerCustomAmounts[name];
+    });
+    if (!Object.keys(shares).length) { alert('Assign at least one person a share.'); return; }
+  } else {
+    var included = CHECKINS.map(function(c) { return c.name; }).filter(function(name) {
+      return ledgerSplitMode === 'exclude' ? !ledgerExcluded[name] : true;
+    });
+    if (!included.length) { alert('At least one person needs to be included in the split.'); return; }
+
+    var base = Math.floor(amount / included.length);
+    var remainder = amount - (base * included.length);
+    included.forEach(function(name, i) {
+      shares[name] = base + (i < remainder ? 1 : 0); // distribute remainder cents-equivalent across first few people
+    });
+  }
+
+  var nowTs = Date.now();
+  var expense = {
+    desc: desc,
+    amount: amount,
+    paidBy: ledgerSelectedPayer,
+    shares: shares,
+    createdBy: CURRENT_USER || ledgerSelectedPayer,
+    ts: nowTs
+  };
+
+  if (db) {
+    db.ref('ledger/expenses/' + nowTs).set(expense);
+  } else {
+    expense.id = 'local-' + nowTs;
+    ledgerExpenses.unshift(expense);
+    ledgerRenderAll();
+  }
+
+  closeModal('ledger-add-modal');
+}
+
+
 function deletePhoto(index) {
   if (!confirm('Delete this photo?')) return;
   var p = photos[index];
@@ -5280,6 +5952,12 @@ document.addEventListener('DOMContentLoaded', function(){
         <button onclick="devDeleteOneScavPhoto()" style="width:100%;background:linear-gradient(135deg,#cc0000,#ff4444);border:none;border-radius:8px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;margin-bottom:10px;">Delete Selected Photo</button>
         <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">Or wipe everything — all photos and all votes across every category:</div>
         <button onclick="devClearAllScavenger()" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:var(--coral);font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;padding:10px;cursor:pointer;">Clear All Scavenger Hunt Data</button>
+      </div>
+
+      <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">Trip Recap</div>
+      <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;margin-bottom:12px;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">Assembles everything into one shareable recap page — photos, leaderboards, scavenger hunt winners, incident log, and group notes.</div>
+        <button onclick="generateTripRecap()" style="width:100%;background:linear-gradient(135deg,var(--gold),#e6b800);border:none;border-radius:8px;color:#1a1a1a;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;padding:11px;cursor:pointer;">🌴 Generate Trip Recap</button>
       </div>
 
       <div style="color:var(--gold);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">App Status</div>
