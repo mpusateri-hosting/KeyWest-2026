@@ -1463,10 +1463,6 @@
         <div class="qb-icon">💡</div>
         <div class="qb-label">Recs</div>
       </div>
-      <div class="quick-btn" onclick="showScreen('itinerary')">
-        <div class="qb-icon">📋</div>
-        <div class="qb-label">Itinerary</div>
-      </div>
       <div class="quick-btn" onclick="showScreen('ineed')">
         <div class="qb-icon">🆘</div>
         <div class="qb-label">I Need...</div>
@@ -1823,8 +1819,23 @@
   ======================================================== -->
   <div id="screen-calendar" class="screen">
     <div class="app-header">
-      <h1>Trip Calendar</h1>
-      <div class="subtitle">Tap any event for directions</div>
+      <h1>Itinerary &amp; Events</h1>
+      <div class="subtitle">Confirmed schedule · Tap any event for directions</div>
+    </div>
+
+    <div style="margin:0 16px 6px;">
+      <div class="rec-category">✈️ Confirmed — Flights &amp; Hotel</div>
+      <div class="card" style="padding:12px 14px;margin-bottom:14px;">
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-border);"><div style="font-size:12px;font-weight:600;color:var(--teal-light);min-width:72px;">9:00 AM</div><div style="font-size:13px;color:var(--off-white);">Depart Louisville — UA 3696 SDF → ORD</div></div>
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-border);"><div style="font-size:12px;font-weight:600;color:var(--teal-light);min-width:72px;">10:38 AM</div><div style="font-size:13px;color:var(--off-white);">Land Chicago O'Hare — connection to Key West</div></div>
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-border);"><div style="font-size:12px;font-weight:600;color:var(--teal-light);min-width:72px;">11:43 AM</div><div style="font-size:13px;color:var(--off-white);">Depart O'Hare — UA 3690 ORD → EYW</div></div>
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-border);"><div style="font-size:12px;font-weight:600;color:var(--teal-light);min-width:72px;">3:07 PM</div><div style="font-size:13px;color:var(--off-white);">Arrive Key West! Check in to The Reach Key West 🌴</div></div>
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-border);"><div style="font-size:12px;font-weight:600;color:var(--gold);min-width:72px;">Sat 11:00 AM</div><div style="font-size:13px;color:var(--off-white);">Check out of The Reach Key West</div></div>
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-border);"><div style="font-size:12px;font-weight:600;color:var(--gold);min-width:72px;">Sat 4:00 PM</div><div style="font-size:13px;color:var(--off-white);">UA 3499 departs EYW → ORD</div></div>
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-border);"><div style="font-size:12px;font-weight:600;color:var(--gold);min-width:72px;">Sat 7:55 PM</div><div style="font-size:13px;color:var(--off-white);">Land Chicago O'Hare</div></div>
+        <div class="itin-item" style="display:flex;gap:10px;padding:7px 0;"><div style="font-size:12px;font-weight:600;color:var(--gold);min-width:72px;">Sat 9:02 PM</div><div style="font-size:13px;color:var(--off-white);">UA 3551 departs ORD → SDF</div></div>
+      </div>
+      <div class="rec-category">📅 Group Events</div>
     </div>
 
     <div id="calendar-content">
@@ -1832,20 +1843,6 @@
     </div>
 
     <button class="add-event-btn" onclick="openAddEventModal()">+ Add Event</button>
-  </div>
-
-  <!-- ========================================================
-       ITINERARY SCREEN
-  ======================================================== -->
-  <div id="screen-itinerary" class="screen">
-    <div class="app-header">
-      <h1>Trip Itinerary</h1>
-      <div class="subtitle">The full game plan</div>
-    </div>
-
-    <div id="itinerary-content">
-      <!-- populated by JS -->
-    </div>
   </div>
 
   <!-- ========================================================
@@ -2520,8 +2517,15 @@
     <div class="modal-handle"></div>
     <div class="modal-title">📅 Add Event</div>
     <input class="input-field" id="evt-title" placeholder="Event name" />
-    <input class="input-field" id="evt-date" placeholder="Date (e.g. Jul 8)" />
-    <input class="input-field" id="evt-time" placeholder="Time (e.g. 2:00 PM)" />
+    <select class="input-field" id="evt-date">
+      <option value="">— Pick a day —</option>
+      <option value="Jul 7">Tuesday, July 7 — Arrival</option>
+      <option value="Jul 8">Wednesday, July 8</option>
+      <option value="Jul 9">Thursday, July 9</option>
+      <option value="Jul 10">Friday, July 10</option>
+      <option value="Jul 11">Saturday, July 11 — Departure</option>
+    </select>
+    <input class="input-field" id="evt-time" type="time" style="color:var(--off-white);" />
     <input class="input-field" id="evt-location" placeholder="Location / address (for directions)" />
     <select class="input-field" id="evt-type">
       <option value="group">👥 Group Event</option>
@@ -2538,8 +2542,14 @@
     <div class="modal-handle"></div>
     <div class="modal-title">✏️ Edit Event</div>
     <input class="input-field" id="edit-evt-title" placeholder="Event name" />
-    <input class="input-field" id="edit-evt-date" placeholder="Date (e.g. Jul 8)" />
-    <input class="input-field" id="edit-evt-time" placeholder="Time (e.g. 2:00 PM)" />
+    <select class="input-field" id="edit-evt-date">
+      <option value="Jul 7">Tuesday, July 7 — Arrival</option>
+      <option value="Jul 8">Wednesday, July 8</option>
+      <option value="Jul 9">Thursday, July 9</option>
+      <option value="Jul 10">Friday, July 10</option>
+      <option value="Jul 11">Saturday, July 11 — Departure</option>
+    </select>
+    <input class="input-field" id="edit-evt-time" type="time" style="color:var(--off-white);" />
     <input class="input-field" id="edit-evt-location" placeholder="Location / address (for directions)" />
     <select class="input-field" id="edit-evt-type">
       <option value="group">👥 Group Event</option>
@@ -2726,30 +2736,6 @@ var RECS = [
 
 ];
 
-var ITINERARY = [
-  { day:1, name:"Arrival Day", date:"Tuesday, July 7", items:[
-    { time:"9:00 AM",  text:"Depart Louisville — UA 3696 SDF → ORD" },
-    { time:"10:38 AM", text:"Land Chicago O'Hare — connection to Key West" },
-    { time:"11:43 AM", text:"Depart O'Hare — UA 3690 ORD → EYW" },
-    { time:"3:07 PM",  text:"Arrive Key West! Check in to The Reach Key West — Hilton Curio 🌴" },
-  ]},
-  { day:2, name:"Day 2", date:"Wednesday, July 8", items:[
-    { time:"—",  text:"Nothing scheduled yet — add events from the Calendar screen" },
-  ]},
-  { day:3, name:"Day 3", date:"Thursday, July 9", items:[
-    { time:"—",  text:"Nothing scheduled yet — add events from the Calendar screen" },
-  ]},
-  { day:4, name:"Day 4", date:"Friday, July 10", items:[
-    { time:"—",  text:"Nothing scheduled yet — add events from the Calendar screen" },
-  ]},
-  { day:5, name:"Departure Day", date:"Saturday, July 11", items:[
-    { time:"11:00 AM", text:"Check out of The Reach Key West" },
-    { time:"4:00 PM",  text:"UA 3499 departs EYW → ORD" },
-    { time:"7:55 PM",  text:"Land Chicago O'Hare" },
-    { time:"9:02 PM",  text:"UA 3551 departs ORD → SDF" },
-  ]},
-];
-
 /* ================================================================
    FIREBASE INITIALIZATION
 ================================================================ */
@@ -2774,6 +2760,7 @@ function initFirebase() {
         listenForTrivia();
         listenForTripLog();
         listenForIncidents();
+        listenForEvents();
         listenForScavenger();
         listenForLedger();
       } catch(e) {
@@ -3284,26 +3271,6 @@ function initCalendar() {
 }
 
 /* ================================================================
-   ITINERARY
-================================================================ */
-function initItinerary() {
-  var html = '';
-  ITINERARY.forEach(function(day){
-    html += '<div class="itin-day">';
-    html += '<div class="itin-day-header">';
-    html += '<div class="itin-day-num">' + day.day + '</div>';
-    html += '<div class="itin-day-info"><div class="itin-day-name">' + day.name + '</div><div class="itin-day-date">' + day.date + '</div></div>';
-    html += '</div>';
-    html += '<div class="itin-items">';
-    day.items.forEach(function(item){
-      html += '<div class="itin-item"><div class="itin-item-time">' + item.time + '</div><div>' + item.text + '</div></div>';
-    });
-    html += '</div></div>';
-  });
-  document.getElementById('itinerary-content').innerHTML = html;
-}
-
-/* ================================================================
    CHECK-INS
 ================================================================ */
 function initCheckins() {
@@ -3425,7 +3392,7 @@ function openEditEvent(id) {
   document.getElementById('edit-evt-id').value = id;
   document.getElementById('edit-evt-title').value = e.title;
   document.getElementById('edit-evt-date').value = e.date;
-  document.getElementById('edit-evt-time').value = e.time;
+  document.getElementById('edit-evt-time').value = fmt12to24(e.time);
   document.getElementById('edit-evt-location').value = e.address || '';
   document.getElementById('edit-evt-type').value = e.type;
   document.getElementById('edit-event-modal').classList.add('open');
@@ -3433,48 +3400,103 @@ function openEditEvent(id) {
 
 function saveEditEvent() {
   var id = parseInt(document.getElementById('edit-evt-id').value);
-  for (var i = 0; i < EVENTS.length; i++) {
-    if (EVENTS[i].id === id) {
-      EVENTS[i].title   = document.getElementById('edit-evt-title').value.trim();
-      EVENTS[i].date    = document.getElementById('edit-evt-date').value.trim();
-      EVENTS[i].time    = document.getElementById('edit-evt-time').value.trim();
-      EVENTS[i].address = document.getElementById('edit-evt-location').value.trim();
-      EVENTS[i].type    = document.getElementById('edit-evt-type').value;
-      break;
+  var timeRaw = document.getElementById('edit-evt-time').value;
+  var updates = {
+    title:   document.getElementById('edit-evt-title').value.trim(),
+    date:    document.getElementById('edit-evt-date').value,
+    time:    fmtTime24to12(timeRaw),
+    address: document.getElementById('edit-evt-location').value.trim(),
+    type:    document.getElementById('edit-evt-type').value
+  };
+
+  if (db) {
+    db.ref('events/' + id).update(updates);
+  } else {
+    for (var i = 0; i < EVENTS.length; i++) {
+      if (EVENTS[i].id === id) {
+        EVENTS[i].title   = updates.title;
+        EVENTS[i].date    = updates.date;
+        EVENTS[i].time    = updates.time;
+        EVENTS[i].address = updates.address;
+        EVENTS[i].type    = updates.type;
+        break;
+      }
     }
+    initCalendar();
+    initHome();
   }
+
   closeModal('edit-event-modal');
-  initCalendar();
-  initHome();
 }
 
 function deleteEvent() {
   var id = parseInt(document.getElementById('edit-evt-id').value);
   if (!confirm('Delete this event?')) return;
-  for (var i = 0; i < EVENTS.length; i++) {
-    if (EVENTS[i].id === id) {
-      EVENTS.splice(i, 1);
-      break;
+
+  if (db) {
+    db.ref('events/' + id).remove();
+  } else {
+    for (var i = 0; i < EVENTS.length; i++) {
+      if (EVENTS[i].id === id) { EVENTS.splice(i, 1); break; }
     }
+    initCalendar();
+    initHome();
   }
+
   closeModal('edit-event-modal');
-  initCalendar();
-  initHome();
+}
+
+function fmtTime24to12(t) {
+  // Converts "14:00" to "2:00 PM", "09:30" to "9:30 AM"
+  if (!t) return '';
+  var parts = t.split(':');
+  var h = parseInt(parts[0], 10);
+  var m = parts[1] || '00';
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12 || 12;
+  return h12 + ':' + m + ' ' + ampm;
+}
+
+function fmt12to24(t) {
+  // Converts "2:00 PM" back to "14:00" for populating the time input on edit
+  if (!t || t.indexOf(':') === -1) return '';
+  var parts = t.split(' ');
+  var timeParts = parts[0].split(':');
+  var h = parseInt(timeParts[0], 10);
+  var m = timeParts[1] || '00';
+  var ampm = parts[1] || 'AM';
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  return (h < 10 ? '0' : '') + h + ':' + m;
 }
 
 function submitEvent() {
   var title = document.getElementById('evt-title').value.trim();
-  var date  = document.getElementById('evt-date').value.trim();
-  var time  = document.getElementById('evt-time').value.trim();
+  var date  = document.getElementById('evt-date').value;
+  var timeRaw = document.getElementById('evt-time').value;
   var addr  = document.getElementById('evt-location').value.trim();
   var type  = document.getElementById('evt-type').value;
-  if (!title || !date || !time) { alert('Please fill in event name, date, and time.'); return; }
+  if (!title) { alert('Please enter an event name.'); return; }
+  if (!date)  { alert('Please pick a day.'); return; }
+  if (!timeRaw) { alert('Please pick a time.'); return; }
 
-  EVENTS.push({ id: Date.now(), date:date, time:time, title:title, type:type, address:addr, lat:CONFIG.keyWestLat, lng:CONFIG.keyWestLng });
-  initCalendar();
-  initHome();
+  var time = fmtTime24to12(timeRaw);
+  var nowTs = Date.now();
+  var evt = { id: nowTs, date:date, time:time, title:title, type:type, address:addr, lat:CONFIG.keyWestLat, lng:CONFIG.keyWestLng, ts:nowTs };
+
+  if (db) {
+    db.ref('events/' + nowTs).set(evt);
+  } else {
+    EVENTS.push(evt);
+    initCalendar();
+    initHome();
+  }
+
   closeModal('add-event-modal');
-  ['evt-title','evt-date','evt-time','evt-location'].forEach(function(id){ document.getElementById(id).value = ''; });
+  document.getElementById('evt-title').value = '';
+  document.getElementById('evt-date').value = '';
+  document.getElementById('evt-time').value = '';
+  document.getElementById('evt-location').value = '';
 }
 
 /* ================================================================
@@ -4782,6 +4804,30 @@ var incidentLog = [];
 var incidentReport = {};
 var incidentStepIndex = 0;
 var incidentSteps = [];
+
+function listenForEvents() {
+  if (!db) return;
+  db.ref('events').orderByChild('ts').on('value', function(snapshot) {
+    var data = snapshot.val();
+    EVENTS = [];
+    if (data) {
+      Object.keys(data).forEach(function(key) {
+        var e = data[key];
+        e.id = parseInt(key);
+        EVENTS.push(e);
+      });
+      EVENTS.sort(function(a, b) {
+        // Sort by date then time
+        var days = ['Jul 7','Jul 8','Jul 9','Jul 10','Jul 11'];
+        var da = days.indexOf(a.date), db2 = days.indexOf(b.date);
+        if (da !== db2) return da - db2;
+        return a.time.localeCompare(b.time);
+      });
+    }
+    initCalendar();
+    initHome();
+  });
+}
 
 function listenForIncidents() {
   if (!db) return;
@@ -6106,7 +6152,6 @@ document.addEventListener('DOMContentLoaded', function(){
   loadIdentity();
   initHome();
   initCalendar();
-  initItinerary();
   initCheckins();
   initRecs();
   loadWeather();
