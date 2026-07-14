@@ -5480,8 +5480,9 @@ function recapRenderHero() {
   if (!el) return;
   var hero = recapFindBestOverallPhoto();
   if (hero) {
-    el.innerHTML = '<div style="border-radius:14px;overflow:hidden;"><img src="' + hero.src + '" style="width:100%;display:block;max-height:320px;object-fit:cover;"></div>' +
-      '<div style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:6px;">Best Overall Photo \u2014 ' + (hero.submittedBy || 'Someone') + '</div>';
+    el.innerHTML = '<div style="border-radius:14px;overflow:hidden;cursor:pointer;" onclick="openRecapPhoto(\'' + hero.src + '\')">' +
+      '<img src="' + hero.src + '" style="width:100%;display:block;max-height:320px;object-fit:cover;"></div>' +
+      '<div style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:6px;">Best Overall Photo \u2014 ' + (hero.submittedBy || 'Someone') + ' \u00b7 Tap to enlarge</div>';
   } else {
     el.innerHTML = '<div class="card" style="padding:30px;text-align:center;color:var(--text-muted);font-size:13px;">No "Best Overall Photo" winner yet \u2014 submit and vote in the Scavenger Hunt to fill this in.</div>';
   }
@@ -5562,7 +5563,7 @@ function recapRenderScavenger() {
 
     html += '<div class="card" style="padding:8px;">';
     if (winner) {
-      html += '<img src="' + winner.src + '" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px;">';
+      html += '<img src="' + winner.src + '" onclick="openRecapPhoto(\'' + winner.src + '\')" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px;cursor:pointer;">';
       html += '<div style="font-size:10px;color:var(--teal-light);font-weight:600;line-height:1.3;">' + cat.emoji + ' ' + cat.title + '</div>';
       html += '<div style="font-size:10px;color:var(--text-muted);margin-top:2px;">' + (winner.submittedBy || 'Someone') + '</div>';
     } else {
@@ -6070,6 +6071,16 @@ var DUVAL_MAP_STOPS = [
   { emoji:'\uD83C\uDF05', name:'Mallory Square', address:'Mallory Square, Key West', note:'North end. Sunset celebration every night.' }
 ];
 
+function openRecapPhoto(src) {
+  var overlay = document.getElementById('treasure-map-overlay');
+  var img = document.getElementById('treasure-map-img');
+  if (!overlay || !img) return;
+  img.src = src;
+  overlay.style.display = 'block';
+  var nav = document.querySelector('.bottom-nav');
+  if (nav) nav.style.display = 'none';
+}
+
 function openTreasureMap() {
   document.getElementById('treasure-map-overlay').style.display = 'block';
   var nav = document.querySelector('.bottom-nav');
@@ -6115,8 +6126,8 @@ function exportTripRecap() {
   var heroHtml = '';
   var hero = recapFindBestOverallPhoto();
   if (hero) {
-    heroHtml = '<div style="border-radius:14px;overflow:hidden;margin-bottom:8px;"><img src="' + hero.src + '" style="width:100%;display:block;max-height:320px;object-fit:cover;"></div>';
-    heroHtml += '<div style="text-align:center;font-size:12px;color:#8FB4C4;margin-bottom:20px;">Best Overall Photo \u2014 ' + (hero.submittedBy || 'Someone') + '</div>';
+    heroHtml = '<a href="' + hero.src + '" target="_blank" style="display:block;border-radius:14px;overflow:hidden;margin-bottom:8px;"><img src="' + hero.src + '" style="width:100%;display:block;max-height:320px;object-fit:cover;"></a>';
+    heroHtml += '<div style="text-align:center;font-size:12px;color:#8FB4C4;margin-bottom:20px;">Best Overall Photo \u2014 ' + (hero.submittedBy || 'Someone') + ' \u00b7 Tap to enlarge</div>';
   }
 
   // ── Stats ──
@@ -6179,7 +6190,7 @@ function exportTripRecap() {
     });
     scavHtml += '<div class="card" style="padding:8px;">';
     if (winner) {
-      scavHtml += '<img src="' + winner.src + '" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px;">';
+      scavHtml += '<a href="' + winner.src + '" target="_blank"><img src="' + winner.src + '" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;margin-bottom:6px;"></a>';
       scavHtml += '<div style="font-size:10px;color:#7EECEA;font-weight:600;line-height:1.3;">' + cat.emoji + ' ' + cat.title + '</div>';
       scavHtml += '<div style="font-size:10px;color:#8FB4C4;margin-top:2px;">' + (winner.submittedBy || 'Someone') + '</div>';
     } else {
